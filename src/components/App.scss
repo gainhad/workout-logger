@@ -1,0 +1,76 @@
+$app-background: rgba(57, 134, 106, 1);
+$font-stack: Helvetica, sans-serif;
+$fg-1: white;
+
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.App {
+  background: $app-background;
+  height: 100%;
+}
+a {
+  color: $fg-1;
+}
+#dashboard {
+  font: 150% $font-stack;
+  display: grid;
+  grid-template-rows: 1fr 45% 50%;
+  height: 100%;
+}
+
+.left-nav {
+  padding: 2vh 0 0 5vw;
+  font-size: 80%;
+}
+
+
+#dashboard-menu {
+  button {
+    font: 100% $font-stack;
+    color: $fg-1;
+    border: 1px solid $fg-1;
+    background: none;
+    width: 80vw;
+    padding: 2vh;
+  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15vw 0 1vw 0;
+}
+
+#recent-activity {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: $fg-1;
+}
+
+#login-screen {
+  @include flex-column-center;
+  font: 100% $font-stack;
+  height: 100%;
+  form {
+    @include flex-column-center;
+    justify-content: space-between;
+    height: 20vh;
+  }
+  input {
+    font: 100% $font-stack;
+    text-align: center;
+    color: $fg-1;
+    background: none;
+    border: none;
+    border-bottom: 1px solid white;
+    &::placeholder {
+      color: rgba(255, 255, 255, .6)
+    }
+  }
+}
