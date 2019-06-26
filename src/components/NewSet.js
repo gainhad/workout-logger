@@ -12,8 +12,8 @@ const NewSet = props => {
       <input type="number" required="true" placeholder="weight" />
       <input type="number" required="true" placeholder="reps" />
       <input type="number" required="true" placeholder="rpe" />
-      <input type="submit" value="ENTER" />
       <input type="button" value="CANCEL" onClick={props.toggleModal} />
+      <input type="submit" value="ENTER" />
     </form>
   );
 };
