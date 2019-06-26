@@ -17,7 +17,7 @@ const Workout = props => {
         { weight: 90, reps: 5, rpe: 6 },
         { weight: 215, reps: 5, rpe: 7 },
         { weight: 225, reps: 5, rpe: 8 },
-        { weight: 225, reps: 5, rpe: 10 }
+        { weight: 225, reps: 5, rpe: 8 }
       ]
     },
     {
