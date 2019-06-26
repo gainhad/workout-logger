@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './NewSet.scss';
 
 const NewSet = props => {
@@ -34,7 +34,6 @@ const NewSet = props => {
       />
       <input
         type="button"
-        value="2"
         value="CANCEL"
         onClick={props.toggleModal}
       />
