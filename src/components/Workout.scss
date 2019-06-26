@@ -1,0 +1,19 @@
+@import './colors';
+
+#times-modal {
+  bottom: unset;
+  left: unset;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  
+  .upper-right {
+    align-self: unset;
+  }
+}
+
+#set-modal {
+  display: flex;
+  flex-direction: column;
+}
+

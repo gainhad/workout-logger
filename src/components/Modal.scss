@@ -1,0 +1,24 @@
+@import './colors';
+
+.modal {
+  height: 30%;
+  width: 50%;
+  background: $app-background;
+  z-index: 2;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0; 
+  right: 0;
+  left: 0;
+  box-shadow: 5px 5px 2px 1px rgba(255, 255, 255, .1);
+}
+
+#close-modal-button {
+  background: none;
+  border: none;
+  font: 150% $font-stack;
+  padding: 9px;
+  color: $fg-1;
+}
+

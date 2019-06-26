@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 const Dashboard = () => {
   return (
     <div id="dashboard">
-      <Link to="/login" className="left-nav">Logout</Link>
+      <Link to="/login" className="left-nav">
+        Logout
+      </Link>
       <DashboardMenu />
       <RecentActivity />
     </div>
@@ -15,11 +17,13 @@ const Dashboard = () => {
 const DashboardMenu = () => {
   return (
     <div id="dashboard-menu">
-      <button type="button">Start Workout</button>
-      <button type="button">Log Measurement</button>
-    <button type="button">View Data</button>
-  </div>
+      <Link to="/workout">
+        <button type="button" class="button-one">Start Workout</button>
+      </Link>
+      <button type="button" class="button-one">Log Measurement</button>
+      <button type="button" class="button-one">View Data</button>
+    </div>
   );
-}
+};
 
 export default Dashboard;

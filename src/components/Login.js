@@ -7,7 +7,7 @@ const Login = () => {
         <input type="text" name="username" placeholder="username"/>
         <input type="password" name="password" placeholder="password"/>
         <Link to="/">
-          <button type="button">Login</button>
+          <button type="button" class="arrow-button">&rarr;</button>
         </Link>
       </form>
     </div>
