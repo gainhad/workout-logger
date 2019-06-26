@@ -1,60 +1,28 @@
 import React, { useState } from 'react';
 
 const LiftLog = props => {
-  const [lifts, setLifts] = useState([
-    {
-      name: 'deadlift',
-      sets: [
-        { weight: 90, reps: 5, rpe: 6 },
-        { weight: 215, reps: 5, rpe: 7 },
-        { weight: 225, reps: 5, rpe: 8 },
-        { weight: 225, reps: 5, rpe: 10 }
-      ]
-    },
-    {
-      name: 'squat',
-      sets: [
-        { weight: 230, reps: 5, rpe: 6 },
-        { weight: 245, reps: 5, rpe: 7 },
-        { weight: 255, reps: 5, rpe: 8 },
-        { weight: 255, reps: 5, rpe: 8 }
-      ]
-    },
-    {
-      name: 'bench press',
-      sets: [
-        { weight: 100, reps: 7, rpe: 6 },
-        { weight: 115, reps: 7, rpe: 7 },
-        { weight: 125, reps: 7, rpe: 8 },
-        { weight: 125, reps: 7, rpe: 8 }
-      ]
-    }
-  ]);
-
-  const [currentLiftIndex, setCurrentLiftIndex] = useState(0);
 
   function selectPreviousLift() {
-    if (currentLiftIndex < lifts.length - 1) {
-      setCurrentLiftIndex(currentLiftIndex + 1);
+    if (props.currentLiftIndex < props.lifts.length - 1) {
+      props.setCurrentLiftIndex(props.currentLiftIndex + 1);
     }
   }
 
   function selectNextLift() {
-    if (currentLiftIndex > 0) {
-      setCurrentLiftIndex(currentLiftIndex - 1);
+    if (props.currentLiftIndex > 0) {
+      props.setCurrentLiftIndex(props.currentLiftIndex - 1);
     }
   }
-
   return (
     <div id="lift-log">
       <LiftSelector
-        atEnd={currentLiftIndex === lifts.length - 1}
-        atBeginning={currentLiftIndex === 0}
-        currentLift={lifts[currentLiftIndex]}
+        atEnd={props.currentLiftIndex === props.lifts.length - 1}
+        atBeginning={props.currentLiftIndex === 0}
+        currentLift={props.lifts[props.currentLiftIndex]}
         selectPreviousLift={selectPreviousLift}
         selectNextLift={selectNextLift}
       />
-      <InfoDisplay sets={lifts[currentLiftIndex].sets} />
+          <InfoDisplay sets={props.lifts[props.currentLiftIndex].sets} />
       <button type="button" onClick={props.toggleModal} className="arrow-button" id="add-set-button">
         &#65291;
       </button>

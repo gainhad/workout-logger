@@ -10,6 +10,36 @@ const Workout = props => {
   const [isBlurred, setIsBlurred] = useState(false);
   const [newSetModal, setNewSetModal] = useState(false);
   const [timesModal, setTimesModal] = useState(false);
+  const [lifts, setLifts] = useState([
+    {
+      name: 'deadlift',
+      sets: [
+        { weight: 90, reps: 5, rpe: 6 },
+        { weight: 215, reps: 5, rpe: 7 },
+        { weight: 225, reps: 5, rpe: 8 },
+        { weight: 225, reps: 5, rpe: 10 }
+      ]
+    },
+    {
+      name: 'squat',
+      sets: [
+        { weight: 230, reps: 5, rpe: 6 },
+        { weight: 245, reps: 5, rpe: 7 },
+        { weight: 255, reps: 5, rpe: 8 },
+        { weight: 255, reps: 5, rpe: 8 }
+      ]
+    },
+    {
+      name: 'bench press',
+      sets: [
+        { weight: 100, reps: 7, rpe: 6 },
+        { weight: 115, reps: 7, rpe: 7 },
+        { weight: 125, reps: 7, rpe: 8 },
+        { weight: 125, reps: 7, rpe: 8 }
+      ]
+    }
+  ]);
+  const [currentLiftIndex, setCurrentLiftIndex] = useState(0);
 
   function toggleSetModal() {
     setNewSetModal(!newSetModal);
@@ -20,13 +50,13 @@ const Workout = props => {
     setTimesModal(!timesModal);
     setIsBlurred(!isBlurred);
   }
-  
+
   function addSet(newWeight, newReps, newRpe) {
     const newSet = {
       weight: newWeight,
       reps: newReps,
       rpe: newRpe
-    }
+    };
     console.log(newSet);
   }
 
@@ -47,11 +77,16 @@ const Workout = props => {
         >
           TIMES
         </button>
-        <LiftLog toggleModal={toggleSetModal} />
+        <LiftLog
+          toggleModal={toggleSetModal}
+          currentLiftIndex={currentLiftIndex}
+          setCurrentLiftIndex={setCurrentLiftIndex}
+          lifts={lifts}
+        />
       </div>
       {newSetModal && (
         <Modal toggleButton={false} id="set-modal">
-          <NewSet toggleModal={toggleSetModal} addSet={addSet}/>
+          <NewSet toggleModal={toggleSetModal} addSet={addSet} />
         </Modal>
       )}
       {timesModal && (
