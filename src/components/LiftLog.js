@@ -93,8 +93,8 @@ const LiftSelector = props => {
 };
 
 const InfoDisplay = props => {
-  const setList = props.sets.map(set => (
-    <div className="set">
+  const setList = props.sets.map((set, index) => (
+    <div className="set" key={index}>
       <div className="set-weight grid-left">
         <b>{set.weight}</b> <span>lbs</span>
       </div>

@@ -35,15 +35,15 @@ const Workout = props => {
   return (
     <React.Fragment>
       <div id="workout-screen" className={test}>
-        <Link to="/" class="upper-left">
-          <button type="button" class="arrow-button">
+        <Link to="/" className="upper-left">
+          <button type="button" className="arrow-button">
             &larr;
           </button>
         </Link>
         <button
           type="button"
           onClick={toggleTimesModal}
-          class="upper-right button-underline"
+          className="upper-right button-underline"
         >
           TIMES
         </button>
@@ -59,7 +59,7 @@ const Workout = props => {
           <button
             type="button"
             onClick={toggleTimesModal}
-            class="upper-right button-underline"
+            className="upper-right button-underline"
           >
             TIMES
           </button>
