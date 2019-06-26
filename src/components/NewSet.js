@@ -5,7 +5,11 @@ const NewSet = props => {
   function onSubmit(event) {
     event.preventDefault();
     props.toggleModal();
-    props.addSet(event.target.weight.value, event.target.reps.value, event.target.weight.value);
+    props.addSet(
+      event.target.weight.value,
+      event.target.reps.value,
+      event.target.rpe.value
+    );
   }
 
   return (
@@ -13,22 +17,19 @@ const NewSet = props => {
       <input
         name="weight"
         type="number"
-        value="250"
-        required="true"
+        required={true}
         placeholder="weight"
       />
       <input
         name="reps"
         type="number"
-        value="20"
-        required="true"
+        required={true}
         placeholder="reps"
       />
       <input
         name="rpe"
         type="number"
-        value="9"
-        required="true"
+        required={true}
         placeholder="rpe"
       />
       <input

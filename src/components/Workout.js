@@ -57,7 +57,14 @@ const Workout = props => {
       reps: newReps,
       rpe: newRpe
     };
-    console.log(newSet);
+    setLifts(
+      lifts.map((lift, index) => {
+        if (index === currentLiftIndex) {
+          lift.sets = [...lift.sets, newSet];
+        }
+        return lift;
+      })
+    );
   }
 
   let test = isBlurred ? 'blurred' : '';
