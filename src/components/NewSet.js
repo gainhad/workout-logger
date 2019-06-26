@@ -4,15 +4,39 @@ import './NewSet.scss';
 const NewSet = props => {
   function onSubmit(event) {
     event.preventDefault();
-    console.log('set submitted');
+    props.toggleModal();
+    props.addSet(event.target.weight.value, event.target.reps.value, event.target.weight.value);
   }
 
   return (
     <form onSubmit={onSubmit} id="new-set">
-      <input type="number" required="true" placeholder="weight" />
-      <input type="number" required="true" placeholder="reps" />
-      <input type="number" required="true" placeholder="rpe" />
-      <input type="button" value="CANCEL" onClick={props.toggleModal} />
+      <input
+        name="weight"
+        type="number"
+        value="250"
+        required="true"
+        placeholder="weight"
+      />
+      <input
+        name="reps"
+        type="number"
+        value="20"
+        required="true"
+        placeholder="reps"
+      />
+      <input
+        name="rpe"
+        type="number"
+        value="9"
+        required="true"
+        placeholder="rpe"
+      />
+      <input
+        type="button"
+        value="2"
+        value="CANCEL"
+        onClick={props.toggleModal}
+      />
       <input type="submit" value="ENTER" />
     </form>
   );

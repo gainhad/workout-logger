@@ -10,14 +10,26 @@ const Workout = props => {
   const [isBlurred, setIsBlurred] = useState(false);
   const [newSetModal, setNewSetModal] = useState(false);
   const [timesModal, setTimesModal] = useState(false);
+
   function toggleSetModal() {
     setNewSetModal(!newSetModal);
     setIsBlurred(!isBlurred);
   }
+
   function toggleTimesModal() {
     setTimesModal(!timesModal);
     setIsBlurred(!isBlurred);
   }
+  
+  function addSet(newWeight, newReps, newRpe) {
+    const newSet = {
+      weight: newWeight,
+      reps: newReps,
+      rpe: newRpe
+    }
+    console.log(newSet);
+  }
+
   let test = isBlurred ? 'blurred' : '';
 
   return (
@@ -39,7 +51,7 @@ const Workout = props => {
       </div>
       {newSetModal && (
         <Modal toggleButton={false} id="set-modal">
-          <NewSet toggleModal={toggleSetModal}/>
+          <NewSet toggleModal={toggleSetModal} addSet={addSet}/>
         </Modal>
       )}
       {timesModal && (
