@@ -74,8 +74,6 @@ const Workout = props => {
     return (a.weight >= b.weight) ? a : b;
   });
 
-  console.log(maxSet);
-
   return (
     <React.Fragment>
       <div id="workout-screen" className={test}>

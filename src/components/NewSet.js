@@ -6,9 +6,9 @@ const NewSet = props => {
     event.preventDefault();
     props.toggleModal();
     props.addSet(
-      event.target.weight.value,
-      event.target.reps.value,
-      event.target.rpe.value
+      Number(event.target.weight.value),
+      Number(event.target.reps.value),
+      Number(event.target.rpe.value)
     );
   }
 
