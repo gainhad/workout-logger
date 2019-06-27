@@ -17,3 +17,11 @@
   flex-direction: column;
 }
 
+#lift-history-button {
+  align-self: end;
+  font-size: 1.5em;
+  grid-column: 1 / 3;
+  padding: 10px;
+  margin: 10px;
+}
+

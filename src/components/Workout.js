@@ -14,7 +14,12 @@ const Workout = props => {
   const [lifts, setLifts] = useState([
     {
       name: 'deadlift',
-      sets: []
+      sets: [
+        { weight: 230, reps: 5, rpe: 6 },
+        { weight: 245, reps: 5, rpe: 7 },
+        { weight: 255, reps: 5, rpe: 8 },
+        { weight: 255, reps: 5, rpe: 8 }
+      ]
     },
     {
       name: 'squat',
@@ -93,6 +98,9 @@ const Workout = props => {
           lifts={lifts}
         />
         {maxSet && maxSet.rpe >= 6.5 && <E1rmDisplay set={maxSet} />}
+        <button type="button" id="lift-history-button" className="arrow-button">
+            Lift History 
+        </button>
       </div>
       {newSetModal && (
         <Modal toggleButton={false} id="set-modal">
