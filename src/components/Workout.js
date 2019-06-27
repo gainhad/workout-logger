@@ -14,12 +14,7 @@ const Workout = props => {
   const [lifts, setLifts] = useState([
     {
       name: 'deadlift',
-      sets: [
-        { weight: 90, reps: 5, rpe: 6 },
-        { weight: 215, reps: 5, rpe: 7 },
-        { weight: 225, reps: 5, rpe: 8 },
-        { weight: 225, reps: 5, rpe: 9 }
-      ]
+      sets: []
     },
     {
       name: 'squat',
@@ -70,9 +65,11 @@ const Workout = props => {
   }
 
   const test = isBlurred ? 'blurred' : '';
-  const maxSet = lifts[currentLiftIndex].sets.reduce((a, b) => {
-    return (a.weight >= b.weight) ? a : b;
-  });
+  const maxSet = lifts[currentLiftIndex].sets.length
+    ? lifts[currentLiftIndex].sets.reduce((a, b) => {
+        return a.weight >= b.weight ? a : b;
+      })
+    : null;
 
   return (
     <React.Fragment>
@@ -95,7 +92,7 @@ const Workout = props => {
           setCurrentLiftIndex={setCurrentLiftIndex}
           lifts={lifts}
         />
-          <E1rmDisplay set={maxSet}/>
+        {maxSet && maxSet.rpe >= 6.5 && <E1rmDisplay set={maxSet} />}
       </div>
       {newSetModal && (
         <Modal toggleButton={false} id="set-modal">
