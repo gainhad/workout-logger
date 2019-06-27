@@ -46,6 +46,9 @@ a {
   background: none;
   width: 80vw;
   padding: 2vh;
+  &:active, &:focus {
+    outline: none;
+  }
 }
 
 .button-underline {

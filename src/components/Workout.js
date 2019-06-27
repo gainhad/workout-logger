@@ -7,12 +7,14 @@ import NewSet from './NewSet';
 import E1rmDisplay from './E1rmDisplay';
 import RestTimer from './RestTimer';
 import useInterval from '../utils/useInterval';
+import NewRestTimer from './NewRestTimer';
 import './Workout.scss';
 
 const Workout = props => {
   const [isBlurred, setIsBlurred] = useState(false);
   const [newSetModal, setNewSetModal] = useState(false);
   const [timesModal, setTimesModal] = useState(false);
+  const [restTimerModal, setRestTimerModal] = useState(false);
   const [lifts, setLifts] = useState([
     {
       name: 'deadlift',
@@ -45,33 +47,57 @@ const Workout = props => {
   ]);
   const [currentLiftIndex, setCurrentLiftIndex] = useState(0);
   const [timers, setTimers] = useState([
-    { name: 'rest', decrement: true, started: true, seconds: 0 }
+    { name: 'rest', decrement: true, started: false, seconds: 0 }
   ]);
 
   //update times every second
   useInterval(() => {
-    setTimers(timers.map(timer => {
-      if (timer.started) {
-        if (timer.decrement && timer.seconds > 0) {
-          return Object.assign(timer, {seconds: timer.seconds - 1});
-        } else if (!timer.decrement) {
-          return Object.assign(timer, {seconds: timer.seconds + 1});
+    setTimers(
+      timers.map(timer => {
+        if (timer.started) {
+          if (timer.decrement && timer.seconds > 0) {
+            return Object.assign(timer, { seconds: timer.seconds - 1 });
+          } else if (!timer.decrement) {
+            return Object.assign(timer, { seconds: timer.seconds + 1 });
+          } else {
+            return timer;
+          }
         } else {
           return timer;
         }
-      } else {
-        return timer;
-      }
-    }));
+      })
+    );
   }, 1000);
 
+  function startIndividualTimer(timerName, newSeconds) {
+    setTimers(
+      timers.map(timer => {
+        if (timer.name === timerName) {
+          return Object.assign(timer, { seconds: newSeconds, started: true });
+        } else {
+          return timer;
+        }
+      })
+    );
+  }
+
   function toggleSetModal() {
-    setNewSetModal(!newSetModal);
-    setIsBlurred(!isBlurred);
+    if (newSetModal) {
+      setNewSetModal(false);
+      setRestTimerModal(true);
+    } else {
+      setNewSetModal(true);
+      setIsBlurred(true);
+    }
   }
 
   function toggleTimesModal() {
     setTimesModal(!timesModal);
+    setIsBlurred(!isBlurred);
+  }
+
+  function toggleRestTimerModal() {
+    setRestTimerModal(!restTimerModal);
     setIsBlurred(!isBlurred);
   }
 
@@ -108,7 +134,9 @@ const Workout = props => {
             &larr;
           </button>
         </Link>
-          {restTimer.started && <RestTimer secondsRemaining={restTimer.seconds} />}
+        {restTimer.started && (
+          <RestTimer secondsRemaining={restTimer.seconds} />
+        )}
         <button
           type="button"
           onClick={toggleTimesModal}
@@ -149,7 +177,12 @@ const Workout = props => {
           />
         </Modal>
       )}
-      {(newSetModal || timesModal) && <Backdrop />}
+      {restTimerModal && (
+        <Modal toggleButton={false} id="new-rest-timer-modal">
+          <NewRestTimer toggleModal={toggleRestTimerModal} startTimer={startIndividualTimer} />
+        </Modal>
+      )}
+      {(newSetModal || timesModal || restTimerModal) && <Backdrop />}
     </React.Fragment>
   );
 };
