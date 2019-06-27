@@ -4,6 +4,7 @@ import LiftLog from './LiftLog';
 import Modal from './Modal';
 import Backdrop from './Backdrop';
 import NewSet from './NewSet';
+import E1rmDisplay from './E1rmDisplay';
 import './Workout.scss';
 
 const Workout = props => {
@@ -17,7 +18,7 @@ const Workout = props => {
         { weight: 90, reps: 5, rpe: 6 },
         { weight: 215, reps: 5, rpe: 7 },
         { weight: 225, reps: 5, rpe: 8 },
-        { weight: 225, reps: 5, rpe: 8 }
+        { weight: 225, reps: 5, rpe: 9 }
       ]
     },
     {
@@ -68,7 +69,12 @@ const Workout = props => {
     );
   }
 
-  let test = isBlurred ? 'blurred' : '';
+  const test = isBlurred ? 'blurred' : '';
+  const maxSet = lifts[currentLiftIndex].sets.reduce((a, b) => {
+    return (a.weight >= b.weight) ? a : b;
+  });
+
+  console.log(maxSet);
 
   return (
     <React.Fragment>
@@ -91,6 +97,7 @@ const Workout = props => {
           setCurrentLiftIndex={setCurrentLiftIndex}
           lifts={lifts}
         />
+          <E1rmDisplay set={maxSet}/>
       </div>
       {newSetModal && (
         <Modal toggleButton={false} id="set-modal">
