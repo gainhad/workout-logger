@@ -1,8 +1,8 @@
 @import './colors';
 
 .modal {
-  height: 30%;
-  width: 50%;
+  height: max-content;
+  width: max-content;
   background: $app-background;
   z-index: 2;
   position: absolute;

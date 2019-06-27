@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import LiftLog from './LiftLog';
 import Modal from './Modal';
 import Backdrop from './Backdrop';
 import NewSet from './NewSet';
 import E1rmDisplay from './E1rmDisplay';
+import RestTimer from './RestTimer';
+import useInterval from '../utils/useInterval';
 import './Workout.scss';
 
 const Workout = props => {
@@ -42,6 +44,26 @@ const Workout = props => {
     }
   ]);
   const [currentLiftIndex, setCurrentLiftIndex] = useState(0);
+  const [timers, setTimers] = useState([
+    { name: 'rest', decrement: true, started: true, seconds: 0 }
+  ]);
+
+  //update times every second
+  useInterval(() => {
+    setTimers(timers.map(timer => {
+      if (timer.started) {
+        if (timer.decrement && timer.seconds > 0) {
+          return Object.assign(timer, {seconds: timer.seconds - 1});
+        } else if (!timer.decrement) {
+          return Object.assign(timer, {seconds: timer.seconds + 1});
+        } else {
+          return timer;
+        }
+      } else {
+        return timer;
+      }
+    }));
+  }, 1000);
 
   function toggleSetModal() {
     setNewSetModal(!newSetModal);
@@ -76,6 +98,8 @@ const Workout = props => {
       })
     : null;
 
+  const restTimer = timers.find(timer => timer.name === 'rest');
+
   return (
     <React.Fragment>
       <div id="workout-screen" className={test}>
@@ -84,10 +108,12 @@ const Workout = props => {
             &larr;
           </button>
         </Link>
+          {restTimer.started && <RestTimer secondsRemaining={restTimer.seconds} />}
         <button
           type="button"
           onClick={toggleTimesModal}
           className="upper-right button-underline"
+          id="times-toggle"
         >
           TIMES
         </button>
@@ -99,7 +125,7 @@ const Workout = props => {
         />
         {maxSet && maxSet.rpe >= 6.5 && <E1rmDisplay set={maxSet} />}
         <button type="button" id="lift-history-button" className="arrow-button">
-            Lift History 
+          Lift History
         </button>
       </div>
       {newSetModal && (
@@ -116,6 +142,11 @@ const Workout = props => {
           >
             TIMES
           </button>
+          <RestTimer
+            secondsRemaining={
+              timers.find(timer => timer.name === 'rest').seconds
+            }
+          />
         </Modal>
       )}
       {(newSetModal || timesModal) && <Backdrop />}
