@@ -8,6 +8,7 @@ import E1rmDisplay from './E1rmDisplay';
 import RestTimer from './RestTimer';
 import useInterval from '../utils/useInterval';
 import NewRestTimer from './NewRestTimer';
+import soundFile from '../assets/audio/bell.wav';
 import './Workout.scss';
 
 const Workout = props => {
@@ -47,7 +48,7 @@ const Workout = props => {
   ]);
   const [currentLiftIndex, setCurrentLiftIndex] = useState(0);
   const [timers, setTimers] = useState([
-    { name: 'rest', decrement: true, started: false, seconds: 0 }
+    { name: 'rest', decrement: true, started: true, finished: false, seconds: 2 }
   ]);
 
   //update times every second
@@ -57,6 +58,8 @@ const Workout = props => {
         if (timer.started) {
           if (timer.decrement && timer.seconds > 0) {
             return Object.assign(timer, { seconds: timer.seconds - 1 });
+          } else if (timer.decrement) {
+            return Object.assign(timer, { finished: true });
           } else if (!timer.decrement) {
             return Object.assign(timer, { seconds: timer.seconds + 1 });
           } else {
@@ -73,7 +76,7 @@ const Workout = props => {
     setTimers(
       timers.map(timer => {
         if (timer.name === timerName) {
-          return Object.assign(timer, { seconds: newSeconds, started: true });
+          return Object.assign(timer, { seconds: newSeconds, started: true, finished: false });
         } else {
           return timer;
         }
@@ -126,6 +129,16 @@ const Workout = props => {
 
   const restTimer = timers.find(timer => timer.name === 'rest');
 
+  // Play sound when rest finishes
+  useEffect(() => {
+    if (restTimer.finished) {
+      const sound = new Audio();
+      sound.src = soundFile;
+      sound.play();
+
+    }
+  }, [restTimer.finished]);
+
   return (
     <React.Fragment>
       <div id="workout-screen" className={test}>
@@ -134,9 +147,12 @@ const Workout = props => {
             &larr;
           </button>
         </Link>
-        {restTimer.started && (
+        {(restTimer.started && !restTimer.finished) && (
           <RestTimer secondsRemaining={restTimer.seconds} />
         )}
+            {restTimer.finished && (
+              <div className="rest-timer" id="rest-finished"><b>REST FINISHED!</b></div>
+            )}
         <button
           type="button"
           onClick={toggleTimesModal}
