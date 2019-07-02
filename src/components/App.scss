@@ -9,6 +9,8 @@
 .App {
   background: $app-background;
   height: 100%;
+  font: $font-stack;
+  color: $fg-1;
 }
 
 a {
