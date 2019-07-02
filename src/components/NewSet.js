@@ -35,7 +35,8 @@ const NewSet = props => {
       <input
         type="button"
         value="CANCEL"
-        onClick={props.toggleModal}
+        className="cancel-button"
+        onClick={props.closeModal}
       />
       <input type="submit" value="ENTER" />
     </form>
