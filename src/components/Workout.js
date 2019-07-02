@@ -8,12 +8,14 @@ import E1rmDisplay from './E1rmDisplay';
 import RestTimer from './RestTimer';
 import useInterval from '../utils/useInterval';
 import NewRestTimer from './NewRestTimer';
+import NewLift from './NewLift';
 import soundFile from '../assets/audio/bell.wav';
 import './Workout.scss';
 
 const Workout = props => {
   const [isBlurred, setIsBlurred] = useState(false);
   const [newSetModal, setNewSetModal] = useState(false);
+  const [newLiftModal, setNewLiftModal] = useState(false);
   const [timesModal, setTimesModal] = useState(false);
   const [restTimerModal, setRestTimerModal] = useState(false);
   const [lifts, setLifts] = useState([
@@ -48,7 +50,13 @@ const Workout = props => {
   ]);
   const [currentLiftIndex, setCurrentLiftIndex] = useState(0);
   const [timers, setTimers] = useState([
-    { name: 'rest', decrement: true, started: true, finished: false, seconds: 2 }
+    {
+      name: 'rest',
+      decrement: true,
+      started: false,
+      finished: false,
+      seconds: 0
+    }
   ]);
 
   //update times every second
@@ -76,12 +84,21 @@ const Workout = props => {
     setTimers(
       timers.map(timer => {
         if (timer.name === timerName) {
-          return Object.assign(timer, { seconds: newSeconds, started: true, finished: false });
+          return Object.assign(timer, {
+            seconds: newSeconds,
+            started: true,
+            finished: false
+          });
         } else {
           return timer;
         }
       })
     );
+  }
+
+  function closeSetModal() {
+    setNewSetModal(false);
+    setIsBlurred(false);
   }
 
   function toggleSetModal() {
@@ -104,12 +121,18 @@ const Workout = props => {
     setIsBlurred(!isBlurred);
   }
 
+  function toggleNewLiftModal() {
+    setNewLiftModal(!newLiftModal);
+    setIsBlurred(!isBlurred);
+  }
+
   function addSet(newWeight, newReps, newRpe) {
     const newSet = {
       weight: newWeight,
       reps: newReps,
       rpe: newRpe
     };
+
     setLifts(
       lifts.map((lift, index) => {
         if (index === currentLiftIndex) {
@@ -118,6 +141,10 @@ const Workout = props => {
         return lift;
       })
     );
+  }
+
+  function addLift(newLift) {
+    setLifts([{ name: newLift, sets: [] }, ...lifts]);
   }
 
   const test = isBlurred ? 'blurred' : '';
@@ -135,7 +162,6 @@ const Workout = props => {
       const sound = new Audio();
       sound.src = soundFile;
       sound.play();
-
     }
   }, [restTimer.finished]);
 
@@ -147,12 +173,14 @@ const Workout = props => {
             &larr;
           </button>
         </Link>
-        {(restTimer.started && !restTimer.finished) && (
+        {restTimer.started && !restTimer.finished && (
           <RestTimer secondsRemaining={restTimer.seconds} />
         )}
-            {restTimer.finished && (
-              <div className="rest-timer" id="rest-finished"><b>REST FINISHED!</b></div>
-            )}
+        {restTimer.finished && (
+          <div className="rest-timer" id="rest-finished">
+            <b>REST FINISHED!</b>
+          </div>
+        )}
         <button
           type="button"
           onClick={toggleTimesModal}
@@ -162,7 +190,8 @@ const Workout = props => {
           TIMES
         </button>
         <LiftLog
-          toggleModal={toggleSetModal}
+          toggleSetModal={toggleSetModal}
+          toggleNewLiftModal={toggleNewLiftModal}
           currentLiftIndex={currentLiftIndex}
           setCurrentLiftIndex={setCurrentLiftIndex}
           lifts={lifts}
@@ -174,7 +203,11 @@ const Workout = props => {
       </div>
       {newSetModal && (
         <Modal toggleButton={false} id="set-modal">
-          <NewSet toggleModal={toggleSetModal} addSet={addSet} />
+          <NewSet
+            closeModal={closeSetModal}
+            toggleModal={toggleSetModal}
+            addSet={addSet}
+          />
         </Modal>
       )}
       {timesModal && (
@@ -186,19 +219,27 @@ const Workout = props => {
           >
             TIMES
           </button>
-          <RestTimer
-            secondsRemaining={
-              timers.find(timer => timer.name === 'rest').seconds
-            }
-          />
+          {restTimer.started && (
+            <RestTimer secondsRemaining={restTimer.seconds} />
+          )}
         </Modal>
       )}
       {restTimerModal && (
         <Modal toggleButton={false} id="new-rest-timer-modal">
-          <NewRestTimer toggleModal={toggleRestTimerModal} startTimer={startIndividualTimer} />
+          <NewRestTimer
+            toggleModal={toggleRestTimerModal}
+            startTimer={startIndividualTimer}
+          />
         </Modal>
       )}
-      {(newSetModal || timesModal || restTimerModal) && <Backdrop />}
+      {newLiftModal && (
+        <Modal toggleButton={false} id="new-lift-modal">
+          <NewLift toggleModal={toggleNewLiftModal} addLift={addLift}/>
+        </Modal>
+      )}
+      {(newSetModal || timesModal || restTimerModal || newLiftModal) && (
+        <Backdrop />
+      )}
     </React.Fragment>
   );
 };

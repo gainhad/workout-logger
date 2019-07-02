@@ -21,9 +21,10 @@ const LiftLog = props => {
         currentLift={props.lifts[props.currentLiftIndex]}
         selectPreviousLift={selectPreviousLift}
         selectNextLift={selectNextLift}
+        toggleNewLiftModal={props.toggleNewLiftModal}
       />
           <InfoDisplay sets={props.lifts[props.currentLiftIndex].sets} />
-      <button type="button" onClick={props.toggleModal} className="arrow-button" id="add-set-button">
+      <button type="button" onClick={props.toggleSetModal} className="arrow-button" id="add-set-button">
         &#65291;
       </button>
     </div>
@@ -44,7 +45,7 @@ const LiftSelector = props => {
       ) : null}
       <h2>{props.currentLift.name.toUpperCase()}</h2>
       {props.atBeginning ? (
-        <button type="button" className="arrow-button">
+        <button type="button" className="arrow-button" onClick={props.toggleNewLiftModal}>
           &#65291;
         </button>
       ) : (
