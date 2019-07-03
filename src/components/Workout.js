@@ -3,21 +3,18 @@ import { Link } from 'react-router-dom';
 import LiftLog from './LiftLog';
 import Modal from './Modal';
 import Backdrop from './Backdrop';
-import NewSet from './NewSet';
 import E1rmDisplay from './E1rmDisplay';
 import RestTimer from './RestTimer';
+import TimesDisplay from './TimesDisplay';
 import useInterval from '../utils/useInterval';
-import NewRestTimer from './NewRestTimer';
-import NewLift from './NewLift';
 import soundFile from '../assets/audio/bell.wav';
 import './Workout.scss';
 
 const Workout = props => {
   const [isBlurred, setIsBlurred] = useState(false);
-  const [newSetModal, setNewSetModal] = useState(false);
-  const [newLiftModal, setNewLiftModal] = useState(false);
-  const [timesModal, setTimesModal] = useState(false);
-  const [restTimerModal, setRestTimerModal] = useState(false);
+  const [modal, setModal] = useState({ id: null, child: null });
+  const [editSetModal, setEditSetModal] = useState(false);
+  const [liftEditable, setLiftEditable] = useState(false);
   const [lifts, setLifts] = useState([
     {
       name: 'deadlift',
@@ -56,8 +53,17 @@ const Workout = props => {
       started: false,
       finished: false,
       seconds: 0
+    }, 
+    {
+      name: 'workout',
+      decrement: false,
+      started: true,
+      finished: false,
+      seconds: 0
     }
   ]);
+  const restTimer = timers.find(timer => timer.name === 'rest');
+  const workoutTimer = timers.find(timer => timer.name === 'workout');
 
   //update times every second
   useInterval(() => {
@@ -96,34 +102,8 @@ const Workout = props => {
     );
   }
 
-  function closeSetModal() {
-    setNewSetModal(false);
-    setIsBlurred(false);
-  }
-
-  function toggleSetModal() {
-    if (newSetModal) {
-      setNewSetModal(false);
-      setRestTimerModal(true);
-    } else {
-      setNewSetModal(true);
-      setIsBlurred(true);
-    }
-  }
-
-  function toggleTimesModal() {
-    setTimesModal(!timesModal);
-    setIsBlurred(!isBlurred);
-  }
-
-  function toggleRestTimerModal() {
-    setRestTimerModal(!restTimerModal);
-    setIsBlurred(!isBlurred);
-  }
-
-  function toggleNewLiftModal() {
-    setNewLiftModal(!newLiftModal);
-    setIsBlurred(!isBlurred);
+  function closeModal() {
+    setModal({ id: null, child: null });
   }
 
   function addSet(newWeight, newReps, newRpe) {
@@ -147,14 +127,15 @@ const Workout = props => {
     setLifts([{ name: newLift, sets: [] }, ...lifts]);
   }
 
-  const test = isBlurred ? 'blurred' : '';
-  const maxSet = lifts[currentLiftIndex].sets.length
-    ? lifts[currentLiftIndex].sets.reduce((a, b) => {
-        return a.weight >= b.weight ? a : b;
-      })
-    : null;
 
-  const restTimer = timers.find(timer => timer.name === 'rest');
+  function openTimesDisplay() {
+    setModal({
+      id: 'times-modal',
+      child: <TimesDisplay closeModal={closeModal} restTimerStarted={restTimer.started} restTimerSeconds={restTimer.seconds} workoutTimer={workoutTimer.seconds}/>
+    });
+  }
+
+  const test = <div>{workoutTimer.Seconds}</div>;
 
   // Play sound when rest finishes
   useEffect(() => {
@@ -165,9 +146,19 @@ const Workout = props => {
     }
   }, [restTimer.finished]);
 
+  useEffect(() => {
+    modal.child ? setIsBlurred(true) : setIsBlurred(false);
+  }, [modal.child]);
+
+  const maxSet = lifts[currentLiftIndex].sets.length
+    ? lifts[currentLiftIndex].sets.reduce((a, b) => {
+        return a.weight >= b.weight ? a : b;
+      })
+    : null;
+
   return (
-    <React.Fragment>
-      <div id="workout-screen" className={test}>
+    <>
+      <div id="workout-screen" className={isBlurred ? 'blurred' : ''}>
         <Link to="/" className="upper-left">
           <button type="button" className="arrow-button">
             &larr;
@@ -183,64 +174,35 @@ const Workout = props => {
         )}
         <button
           type="button"
-          onClick={toggleTimesModal}
+          onClick={openTimesDisplay}
           className="upper-right button-underline"
           id="times-toggle"
         >
           TIMES
         </button>
         <LiftLog
-          toggleSetModal={toggleSetModal}
-          toggleNewLiftModal={toggleNewLiftModal}
+          liftEditable={liftEditable}
+          setLiftEditable={setLiftEditable}
+          setEditSetModal={setEditSetModal}
           currentLiftIndex={currentLiftIndex}
           setCurrentLiftIndex={setCurrentLiftIndex}
           lifts={lifts}
+          setModal={setModal}
+          closeModal={closeModal}
+          addSet={addSet}
+          startTimer={startIndividualTimer}
+          addLift={addLift}
         />
         {maxSet && maxSet.rpe >= 6.5 && <E1rmDisplay set={maxSet} />}
         <button type="button" id="lift-history-button" className="arrow-button">
           Lift History
         </button>
       </div>
-      {newSetModal && (
-        <Modal toggleButton={false} id="set-modal">
-          <NewSet
-            closeModal={closeSetModal}
-            toggleModal={toggleSetModal}
-            addSet={addSet}
-          />
-        </Modal>
-      )}
-      {timesModal && (
-        <Modal toggleButton={false} id="times-modal">
-          <button
-            type="button"
-            onClick={toggleTimesModal}
-            className="upper-right button-underline"
-          >
-            TIMES
-          </button>
-          {restTimer.started && (
-            <RestTimer secondsRemaining={restTimer.seconds} />
-          )}
-        </Modal>
-      )}
-      {restTimerModal && (
-        <Modal toggleButton={false} id="new-rest-timer-modal">
-          <NewRestTimer
-            toggleModal={toggleRestTimerModal}
-            startTimer={startIndividualTimer}
-          />
-        </Modal>
-      )}
-      {newLiftModal && (
-        <Modal toggleButton={false} id="new-lift-modal">
-          <NewLift toggleModal={toggleNewLiftModal} addLift={addLift}/>
-        </Modal>
-      )}
-      {(newSetModal || timesModal || restTimerModal || newLiftModal) && (
-        <Backdrop />
-      )}
-    </React.Fragment>
+      <Modal id={modal.id} showModal={modal.child}>
+        {modal.child}
+      </Modal>
+      {isBlurred && <Backdrop />}
+    </>
   );
 };
 

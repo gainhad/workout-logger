@@ -4,12 +4,12 @@ import './NewSet.scss';
 const NewSet = props => {
   function onSubmit(event) {
     event.preventDefault();
-    props.toggleModal();
     props.addSet(
       Number(event.target.weight.value),
       Number(event.target.reps.value),
       Number(event.target.rpe.value)
     );
+    props.openRestTimerModal();
   }
 
   return (
@@ -36,7 +36,7 @@ const NewSet = props => {
         type="button"
         value="CANCEL"
         className="cancel-button"
-        onClick={props.closeModal}
+        onClick={props.closeSelf}
       />
       <input type="submit" value="ENTER" />
     </form>
