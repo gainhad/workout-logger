@@ -1,10 +1,7 @@
 import React from 'react';
-import NewSet from './NewSet';
-import NewRestTimer from './NewRestTimer';
-import NewLift from './NewLift';
-import './LiftLog.scss';
 
 const LiftLog = props => {
+
   function selectPreviousLift() {
     if (props.currentLiftIndex < props.lifts.length - 1) {
       props.setCurrentLiftIndex(props.currentLiftIndex + 1);
@@ -16,39 +13,6 @@ const LiftLog = props => {
       props.setCurrentLiftIndex(props.currentLiftIndex - 1);
     }
   }
-
-  function openSetModal() {
-    props.setModal({
-      id: 'set-modal',
-      child: (
-        <NewSet
-          closeSelf={props.closeModal}
-          addSet={props.addSet}
-          openRestTimerModal={openRestTimerModal}
-        />
-      )
-    });
-  }
-
-  function openRestTimerModal() {
-    props.setModal({
-      id: 'new-rest-timer-modal',
-      child: (
-        <NewRestTimer
-          startTimer={props.startTimer}
-          closeModal={props.closeModal}
-        />
-      )
-    });
-  }
-
-  function openNewLiftModal() {
-    props.setModal({
-      id: 'new-lift-modal',
-      child: <NewLift closeModal={props.closeModal} addLift={props.addLift} />
-    });
-  }
-
   return (
     <div id="lift-log">
       <LiftSelector
@@ -57,26 +21,10 @@ const LiftLog = props => {
         currentLift={props.lifts[props.currentLiftIndex]}
         selectPreviousLift={selectPreviousLift}
         selectNextLift={selectNextLift}
-        openNewLiftModal={openNewLiftModal}
+        toggleNewLiftModal={props.toggleNewLiftModal}
       />
-      <InfoDisplay
-        liftEditable={props.liftEditable}
-        setEditSetModal={props.setEditSetModal}
-        sets={props.lifts[props.currentLiftIndex].sets}
-      />
-      <button
-        type="button"
-        id="edit-lift"
-        onClick={() => props.setLiftEditable(!props.liftEditable)}
-      >
-        EDIT
-      </button>
-      <button
-        type="button"
-        onClick={openSetModal}
-        className="arrow-button"
-        id="add-set-button"
-      >
+          <InfoDisplay sets={props.lifts[props.currentLiftIndex].sets} />
+      <button type="button" onClick={props.toggleSetModal} className="arrow-button" id="add-set-button">
         &#65291;
       </button>
     </div>
@@ -97,11 +45,7 @@ const LiftSelector = props => {
       ) : null}
       <h2>{props.currentLift.name.toUpperCase()}</h2>
       {props.atBeginning ? (
-        <button
-          type="button"
-          className="arrow-button"
-          onClick={props.openNewLiftModal}
-        >
+        <button type="button" className="arrow-button" onClick={props.toggleNewLiftModal}>
           &#65291;
         </button>
       ) : (
@@ -119,11 +63,7 @@ const LiftSelector = props => {
 
 const InfoDisplay = props => {
   const setList = props.sets.map((set, index) => (
-    <div
-      className="set"
-      key={index}
-      onClick={props.liftEditable ? () => props.setEditSetModal(true) : null}
-    >
+    <div className="set" key={index}>
       <div className="set-weight grid-left">
         <b>{set.weight}</b> <span>lbs</span>
       </div>

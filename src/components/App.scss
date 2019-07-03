@@ -136,7 +136,6 @@ a {
 #lift-log {
   display: grid;
   grid-template-rows: auto auto auto;
-  grid-template-columns: 20% 1fr 20%;
   grid-column: 1 / 4;
   width: 80%;
   background: rgba(0, 0, 0, .1);
@@ -145,7 +144,6 @@ a {
 }
 
 #lift-selector {
-  grid-column: 1 / 4;
   display: grid;
   grid-template-columns: 1fr 80% 1fr;
   width: 100%;
@@ -178,7 +176,6 @@ h2 {
 }
 
 #info-display {
-  grid-column: 1 / 4;
   max-height: 52vh;
   overflow-y: auto;
 }
@@ -192,7 +189,6 @@ h2 {
 }
 
 #add-set-button {
-  grid-column: 2 / 3;
   height: 1.5em;
   width: 1.5em;
   background: rgba(255, 255, 255, .1);
