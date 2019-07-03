@@ -136,6 +136,7 @@ a {
 #lift-log {
   display: grid;
   grid-template-rows: auto auto auto;
+  grid-template-columns: 20% 60% 20%;
   grid-column: 1 / 4;
   width: 80%;
   background: rgba(0, 0, 0, .1);
@@ -146,6 +147,7 @@ a {
 #lift-selector {
   display: grid;
   grid-template-columns: 1fr 80% 1fr;
+  grid-column: 1 / 4;
   width: 100%;
   justify-items: center;
   align-items: center;
@@ -176,6 +178,7 @@ h2 {
 }
 
 #info-display {
+  grid-column: 1 / 4;
   max-height: 52vh;
   overflow-y: auto;
 }

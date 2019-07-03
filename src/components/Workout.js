@@ -15,6 +15,7 @@ import './Workout.scss';
 const Workout = props => {
   const [isBlurred, setIsBlurred] = useState(false);
   const [newSetModal, setNewSetModal] = useState(false);
+  const [liftEditable, setLiftEditable] = useState(false);
   const [newLiftModal, setNewLiftModal] = useState(false);
   const [timesModal, setTimesModal] = useState(false);
   const [restTimerModal, setRestTimerModal] = useState(false);
@@ -195,6 +196,8 @@ const Workout = props => {
           currentLiftIndex={currentLiftIndex}
           setCurrentLiftIndex={setCurrentLiftIndex}
           lifts={lifts}
+          liftEditable={liftEditable}
+          setLiftEditable={setLiftEditable}
         />
         {maxSet && maxSet.rpe >= 6.5 && <E1rmDisplay set={maxSet} />}
         <button type="button" id="lift-history-button" className="arrow-button">

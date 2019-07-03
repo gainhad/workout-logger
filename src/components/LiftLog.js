@@ -1,7 +1,6 @@
 import React from 'react';
 
 const LiftLog = props => {
-
   function selectPreviousLift() {
     if (props.currentLiftIndex < props.lifts.length - 1) {
       props.setCurrentLiftIndex(props.currentLiftIndex + 1);
@@ -23,8 +22,20 @@ const LiftLog = props => {
         selectNextLift={selectNextLift}
         toggleNewLiftModal={props.toggleNewLiftModal}
       />
-          <InfoDisplay sets={props.lifts[props.currentLiftIndex].sets} />
-      <button type="button" onClick={props.toggleSetModal} className="arrow-button" id="add-set-button">
+      <InfoDisplay editable={props.liftEditable} sets={props.lifts[props.currentLiftIndex].sets} />
+      <button
+        type="button"
+        id="edit-button"
+        onClick={() => props.setLiftEditable(!props.liftEditable)}
+      >
+        EDIT
+      </button>
+      <button
+        type="button"
+        onClick={props.toggleSetModal}
+        className="arrow-button"
+        id="add-set-button"
+      >
         &#65291;
       </button>
     </div>
@@ -45,7 +56,11 @@ const LiftSelector = props => {
       ) : null}
       <h2>{props.currentLift.name.toUpperCase()}</h2>
       {props.atBeginning ? (
-        <button type="button" className="arrow-button" onClick={props.toggleNewLiftModal}>
+        <button
+          type="button"
+          className="arrow-button"
+          onClick={props.toggleNewLiftModal}
+        >
           &#65291;
         </button>
       ) : (
@@ -63,7 +78,7 @@ const LiftSelector = props => {
 
 const InfoDisplay = props => {
   const setList = props.sets.map((set, index) => (
-    <div className="set" key={index}>
+    <div className="set" key={index} onClick={ () => props.editable ? alert("hellow") : null}>
       <div className="set-weight grid-left">
         <b>{set.weight}</b> <span>lbs</span>
       </div>
