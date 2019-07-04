@@ -157,6 +157,12 @@ const Workout = props => {
     setLifts([{ name: newLift, sets: [] }, ...lifts]);
   }
 
+  function updateLift(index, newLift) {
+    let updatedLifts = [...lifts];
+    updatedLifts[index].name = newLift;
+    setLifts(updatedLifts);
+  }
+
   const test = isBlurred ? 'blurred' : '';
   const maxSet = lifts[currentLiftIndex].sets.length
     ? lifts[currentLiftIndex].sets.reduce((a, b) => {
@@ -176,7 +182,13 @@ const Workout = props => {
   }, [restTimer.finished]);
 
   useEffect(() => {
-    if (newSetModal || newLiftModal || restTimerModal || editLiftModal || timesModal) {
+    if (
+      newSetModal ||
+      newLiftModal ||
+      restTimerModal ||
+      editLiftModal ||
+      timesModal
+    ) {
       setIsBlurred(true);
     } else {
       setIsBlurred(false);

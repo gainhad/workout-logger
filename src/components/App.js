@@ -4,9 +4,12 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Login from './Login';
 import Workout from './Workout';
+import store from '../store.js';
+import { Provider } from 'react-redux';
 
 function App() {
   return (
+    <Provider store={store}>
     <div className="App">
       <Router>
         <Route path="/" exact component={Dashboard} />
@@ -14,6 +17,7 @@ function App() {
         <Route path="/workout" component={Workout} />
       </Router>
     </div>
+  </Provider>
   );
 }
 
