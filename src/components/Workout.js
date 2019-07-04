@@ -9,6 +9,7 @@ import RestTimer from './RestTimer';
 import useInterval from '../utils/useInterval';
 import NewRestTimer from './NewRestTimer';
 import NewLift from './NewLift';
+import EditLift from './EditLift';
 import soundFile from '../assets/audio/bell.wav';
 import './Workout.scss';
 
@@ -16,6 +17,11 @@ const Workout = props => {
   const [isBlurred, setIsBlurred] = useState(false);
   const [newSetModal, setNewSetModal] = useState(false);
   const [liftEditable, setLiftEditable] = useState(false);
+  const [editLiftModal, setEditLiftModal] = useState(false);
+  const [editSetModal, setEditSetModal] = useState({
+    display: false,
+    index: 0
+  });
   const [newLiftModal, setNewLiftModal] = useState(false);
   const [timesModal, setTimesModal] = useState(false);
   const [restTimerModal, setRestTimerModal] = useState(false);
@@ -99,7 +105,6 @@ const Workout = props => {
 
   function closeSetModal() {
     setNewSetModal(false);
-    setIsBlurred(false);
   }
 
   function toggleSetModal() {
@@ -108,23 +113,27 @@ const Workout = props => {
       setRestTimerModal(true);
     } else {
       setNewSetModal(true);
-      setIsBlurred(true);
     }
   }
 
   function toggleTimesModal() {
     setTimesModal(!timesModal);
-    setIsBlurred(!isBlurred);
   }
 
   function toggleRestTimerModal() {
     setRestTimerModal(!restTimerModal);
-    setIsBlurred(!isBlurred);
   }
 
   function toggleNewLiftModal() {
     setNewLiftModal(!newLiftModal);
-    setIsBlurred(!isBlurred);
+  }
+
+  function toggleEditLiftNameModal() {
+    setNewLiftModal(true);
+  }
+
+  function toggleEditLiftModal() {
+    setEditLiftModal(!editLiftModal);
   }
 
   function addSet(newWeight, newReps, newRpe) {
@@ -166,6 +175,14 @@ const Workout = props => {
     }
   }, [restTimer.finished]);
 
+  useEffect(() => {
+    if (newSetModal || newLiftModal || restTimerModal || editLiftModal || timesModal) {
+      setIsBlurred(true);
+    } else {
+      setIsBlurred(false);
+    }
+  }, [newSetModal, newLiftModal, restTimerModal, editLiftModal, timesModal]);
+
   return (
     <React.Fragment>
       <div id="workout-screen" className={test}>
@@ -198,6 +215,8 @@ const Workout = props => {
           lifts={lifts}
           liftEditable={liftEditable}
           setLiftEditable={setLiftEditable}
+          setEditSetModal={setEditSetModal}
+          toggleEditLiftModal={toggleEditLiftModal}
         />
         {maxSet && maxSet.rpe >= 6.5 && <E1rmDisplay set={maxSet} />}
         <button type="button" id="lift-history-button" className="arrow-button">
@@ -237,12 +256,25 @@ const Workout = props => {
       )}
       {newLiftModal && (
         <Modal toggleButton={false} id="new-lift-modal">
-          <NewLift toggleModal={toggleNewLiftModal} addLift={addLift}/>
+          <NewLift toggleModal={toggleNewLiftModal} addLift={addLift} />
         </Modal>
       )}
-      {(newSetModal || timesModal || restTimerModal || newLiftModal) && (
-        <Backdrop />
+      {editSetModal.display && (
+        <Modal toggleButton={false} id="edit-lift-modal">
+          editing: {editSetModal.index}
+        </Modal>
       )}
+      {editLiftModal && (
+        <Modal toggleButton={false} id="edit-lift-modal">
+          <EditLift
+            toggleModal={toggleEditLiftModal}
+            changeLiftName={toggleEditLiftNameModal}
+            lift={lifts[currentLiftIndex]}
+            setLifts={setLifts}
+          />
+        </Modal>
+      )}
+      {isBlurred && <Backdrop />}
     </React.Fragment>
   );
 };

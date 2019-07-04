@@ -22,11 +22,15 @@ const LiftLog = props => {
         selectNextLift={selectNextLift}
         toggleNewLiftModal={props.toggleNewLiftModal}
       />
-      <InfoDisplay editable={props.liftEditable} sets={props.lifts[props.currentLiftIndex].sets} />
+      <InfoDisplay
+        editable={props.liftEditable}
+        setEditSetModal={props.setEditSetModal}
+        sets={props.lifts[props.currentLiftIndex].sets}
+      />
       <button
         type="button"
         id="edit-button"
-        onClick={() => props.setLiftEditable(!props.liftEditable)}
+        onClick={props.toggleEditLiftModal}
       >
         EDIT
       </button>
@@ -78,7 +82,15 @@ const LiftSelector = props => {
 
 const InfoDisplay = props => {
   const setList = props.sets.map((set, index) => (
-    <div className="set" key={index} onClick={ () => props.editable ? alert("hellow") : null}>
+    <div
+      className={props.editable ? 'set editable' : 'set'}
+      key={index}
+      onClick={() =>
+        props.editable
+          ? props.setEditSetModal({ display: true, index: index })
+          : null
+      }
+    >
       <div className="set-weight grid-left">
         <b>{set.weight}</b> <span>lbs</span>
       </div>
