@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { addLift } from '../actions/currentWorkoutActions';
+
 
 const LiftLog = props => {
   function selectPreviousLift() {
@@ -36,7 +39,7 @@ const LiftLog = props => {
       </button>
       <button
         type="button"
-        onClick={props.toggleSetModal}
+        onClick={props.addLift}
         className="arrow-button"
         id="add-set-button"
       >
@@ -105,4 +108,4 @@ const InfoDisplay = props => {
   return <div id="info-display">{setList}</div>;
 };
 
-export default LiftLog;
+export default connect(null, { addLift })(LiftLog);
