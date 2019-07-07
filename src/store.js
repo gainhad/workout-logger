@@ -1,18 +1,10 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import rootReducer from './reducers';
+import { configureStore } from 'redux-starter-kit';
+import currentWorkoutReducer from './reducers/currentWorkoutReducer';
 
-const initialState = {};
-
-const middleware = [thunk];
-
-const store = createStore(
-  rootReducer,
-  initialState,
-  compose(
-    applyMiddleware(...middleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
-);
+const store = configureStore({
+  reducer: {
+    currentWorkout: currentWorkoutReducer
+  }
+});
 
 export default store;
