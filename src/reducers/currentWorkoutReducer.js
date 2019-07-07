@@ -15,7 +15,7 @@ const initialState = {
       sets: [{ weight: 256, reps: 5, rpe: 8 }]
     }
   ],
-  currentLiftIndex: 0,
+  currentLiftIndex: 0
 };
 
 function addLiftReducer(state, action) {
@@ -31,7 +31,11 @@ function renameLiftReducer(state, action) {
 }
 
 function addSetReducer(state, action) {
-  state.lifts[action.payload.index].sets.push(action.payload.set);
+  state.lifts[action.payload.liftIndex].sets.push(action.payload.set);
+}
+
+function deleteSetReducer(state, action) {
+  state.lifts[action.payload.liftIndex].sets.splice(action.payload.setIndex, 1);
 }
 
 const currentWorkout = createSlice({
@@ -41,10 +45,11 @@ const currentWorkout = createSlice({
     addLift: addLiftReducer,
     deleteLift: deleteLiftReducer,
     renameLift: renameLiftReducer,
-    addSet: addSetReducer
+    addSet: addSetReducer,
+    deleteSet: deleteSetReducer
   }
 });
 
 const { actions, reducer } = currentWorkout;
-export const { addLift, deleteLift, renameLift } = actions;
+export const { addLift, deleteLift, renameLift, deleteSet } = actions;
 export default reducer;
