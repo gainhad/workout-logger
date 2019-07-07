@@ -1,5 +1,5 @@
 import { configureStore } from 'redux-starter-kit';
-import currentWorkoutReducer from './reducers/currentWorkoutReducer';
+import currentWorkoutReducer from './slices/currentWorkout';
 
 const store = configureStore({
   reducer: {

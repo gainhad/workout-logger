@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import Login from './Login';
 import Workout from './Workout';
-import store from '../store.js';
+import store from '../redux/store.js';
 import { Provider } from 'react-redux';
 
 function App() {
