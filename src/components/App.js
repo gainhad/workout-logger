@@ -10,14 +10,14 @@ import { Provider } from 'react-redux';
 function App() {
   return (
     <Provider store={store}>
-    <div className="App">
-      <Router>
-        <Route path="/" exact component={Dashboard} />
-        <Route path="/login" component={Login} />
-        <Route path="/workout" component={Workout} />
-      </Router>
-    </div>
-  </Provider>
+      <div className="App">
+        <Router>
+          <Route path="/" exact component={Dashboard} />
+          <Route path="/login" component={Login} />
+          <Route path="/workout" component={Workout} />
+        </Router>
+      </div>
+    </Provider>
   );
 }
 

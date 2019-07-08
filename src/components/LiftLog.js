@@ -1,34 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addLift } from '../actions/currentWorkoutActions';
-
+import {
+  addLift,
+  getCurrentLift,
+  incrementCurrentLiftIndex,
+  decrementCurrentLiftIndex,
+  atBeginning,
+  atEnd
+} from '../redux/slices/currentWorkout';
 
 const LiftLog = props => {
-  function selectPreviousLift() {
-    if (props.currentLiftIndex < props.lifts.length - 1) {
-      props.setCurrentLiftIndex(props.currentLiftIndex + 1);
-    }
-  }
-
-  function selectNextLift() {
-    if (props.currentLiftIndex > 0) {
-      props.setCurrentLiftIndex(props.currentLiftIndex - 1);
-    }
-  }
   return (
     <div id="lift-log">
       <LiftSelector
-        atEnd={props.currentLiftIndex === props.lifts.length - 1}
-        atBeginning={props.currentLiftIndex === 0}
-        currentLift={props.lifts[props.currentLiftIndex]}
-        selectPreviousLift={selectPreviousLift}
-        selectNextLift={selectNextLift}
+        atBeginning={props.atBeginning}
+        atEnd={props.atEnd}
+        currentLift={props.lift}
+        selectPreviousLift={props.selectPreviousLift}
+        selectNextLift={props.selectNextLift}
         toggleNewLiftModal={props.toggleNewLiftModal}
       />
       <InfoDisplay
         editable={props.liftEditable}
         setEditSetModal={props.setEditSetModal}
-        sets={props.lifts[props.currentLiftIndex].sets}
+        sets={props.lift.sets}
       />
       <button
         type="button"
@@ -39,7 +34,7 @@ const LiftLog = props => {
       </button>
       <button
         type="button"
-        onClick={props.addLift}
+        onClick={() => props.addLift({ name: 'test' })}
         className="arrow-button"
         id="add-set-button"
       >
@@ -55,7 +50,7 @@ const LiftSelector = props => {
       {!props.atEnd ? (
         <button
           type="button"
-          onClick={props.selectPreviousLift}
+          onClick={()=>props.selectPreviousLift()}
           className="arrow-button"
         >
           &larr;
@@ -74,7 +69,7 @@ const LiftSelector = props => {
         <button
           type="button"
           className="arrow-button"
-          onClick={props.selectNextLift}
+          onClick={()=>props.selectNextLift()}
         >
           &rarr;
         </button>
@@ -108,4 +103,21 @@ const InfoDisplay = props => {
   return <div id="info-display">{setList}</div>;
 };
 
-export default connect(null, { addLift })(LiftLog);
+const mapStateToProps = state => {
+  return {
+    lift: getCurrentLift(state),
+    atBeginning: atBeginning(state),
+    atEnd: atEnd(state)
+  };
+};
+
+const matchDispatchToProps = {
+  addLift,
+  selectNextLift: decrementCurrentLiftIndex,
+  selectPreviousLift: incrementCurrentLiftIndex
+}
+
+export default connect(
+  mapStateToProps,
+  matchDispatchToProps
+)(LiftLog);

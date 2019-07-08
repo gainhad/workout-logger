@@ -1,4 +1,4 @@
-import { createSlice } from 'redux-starter-kit';
+import { createSlice, createSelector, configureStore } from 'redux-starter-kit';
 
 const initialState = {
   lifts: [
@@ -7,8 +7,7 @@ const initialState = {
       sets: [
         { weight: 255, reps: 10, rpe: 6 },
         { weight: 287, reps: 7, rpe: 7 }
-      ],
-      estimatedOneRepMax: 255
+      ]
     },
     { name: 'DEADLIFT', sets: [] },
     { name: 'BENCH PRESS', sets: [] }
@@ -37,11 +36,19 @@ function deleteSetReducer(state, { payload }) {
 }
 
 function updateSetReducer(state, { payload }) {
- state.lifts[payload.liftIndex].sets[payload.setIndex] = payload.updatedSet;
+  state.lifts[payload.liftIndex].sets[payload.setIndex] = payload.updatedSet;
 }
 
-function updateCurrentLiftIndexReducer(state, { payload }) {
-  state.currentLiftIndex = payload.updatedIndex;
+function incrementCurrentLiftIndexReducer(state) {
+  if (state.currentLiftIndex < state.lifts.length - 1) {
+    ++state.currentLiftIndex;
+  }
+}
+
+function decrementCurrentLiftIndexReducer(state) {
+  if (state.currentLiftIndex > 0) {
+    --state.currentLiftIndex;
+  }
 }
 
 const currentWorkout = createSlice({
@@ -54,11 +61,46 @@ const currentWorkout = createSlice({
     addSet: addSetReducer,
     deleteSet: deleteSetReducer,
     updateSet: updateSetReducer,
-    updateCurrentLiftIndex: updateCurrentLiftIndexReducer
+    incrementCurrentLiftIndex: incrementCurrentLiftIndexReducer,
+    decrementCurrentLiftIndex: decrementCurrentLiftIndexReducer
   }
 });
 
+// Selectors
+const getCurrentLiftIndex = createSelector(
+  ['currentWorkout.currentLiftIndex'],
+  index => index
+);
+
+const getCurrentLift = createSelector(
+  ['currentWorkout.currentLiftIndex', 'currentWorkout.lifts'],
+  (index, lifts) => lifts[index]
+);
+
+const getSetsForCurrentLift = createSelector(
+  ['currentWorkout.currentLiftIndex', 'currentWorkout.lifts'],
+  (index, lifts) => lifts[index].sets
+);
+
+const atEnd = createSelector(
+  ['currentWorkout.currentLiftIndex', 'currentWorkout.lifts'],
+  (index, lifts) => index === lifts.length - 1
+);
+
+const atBeginning = createSelector(
+  ['currentWorkout.currentLiftIndex'],
+  index => index === 0
+);
+
 const { actions, reducer } = currentWorkout;
-export const { addLift, deleteLift, renameLift, deleteSet } = actions;
+export const {
+  addLift,
+  deleteLift,
+  renameLift,
+  deleteSet,
+  incrementCurrentLiftIndex,
+  decrementCurrentLiftIndex
+} = actions;
+export { getSetsForCurrentLift, getCurrentLift, atBeginning, atEnd };
 export { initialState };
 export default reducer;

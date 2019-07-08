@@ -13,6 +13,10 @@ describe('currentWorkout reducer', () => {
     lifts: [{ name: 'SQUAT', sets: [] }],
     currentLiftIndex: 0
   };
+  const initialState_Index_One = {
+    lifts: [{ name: 'SQUAT', sets: [] }],
+    currentLiftIndex: 1
+  };
   const initialState_Multiple_Lifts = {
     lifts: [
       {
@@ -40,7 +44,7 @@ describe('currentWorkout reducer', () => {
 
   it('should handle adding the first lift', () => {
     const expectedState = {
-      lifts: [{ name: 'TEST LIFT', sets: [] }],
+      lifts: [{ name: 'TEST LIFT', sets: []}],
       currentLiftIndex: 0
     };
     const action = {
@@ -54,7 +58,10 @@ describe('currentWorkout reducer', () => {
 
   it('should handle adding more lifts', () => {
     const expectedState = {
-      lifts: [{ name: 'TEST LIFT', sets: [] }, { name: 'SQUAT', sets: [] }],
+      lifts: [
+        { name: 'TEST LIFT', sets: []},
+        { name: 'SQUAT', sets: []}
+      ],
       currentLiftIndex: 0
     };
     const action = {
@@ -256,16 +263,67 @@ describe('currentWorkout reducer', () => {
       expectedState
     );
   });
-  it('should handle updating currentLiftIndex', () => {
+  it('should handle incrementing currentLiftIndex if less than number of lifts', () => {
     const expectedState = {
-      lifts: [],
-      currentLiftIndex: 8
+      lifts: [
+        {
+          name: 'SQUAT',
+          sets: [
+            { weight: 100, reps: 10, rpe: 10 },
+            { weight: 100, reps: 10, rpe: 10 }
+          ]
+        },
+        {
+          name: 'BENCH PRESS',
+          sets: [
+            { weight: 100, reps: 10, rpe: 10 },
+            { weight: 100, reps: 10, rpe: 10 }
+          ]
+        },
+        { name: 'DEADLIFT', sets: [] }
+      ],
+      currentLiftIndex: 1
     }
     const action = {
-      type: 'currentWorkout/updateCurrentLiftIndex',
-      payload: { updatedIndex: 8 }
+      type: 'currentWorkout/incrementCurrentLiftIndex',
+    };
+    expect(currentWorkoutReducer(initialState_Multiple_Lifts, action)).toEqual(
+      expectedState
+    );
+  });
+  it('should not incrememnt currentLiftIndex if = num. lifts', () => {
+    const expectedState = {
+      lifts: [ {name: 'SQUAT', sets:[]}],
+      currentLiftIndex: 0
     }
-    expect(currentWorkoutReducer(initialState_Empty, action)).toEqual(
+    const action = {
+      type: 'currentWorkout/incrementCurrentLiftIndex',
+    };
+    expect(currentWorkoutReducer(initialState_One_Lift, action)).toEqual(
+      expectedState
+    );
+  });
+  it('should decrement currentLiftIndex if > number of lifts', () => {
+    const expectedState = {
+      lifts: [{ name: 'SQUAT', sets: []}],
+      currentLiftIndex: 0
+    }
+    const action = {
+      type: 'currentWorkout/decrementCurrentLiftIndex'
+    }
+    expect(currentWorkoutReducer(initialState_Index_One, action)).toEqual(
+      expectedState
+    );
+  });
+  it('should not decrement currentLiftIndex if === 0', () => {
+    const expectedState = {
+      lifts: [{ name: 'SQUAT', sets: []}],
+      currentLiftIndex: 0
+    }
+    const action = {
+      type: 'currentWorkout/decrementCurrentLiftIndex'
+    }
+    expect(currentWorkoutReducer(initialState_One_Lift, action)).toEqual(
       expectedState
     );
   });
