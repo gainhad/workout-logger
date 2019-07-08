@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   getCurrentLift,
   incrementCurrentLiftIndex,
@@ -10,26 +10,29 @@ import {
 
 const LiftLog = props => {
   const [liftEditable, setLiftEditable] = useState(false);
+  const lift = useSelector(getCurrentLift);
+  const atFirstLift = useSelector(atBeginning);
+  const atLastLift = useSelector(atEnd);
+  const dispatch = useDispatch();
+  const selectPreviousLift = () => dispatch(incrementCurrentLiftIndex());
+  const selectNextLift = () => dispatch(decrementCurrentLiftIndex());
+
   return (
     <div id="lift-log">
       <LiftSelector
-        atBeginning={props.atBeginning}
-        atEnd={props.atEnd}
-        currentLift={props.lift}
-        selectPreviousLift={props.selectPreviousLift}
-        selectNextLift={props.selectNextLift}
+        atBeginning={atFirstLift}
+        atEnd={atLastLift}
+        currentLift={lift}
+        selectPreviousLift={selectPreviousLift}
+        selectNextLift={selectNextLift}
         toggleNewLiftModal={props.toggleNewLiftModal}
       />
       <InfoDisplay
         //editable={liftEditable}
         setEditSetModal={props.setEditSetModal}
-        sets={props.lift.sets}
+        sets={lift.sets}
       />
-      <button
-        type="button"
-        id="edit-button"
-        onClick={()=>null}
-      >
+      <button type="button" id="edit-button" onClick={() => null}>
         EDIT
       </button>
       <button
@@ -103,20 +106,4 @@ const InfoDisplay = props => {
   return <div id="info-display">{setList}</div>;
 };
 
-const mapStateToProps = state => {
-  return {
-    lift: getCurrentLift(state),
-    atBeginning: atBeginning(state),
-    atEnd: atEnd(state)
-  };
-};
-
-const mapDispatchToProps = {
-  selectNextLift: decrementCurrentLiftIndex,
-  selectPreviousLift: incrementCurrentLiftIndex
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LiftLog);
+export default LiftLog;
