@@ -33,8 +33,8 @@ const Workout = props => {
       seconds: 0
     }
   ]);
-
   //update times every second
+
   useInterval(() => {
     setTimers(
       timers.map(timer => {

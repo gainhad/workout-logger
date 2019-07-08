@@ -18,6 +18,7 @@ const initialState = {
   restTimer: {}
 };
 
+
 function addLiftReducer(state, { payload }) {
   state.lifts.unshift({ name: payload.name, sets: [] });
 }
@@ -54,6 +55,16 @@ function decrementCurrentLiftIndexReducer(state) {
   }
 }
 
+function startRestTimer(duration) {
+  return {
+    type: 'currentWorkout/startRestTimer',
+    payload: {
+      timeStarted: Date.now(),
+      duration: duration
+    }
+  }
+}
+
 function startRestTimerReducer(state, { payload }) {
   state.restTimer = {
     timeStarted: payload.timeStarted,
@@ -74,7 +85,7 @@ const currentWorkout = createSlice({
     incrementCurrentLiftIndex: incrementCurrentLiftIndexReducer,
     decrementCurrentLiftIndex: decrementCurrentLiftIndexReducer,
     startRestTimer: startRestTimerReducer
-  }
+  },
 });
 
 // Selectors
@@ -129,6 +140,11 @@ const testState = {
 };
 
 const { actions, reducer } = currentWorkout;
+
+// Overwite generate actions with custom actions.
+actions.startRestTimer = startRestTimer;
+
+
 export {
   getSetsForCurrentLift,
   getCurrentLift,

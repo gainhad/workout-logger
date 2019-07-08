@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { currentWorkoutActions } from '../redux/slices/currentWorkout';
 import './NewRestTimer.scss';
 import { prettyDisplayTime } from '../utils/displayHelpers';
 
 const NewRestTimer = props => {
   const [totalSeconds, setTotalSeconds] = useState(180);
 
+  const dispatch = useDispatch();
+  const startRestTimer = duration =>
+    dispatch(currentWorkoutActions.startRestTimer(duration));
+
   function startTimer() {
-    props.startTimer('rest', totalSeconds);
+    startRestTimer(totalSeconds);
     props.toggleModal();
   }
 
