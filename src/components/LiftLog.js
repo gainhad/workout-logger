@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   getCurrentLift,
-  incrementCurrentLiftIndex,
-  decrementCurrentLiftIndex,
   atBeginning,
-  atEnd
+  atEnd,
+  actions
 } from '../redux/slices/currentWorkout';
 
 const LiftLog = props => {
@@ -14,8 +13,8 @@ const LiftLog = props => {
   const atFirstLift = useSelector(atBeginning);
   const atLastLift = useSelector(atEnd);
   const dispatch = useDispatch();
-  const selectPreviousLift = () => dispatch(incrementCurrentLiftIndex());
-  const selectNextLift = () => dispatch(decrementCurrentLiftIndex());
+  const selectPreviousLift = () => dispatch(actions.incrementCurrentLiftIndex());
+  const selectNextLift = () => dispatch(actions.decrementCurrentLiftIndex());
 
   return (
     <div id="lift-log">

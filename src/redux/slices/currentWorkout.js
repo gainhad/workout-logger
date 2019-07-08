@@ -129,15 +129,6 @@ const testState = {
 };
 
 const { actions, reducer } = currentWorkout;
-export const {
-  addLift,
-  deleteLift,
-  renameLift,
-  addSet,
-  deleteSet,
-  incrementCurrentLiftIndex,
-  decrementCurrentLiftIndex
-} = actions;
 export {
   getSetsForCurrentLift,
   getCurrentLift,
