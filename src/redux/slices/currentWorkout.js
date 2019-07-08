@@ -1,4 +1,5 @@
 import { createSlice, createSelector, configureStore } from 'redux-starter-kit';
+import { calculateE1RM } from '../../utils/calculations.js';
 
 const initialState = {
   lifts: [
@@ -6,7 +7,8 @@ const initialState = {
       name: 'SQUAT',
       sets: [
         { weight: 255, reps: 10, rpe: 6 },
-        { weight: 287, reps: 7, rpe: 7 }
+        { weight: 287, reps: 7, rpe: 7 },
+        { weight: 287, reps: 8, rpe: 8 }
       ]
     },
     { name: 'DEADLIFT', sets: [] },
@@ -92,6 +94,31 @@ const atBeginning = createSelector(
   index => index === 0
 );
 
+const getHeaviestSet = createSelector(
+  ['currentWorkout.currentLiftIndex', 'currentWorkout.lifts'],
+  (index, lifts) => {
+    if (lifts[index].sets.length) {
+      return lifts[index].sets.reduce((setA, setB) => {
+        return setA.weight >= setB.weight ? setA : setB;
+      });
+    }
+  }
+);
+
+const getEstimatedOneRepMax = createSelector(
+  [getHeaviestSet],
+  set => {
+    if (set && set.rpe >= 6.5) {
+      return calculateE1RM(set.weight, set.reps, set.rpe);
+    }
+  }
+);
+
+// TODO - Delete after testing is finished
+const testState = {
+  currentWorkout: { ...initialState }
+};
+
 const { actions, reducer } = currentWorkout;
 export const {
   addLift,
@@ -102,6 +129,12 @@ export const {
   incrementCurrentLiftIndex,
   decrementCurrentLiftIndex
 } = actions;
-export { getSetsForCurrentLift, getCurrentLift, atBeginning, atEnd };
+export {
+  getSetsForCurrentLift,
+  getCurrentLift,
+  atBeginning,
+  atEnd,
+  getEstimatedOneRepMax
+};
 export { initialState };
 export default reducer;
