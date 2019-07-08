@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
-  addLift,
   getCurrentLift,
   incrementCurrentLiftIndex,
   decrementCurrentLiftIndex,
@@ -10,6 +9,7 @@ import {
 } from '../redux/slices/currentWorkout';
 
 const LiftLog = props => {
+  const [liftEditable, setLiftEditable] = useState(false);
   return (
     <div id="lift-log">
       <LiftSelector
@@ -21,7 +21,7 @@ const LiftLog = props => {
         toggleNewLiftModal={props.toggleNewLiftModal}
       />
       <InfoDisplay
-        editable={props.liftEditable}
+        //editable={liftEditable}
         setEditSetModal={props.setEditSetModal}
         sets={props.lift.sets}
       />
@@ -34,7 +34,7 @@ const LiftLog = props => {
       </button>
       <button
         type="button"
-        onClick={() => props.addLift({ name: 'test' })}
+        onClick={props.toggleSetModal}
         className="arrow-button"
         id="add-set-button"
       >
@@ -50,7 +50,7 @@ const LiftSelector = props => {
       {!props.atEnd ? (
         <button
           type="button"
-          onClick={()=>props.selectPreviousLift()}
+          onClick={() => props.selectPreviousLift()}
           className="arrow-button"
         >
           &larr;
@@ -69,7 +69,7 @@ const LiftSelector = props => {
         <button
           type="button"
           className="arrow-button"
-          onClick={()=>props.selectNextLift()}
+          onClick={() => props.selectNextLift()}
         >
           &rarr;
         </button>
@@ -112,10 +112,9 @@ const mapStateToProps = state => {
 };
 
 const matchDispatchToProps = {
-  addLift,
   selectNextLift: decrementCurrentLiftIndex,
   selectPreviousLift: incrementCurrentLiftIndex
-}
+};
 
 export default connect(
   mapStateToProps,
