@@ -14,7 +14,8 @@ const initialState = {
     { name: 'DEADLIFT', sets: [] },
     { name: 'BENCH PRESS', sets: [] }
   ],
-  currentLiftIndex: 0
+  currentLiftIndex: 0,
+  restTimer: {}
 };
 
 function addLiftReducer(state, { payload }) {
@@ -53,6 +54,13 @@ function decrementCurrentLiftIndexReducer(state) {
   }
 }
 
+function startRestTimerReducer(state, { payload }) {
+  state.restTimer = {
+    timeStarted: payload.timeStarted,
+    duration: payload.duration
+  };
+}
+
 const currentWorkout = createSlice({
   slice: 'currentWorkout',
   initialState: initialState,
@@ -64,7 +72,8 @@ const currentWorkout = createSlice({
     deleteSet: deleteSetReducer,
     updateSet: updateSetReducer,
     incrementCurrentLiftIndex: incrementCurrentLiftIndexReducer,
-    decrementCurrentLiftIndex: decrementCurrentLiftIndexReducer
+    decrementCurrentLiftIndex: decrementCurrentLiftIndexReducer,
+    startRestTimer: startRestTimerReducer
   }
 });
 
@@ -136,5 +145,5 @@ export {
   atEnd,
   getEstimatedOneRepMax
 };
-export { initialState };
+export { initialState, actions };
 export default reducer;

@@ -16,7 +16,6 @@ import './Workout.scss';
 const Workout = props => {
   const [isBlurred, setIsBlurred] = useState(false);
   const [newSetModal, setNewSetModal] = useState(false);
-  const [liftEditable, setLiftEditable] = useState(false);
   const [editLiftModal, setEditLiftModal] = useState(false);
   const [editSetModal, setEditSetModal] = useState({
     display: false,
@@ -25,37 +24,6 @@ const Workout = props => {
   const [newLiftModal, setNewLiftModal] = useState(false);
   const [timesModal, setTimesModal] = useState(false);
   const [restTimerModal, setRestTimerModal] = useState(false);
-  const [lifts, setLifts] = useState([
-    {
-      name: 'deadlift',
-      sets: [
-        { weight: 230, reps: 5, rpe: 6 },
-        { weight: 245, reps: 5, rpe: 7 },
-        { weight: 255, reps: 5, rpe: 8 },
-        { weight: 255, reps: 5, rpe: 8 }
-      ]
-    },
-    {
-      name: 'squat',
-      sets: [
-        { weight: 230, reps: 5, rpe: 6 },
-        { weight: 245, reps: 5, rpe: 7 },
-        { weight: 255, reps: 5, rpe: 8 },
-        { weight: 255, reps: 5, rpe: 8 }
-      ]
-    },
-    {
-      name: 'bench press',
-      sets: [
-        { weight: 100, reps: 7, rpe: 6 },
-        { weight: 115, reps: 7, rpe: 7 },
-        { weight: 125, reps: 7, rpe: 8 },
-        { weight: 125, reps: 7, rpe: 8 },
-        { weight: 125, reps: 7, rpe: 8 }
-      ]
-    }
-  ]);
-  const [currentLiftIndex, setCurrentLiftIndex] = useState(0);
   const [timers, setTimers] = useState([
     {
       name: 'rest',
@@ -142,33 +110,9 @@ const Workout = props => {
       reps: newReps,
       rpe: newRpe
     };
-
-    setLifts(
-      lifts.map((lift, index) => {
-        if (index === currentLiftIndex) {
-          lift.sets = [...lift.sets, newSet];
-        }
-        return lift;
-      })
-    );
-  }
-
-  function addLift(newLift) {
-    setLifts([{ name: newLift, sets: [] }, ...lifts]);
-  }
-
-  function updateLift(index, newLift) {
-    let updatedLifts = [...lifts];
-    updatedLifts[index].name = newLift;
-    setLifts(updatedLifts);
   }
 
   const test = isBlurred ? 'blurred' : '';
-  const maxSet = lifts[currentLiftIndex].sets.length
-    ? lifts[currentLiftIndex].sets.reduce((a, b) => {
-        return a.weight >= b.weight ? a : b;
-      })
-    : null;
 
   const restTimer = timers.find(timer => timer.name === 'rest');
 
@@ -222,15 +166,10 @@ const Workout = props => {
         <LiftLog
           toggleSetModal={toggleSetModal}
           toggleNewLiftModal={toggleNewLiftModal}
-          currentLiftIndex={currentLiftIndex}
-          setCurrentLiftIndex={setCurrentLiftIndex}
-          lifts={lifts}
-          liftEditable={liftEditable}
-          setLiftEditable={setLiftEditable}
           setEditSetModal={setEditSetModal}
           toggleEditLiftModal={toggleEditLiftModal}
         />
-        {maxSet && maxSet.rpe >= 6.5 && <E1rmDisplay set={maxSet} />}
+        <E1rmDisplay />
         <button type="button" id="lift-history-button" className="arrow-button">
           Lift History
         </button>
@@ -280,8 +219,6 @@ const Workout = props => {
           <EditLift
             toggleModal={toggleEditLiftModal}
             changeLiftName={toggleEditLiftNameModal}
-            lift={lifts[currentLiftIndex]}
-            setLifts={setLifts}
           />
         </Modal>
       )}
