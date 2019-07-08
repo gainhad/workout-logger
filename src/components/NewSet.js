@@ -1,14 +1,18 @@
 import React from 'react';
 import './NewSet.scss';
-import { connect } from 'react-redux';
-import { addSet } from '../redux/slices/currentWorkout';
+import { useSelector, useDispatch } from 'react-redux';
+import { actions } from '../redux/slices/currentWorkout';
 
 const NewSet = props => {
+  const currentLiftIndex = useSelector(state => state.currentWorkout.currentLiftIndex);
+  const dispatch = useDispatch();
+  const addSet = set => dispatch(actions.addSet(set));
+
   function onSubmit(event) {
     event.preventDefault();
     props.toggleModal();
-    props.addSet({
-      liftIndex: props.currentLiftIndex,
+    addSet({
+      liftIndex: currentLiftIndex,
       set: {
         weight: Number(event.target.weight.value),
         reps: Number(event.target.reps.value),
@@ -33,17 +37,4 @@ const NewSet = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    currentLiftIndex: state.currentWorkout.currentLiftIndex
-  };
-};
-
-const mapDispatchToProps = {
-  addSet: addSet
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NewSet);
+export default NewSet;
