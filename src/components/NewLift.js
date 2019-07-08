@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { actions } from '../redux/slices/currentWorkout';
+import { currentWorkoutActions } from '../redux/slices/currentWorkout';
 import './NewLift.scss';
 
 const NewLift = props => {
   const [selectedLift, setSelectedLift] = useState('SQUAT');
   const liftList = ['SQUAT', 'BENCH PRESS', 'DEADLIFT'];
   const dispatch = useDispatch();
-  const addLift = lift => dispatch(actions.addLift(lift));
+  const addLift = lift => dispatch(currentWorkoutActions.addLift(lift));
 
   function onSubmit(event) {
     event.preventDefault();

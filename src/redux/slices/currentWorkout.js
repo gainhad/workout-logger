@@ -136,5 +136,5 @@ export {
   atEnd,
   getEstimatedOneRepMax
 };
-export { initialState, actions };
+export { initialState, actions as currentWorkoutActions };
 export default reducer;

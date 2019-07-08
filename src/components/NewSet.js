@@ -1,12 +1,12 @@
 import React from 'react';
 import './NewSet.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { actions } from '../redux/slices/currentWorkout';
+import { currentWorkoutActions } from '../redux/slices/currentWorkout';
 
 const NewSet = props => {
   const currentLiftIndex = useSelector(state => state.currentWorkout.currentLiftIndex);
   const dispatch = useDispatch();
-  const addSet = set => dispatch(actions.addSet(set));
+  const addSet = set => dispatch(currentWorkoutActions.addSet(set));
 
   function onSubmit(event) {
     event.preventDefault();
