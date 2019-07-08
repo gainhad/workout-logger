@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { addLift } from '../redux/slices/currentWorkout';
+import { useDispatch } from 'react-redux';
+import { actions } from '../redux/slices/currentWorkout';
 import './NewLift.scss';
 
 const NewLift = props => {
   const [selectedLift, setSelectedLift] = useState('SQUAT');
   const liftList = ['SQUAT', 'BENCH PRESS', 'DEADLIFT'];
+  const dispatch = useDispatch();
+  const addLift = lift => dispatch(actions.addLift(lift));
 
   function onSubmit(event) {
     event.preventDefault();
-    props.addLift({ name: selectedLift });
+    addLift({ name: selectedLift });
     props.toggleModal();
   }
 
@@ -44,11 +46,4 @@ const NewLift = props => {
   );
 };
 
-const mapDispatchToProps = {
-  addLift
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(NewLift);
+export default NewLift;
