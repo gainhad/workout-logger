@@ -240,7 +240,6 @@ const Workout = props => {
           <NewSet
             closeModal={closeSetModal}
             toggleModal={toggleSetModal}
-            addSet={addSet}
           />
         </Modal>
       )}

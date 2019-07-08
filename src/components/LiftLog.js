@@ -28,7 +28,7 @@ const LiftLog = props => {
       <button
         type="button"
         id="edit-button"
-        onClick={props.toggleEditLiftModal}
+        onClick={()=>null}
       >
         EDIT
       </button>
@@ -111,12 +111,12 @@ const mapStateToProps = state => {
   };
 };
 
-const matchDispatchToProps = {
+const mapDispatchToProps = {
   selectNextLift: decrementCurrentLiftIndex,
   selectPreviousLift: incrementCurrentLiftIndex
 };
 
 export default connect(
   mapStateToProps,
-  matchDispatchToProps
+  mapDispatchToProps
 )(LiftLog);

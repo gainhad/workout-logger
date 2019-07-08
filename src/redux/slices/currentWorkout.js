@@ -97,6 +97,7 @@ export const {
   addLift,
   deleteLift,
   renameLift,
+  addSet,
   deleteSet,
   incrementCurrentLiftIndex,
   decrementCurrentLiftIndex
