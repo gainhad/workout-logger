@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import {
+  addLift
+} from '../redux/slices/currentWorkout';
 import './NewLift.scss';
 
 const NewLift = props => {
@@ -7,7 +11,7 @@ const NewLift = props => {
 
   function onSubmit(event) {
     event.preventDefault();
-    props.addLift(selectedLift);
+    props.addLift({ name: selectedLift});
     props.toggleModal();
   }
 
@@ -42,4 +46,11 @@ const NewLift = props => {
   );
 };
 
-export default NewLift;
+const mapDispatchToProps = {
+  addLift
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(NewLift);

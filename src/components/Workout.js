@@ -267,7 +267,7 @@ const Workout = props => {
       )}
       {newLiftModal && (
         <Modal toggleButton={false} id="new-lift-modal">
-          <NewLift toggleModal={toggleNewLiftModal} addLift={addLift} />
+          <NewLift toggleModal={toggleNewLiftModal}/>
         </Modal>
       )}
       {editSetModal.display && (
