@@ -12,7 +12,7 @@ const NewLift = props => {
   function onSubmit(event) {
     event.preventDefault();
     addLift({ name: selectedLift });
-    props.toggleModal();
+    props.closeModal();
   }
 
   return (
@@ -39,7 +39,7 @@ const NewLift = props => {
         type="button"
         className="button-one cancel-button"
         value="CANCEL"
-        onClick={props.toggleModal}
+        onClick={props.closeModal}
       />
       <input type="submit" className="button-one" value="ADD LIFT" />
     </form>

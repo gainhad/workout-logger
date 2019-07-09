@@ -10,7 +10,7 @@ import { Provider } from 'react-redux';
 function App() {
   return (
     <Provider store={store}>
-      <div className="App">
+      <div className="App" id="App">
         <Router>
           <Route path="/" exact component={Dashboard} />
           <Route path="/login" component={Login} />

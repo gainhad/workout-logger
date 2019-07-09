@@ -28,6 +28,9 @@
 
 #times-toggle {
   grid-column-end: 4;
+  &:focus {
+    outline: none
+  }
 }
 
 .cancel-button {

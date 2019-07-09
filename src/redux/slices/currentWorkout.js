@@ -1,4 +1,4 @@
-import { createSlice, createSelector, configureStore } from 'redux-starter-kit';
+import { createSlice, createSelector } from 'redux-starter-kit';
 import { calculateE1RM } from '../../utils/calculations.js';
 
 const initialState = {

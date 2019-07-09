@@ -13,7 +13,7 @@ const NewRestTimer = props => {
 
   function startTimer() {
     startRestTimer(totalSeconds);
-    props.toggleModal();
+    props.closeModal();
   }
 
   return (
@@ -45,7 +45,7 @@ const NewRestTimer = props => {
       </div>
       <button
         type="button"
-        onClick={props.toggleModal}
+        onClick={props.closeModal}
         className="button-one action-button"
       >
         SKIP
