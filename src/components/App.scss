@@ -226,5 +226,5 @@ h2 {
 }
 
 .blurred {
-  filter: blur(2px);
+  filter: blur(2px) brightness(.5) grayscale(.3);
 }
