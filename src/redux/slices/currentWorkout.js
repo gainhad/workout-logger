@@ -22,8 +22,12 @@ const initialState = {
 };
 
 
-function addLiftReducer(state, { payload }) {
-  state.lifts.unshift({ name: payload.name, sets: [] });
+function addOrRenameLiftReducer(state, { payload }) {
+  if (isNaN(payload.liftIndex)) {
+    state.lifts.unshift({ name: payload.name, sets: [] });
+  } else {
+    state.lifts[payload.liftIndex].name = payload.name;
+  }
 }
 
 function deleteLiftReducer(state, { payload }) {
@@ -35,10 +39,10 @@ function renameLiftReducer(state, { payload }) {
 }
 
 function addOrUpdateSetReducer(state, { payload }) {
-  if (payload.setIndex) {
-    state.lifts[payload.liftIndex].sets[payload.setIndex] = payload.set;
-  } else {
+  if (isNaN(payload.setIndex)) {
     state.lifts[payload.liftIndex].sets.push(payload.set);
+  } else {
+    state.lifts[payload.liftIndex].sets[payload.setIndex] = payload.set;
   }
 }
 
@@ -83,7 +87,7 @@ const currentWorkout = createSlice({
   slice: 'currentWorkout',
   initialState: initialState,
   reducers: {
-    addLift: addLiftReducer,
+    addOrRenameLift: addOrRenameLiftReducer,
     deleteLift: deleteLiftReducer,
     renameLift: renameLiftReducer,
     addOrUpdateSet: addOrUpdateSetReducer,

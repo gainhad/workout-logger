@@ -138,7 +138,7 @@ a {
   grid-template-rows: auto auto auto;
   grid-template-columns: 20% 60% 20%;
   grid-column: 1 / 4;
-  width: 80%;
+  width: 83%;
   background: rgba(0, 0, 0, .1);
   padding: 10px;
   align-self: start;
@@ -152,7 +152,7 @@ a {
   justify-items: center;
   align-items: center;
   border-bottom: 1px solid $fg-1;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   h2 {
     font-size: 2em;
     grid-column-start: 2;
@@ -176,10 +176,14 @@ h2 {
   span {
     color: rgba(255, 255, 255, .8);
   }
-  &.editable {
-    background: rgba(255, 255, 255, .2);
-    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, .3);
-  }
+}
+.editable {
+  background: rgba(255, 255, 255, .5);
+  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, .3);
+}
+
+.liftName {
+  padding: 5px;
 }
 
 #edit-button {
@@ -190,6 +194,9 @@ h2 {
   align-self: end;
   &:active, &:focus {
     outline: none;
+  }
+  &.cancel-button {
+    background: adjust-color($fg-red, $alpha: -.2);
   }
 }
 

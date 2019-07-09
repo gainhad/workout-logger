@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   getCurrentLift,
+  getCurrentLiftIndex,
   atBeginning,
   atEnd,
   currentWorkoutActions
@@ -9,7 +10,7 @@ import {
 import Modal from './Modal';
 import NewSet from './NewSet';
 import SetForm from './SetForm';
-import NewLift from './NewLift';
+import LiftForm from './LiftForm';
 
 const LiftLog = props => {
   const [liftEditable, setLiftEditable] = useState(false);
@@ -31,6 +32,8 @@ const LiftLog = props => {
         currentLift={lift}
         selectPreviousLift={selectPreviousLift}
         selectNextLift={selectNextLift}
+        editable={liftEditable}
+        setEditable={setLiftEditable}
       />
       <InfoDisplay
         editable={liftEditable}
@@ -41,9 +44,10 @@ const LiftLog = props => {
       <button
         type="button"
         id="edit-button"
+        className={liftEditable ? 'cancel-button' : null}
         onClick={() => setLiftEditable(!liftEditable)}
       >
-        EDIT
+        {liftEditable ? 'CANCEL' : 'EDIT'}
       </button>
       <button
         type="button"
@@ -63,6 +67,7 @@ const LiftLog = props => {
 // TODO - Break this off into it's own component.
 const LiftSelector = props => {
   const [newLiftModalOpen, setNewLiftModalOpen] = useState(false);
+  const currentLiftIndex = useSelector(state => getCurrentLiftIndex(state));
   return (
     <div id="lift-selector">
       {!props.atEnd ? (
@@ -74,7 +79,18 @@ const LiftSelector = props => {
           &larr;
         </button>
       ) : null}
-      <h2>{props.currentLift.name.toUpperCase()}</h2>
+      <h2
+        className={props.editable ? 'liftName editable' : 'liftName'}
+        onClick={
+          props.editable
+            ? () => {
+                setNewLiftModalOpen(true);
+              }
+            : null
+        }
+      >
+        {props.currentLift.name.toUpperCase()}
+      </h2>
       {props.atBeginning ? (
         <button
           type="button"
@@ -94,9 +110,12 @@ const LiftSelector = props => {
       )}
       <Modal
         isOpen={newLiftModalOpen}
-        onClose={() => setNewLiftModalOpen(false)}
+        onClose={() => {
+          setNewLiftModalOpen(false);
+          props.setEditable(false);
+        }}
       >
-        <NewLift />
+        <LiftForm liftIndex={props.editable ? currentLiftIndex : NaN} onLiftSubmit />
       </Modal>
     </div>
   );

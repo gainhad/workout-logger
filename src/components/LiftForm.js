@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { currentWorkoutActions } from '../redux/slices/currentWorkout';
-import './NewLift.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  currentWorkoutActions,
+  getCurrentLift
+} from '../redux/slices/currentWorkout';
+import './LiftForm.scss';
 
-const NewLift = props => {
-  const [selectedLift, setSelectedLift] = useState('SQUAT');
+const LiftForm = ({ liftIndex = undefined, closeModal }) => {
+  const currrentLiftName = useSelector(state => getCurrentLift(state)).name;
+  const [selectedLift, setSelectedLift] = useState(
+    isNaN(liftIndex) ? 'SQUAT' : currrentLiftName 
+  );
   const liftList = ['SQUAT', 'BENCH PRESS', 'DEADLIFT'];
   const dispatch = useDispatch();
-  const addLift = lift => dispatch(currentWorkoutActions.addLift(lift));
+  const submitLift = lift =>
+    dispatch(currentWorkoutActions.addOrRenameLift(lift));
 
   function onSubmit(event) {
     event.preventDefault();
-    addLift({ name: selectedLift });
-    props.closeModal();
+    submitLift({ liftIndex: liftIndex, name: selectedLift });
+    closeModal();
   }
 
   return (
@@ -39,11 +46,11 @@ const NewLift = props => {
         type="button"
         className="button-one cancel-button"
         value="CANCEL"
-        onClick={props.closeModal}
+        onClick={closeModal}
       />
-      <input type="submit" className="button-one" value="ADD LIFT" />
+      <input type="submit" className="button-one" value={isNaN(liftIndex) ? 'ADD' : 'UPDATE'} />
     </form>
   );
 };
 
-export default NewLift;
+export default LiftForm;
