@@ -15,7 +15,10 @@ const initialState = {
     { name: 'BENCH PRESS', sets: [] }
   ],
   currentLiftIndex: 0,
-  restTimer: {}
+  restTimer: {
+    timeStarted: NaN,
+    duration: NaN 
+  }
 };
 
 

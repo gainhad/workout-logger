@@ -147,9 +147,7 @@ const Workout = props => {
             &larr;
           </button>
         </Link>
-        {restTimer.started && !restTimer.finished && (
           <RestTimer secondsRemaining={restTimer.seconds} />
-        )}
         {restTimer.finished && (
           <div className="rest-timer" id="rest-finished">
             <b>REST FINISHED!</b>
