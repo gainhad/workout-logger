@@ -10,7 +10,7 @@ import useInterval from '../utils/useInterval';
 import NewRestTimer from './NewRestTimer';
 import NewLift from './NewLift';
 import EditLift from './EditLift';
-import soundFile from '../assets/audio/bell.wav';
+import TimesDisplay from './TimesDisplay';
 import './Workout.scss';
 
 const Workout = props => {
@@ -116,15 +116,6 @@ const Workout = props => {
 
   const restTimer = timers.find(timer => timer.name === 'rest');
 
-  // Play sound when rest finishes
-  useEffect(() => {
-    if (restTimer.finished) {
-      const sound = new Audio();
-      sound.src = soundFile;
-      sound.play();
-    }
-  }, [restTimer.finished]);
-
   useEffect(() => {
     if (
       newSetModal ||
@@ -147,12 +138,7 @@ const Workout = props => {
             &larr;
           </button>
         </Link>
-          <RestTimer secondsRemaining={restTimer.seconds} />
-        {restTimer.finished && (
-          <div className="rest-timer" id="rest-finished">
-            <b>REST FINISHED!</b>
-          </div>
-        )}
+        <RestTimer secondsRemaining={restTimer.seconds} />
         <button
           type="button"
           onClick={toggleTimesModal}
@@ -174,10 +160,7 @@ const Workout = props => {
       </div>
       {newSetModal && (
         <Modal toggleButton={false} id="set-modal">
-          <NewSet
-            closeModal={closeSetModal}
-            toggleModal={toggleSetModal}
-          />
+          <NewSet closeModal={closeSetModal} toggleModal={toggleSetModal} />
         </Modal>
       )}
       {timesModal && (
@@ -189,9 +172,7 @@ const Workout = props => {
           >
             TIMES
           </button>
-          {restTimer.started && (
-            <RestTimer secondsRemaining={restTimer.seconds} />
-          )}
+          <TimesDisplay />
         </Modal>
       )}
       {restTimerModal && (
@@ -204,7 +185,7 @@ const Workout = props => {
       )}
       {newLiftModal && (
         <Modal toggleButton={false} id="new-lift-modal">
-          <NewLift toggleModal={toggleNewLiftModal}/>
+          <NewLift toggleModal={toggleNewLiftModal} />
         </Modal>
       )}
       {editSetModal.display && (
