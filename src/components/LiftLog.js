@@ -23,37 +23,35 @@ const LiftLog = props => {
   const [setModalOpen, setSetModalOpen] = useState(false);
 
   return (
-    <>
-      <div id="lift-log">
-        <LiftSelector
-          atBeginning={atFirstLift}
-          atEnd={atLastLift}
-          currentLift={lift}
-          selectPreviousLift={selectPreviousLift}
-          selectNextLift={selectNextLift}
-          toggleNewLiftModal={props.toggleNewLiftModal}
-        />
-        <InfoDisplay
-          //editable={liftEditable}
-          setEditSetModal={props.setEditSetModal}
-          sets={lift.sets}
-        />
-        <button type="button" id="edit-button" onClick={() => null}>
-          EDIT
-        </button>
-        <button
-          type="button"
-          onClick={() => setSetModalOpen(true)}
-          className="arrow-button"
-          id="add-set-button"
-        >
-          &#65291;
-        </button>
-      </div>
+    <div id="lift-log">
+      <LiftSelector
+        atBeginning={atFirstLift}
+        atEnd={atLastLift}
+        currentLift={lift}
+        selectPreviousLift={selectPreviousLift}
+        selectNextLift={selectNextLift}
+        toggleNewLiftModal={props.toggleNewLiftModal}
+      />
+      <InfoDisplay
+        //editable={liftEditable}
+        setEditSetModal={props.setEditSetModal}
+        sets={lift.sets}
+      />
+      <button type="button" id="edit-button" onClick={() => null}>
+        EDIT
+      </button>
+      <button
+        type="button"
+        onClick={() => setSetModalOpen(true)}
+        className="arrow-button"
+        id="add-set-button"
+      >
+        &#65291;
+      </button>
       <Modal isOpen={setModalOpen} registerClose={() => setSetModalOpen(false)}>
         <NewSet />
       </Modal>
-    </>
+    </div>
   );
 };
 
@@ -61,43 +59,41 @@ const LiftLog = props => {
 const LiftSelector = props => {
   const [newLiftModalOpen, setNewLiftModalOpen] = useState(false);
   return (
-    <>
-      <div id="lift-selector">
-        {!props.atEnd ? (
-          <button
-            type="button"
-            onClick={() => props.selectPreviousLift()}
-            className="arrow-button"
-          >
-            &larr;
-          </button>
-        ) : null}
-        <h2>{props.currentLift.name.toUpperCase()}</h2>
-        {props.atBeginning ? (
-          <button
-            type="button"
-            className="arrow-button"
-            onClick={() => setNewLiftModalOpen(true)}
-          >
-            &#65291;
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="arrow-button"
-            onClick={() => props.selectNextLift()}
-          >
-            &rarr;
-          </button>
-        )}
-      </div>
+    <div id="lift-selector">
+      {!props.atEnd ? (
+        <button
+          type="button"
+          onClick={() => props.selectPreviousLift()}
+          className="arrow-button"
+        >
+          &larr;
+        </button>
+      ) : null}
+      <h2>{props.currentLift.name.toUpperCase()}</h2>
+      {props.atBeginning ? (
+        <button
+          type="button"
+          className="arrow-button"
+          onClick={() => setNewLiftModalOpen(true)}
+        >
+          &#65291;
+        </button>
+      ) : (
+        <button
+          type="button"
+          className="arrow-button"
+          onClick={() => props.selectNextLift()}
+        >
+          &rarr;
+        </button>
+      )}
       <Modal
         isOpen={newLiftModalOpen}
         registerClose={() => setNewLiftModalOpen(false)}
       >
         <NewLift />
       </Modal>
-    </>
+    </div>
   );
 };
 
@@ -126,6 +122,5 @@ const InfoDisplay = props => {
   ));
   return <div id="info-display">{setList}</div>;
 };
-
 
 export default LiftLog;

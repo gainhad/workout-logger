@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LiftLog from './LiftLog';
 import Modal from './Modal';
@@ -12,36 +12,34 @@ const Workout = props => {
   const [timesDisplayModalOpen, setTimesDisplayModalOpen] = useState(false);
 
   return (
-    <>
-      <div id="workout-screen" >
-        <Link to="/" className="upper-left">
-          <button type="button" className="arrow-button">
-            &larr;
-          </button>
-        </Link>
-        <RestTimer />
-        <button
-          type="button"
-          onClick={() => setTimesDisplayModalOpen(true)}
-          className="upper-right button-underline"
-          id="times-toggle"
-        >
-          TIMES
+    <div id="workout-screen">
+      <Link to="/" className="upper-left">
+        <button type="button" className="arrow-button">
+          &larr;
         </button>
-        <LiftLog />
-        <E1rmDisplay />
-        <button type="button" id="lift-history-button" className="arrow-button">
-          Lift History
-        </button>
-      </div>
+      </Link>
+      <RestTimer />
+      <button
+        type="button"
+        onClick={() => setTimesDisplayModalOpen(true)}
+        className="upper-right button-underline"
+        id="times-toggle"
+      >
+        TIMES
+      </button>
+      <LiftLog />
+      <E1rmDisplay />
+      <button type="button" id="lift-history-button" className="arrow-button">
+        Lift History
+      </button>
       <Modal
         isOpen={timesDisplayModalOpen}
         registerClose={() => setTimesDisplayModalOpen(false)}
         id="times-modal"
       >
-          <TimesDisplay />
+        <TimesDisplay />
       </Modal>
-    </>
+    </div>
   );
 };
 
