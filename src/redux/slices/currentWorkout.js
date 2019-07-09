@@ -34,8 +34,12 @@ function renameLiftReducer(state, { payload }) {
   state.lifts[payload.index].name = payload.name;
 }
 
-function addSetReducer(state, { payload }) {
-  state.lifts[payload.liftIndex].sets.push(payload.set);
+function addOrUpdateSetReducer(state, { payload }) {
+  if (payload.setIndex) {
+    state.lifts[payload.liftIndex].sets[payload.setIndex] = payload.set;
+  } else {
+    state.lifts[payload.liftIndex].sets.push(payload.set);
+  }
 }
 
 function deleteSetReducer(state, { payload }) {
@@ -82,7 +86,7 @@ const currentWorkout = createSlice({
     addLift: addLiftReducer,
     deleteLift: deleteLiftReducer,
     renameLift: renameLiftReducer,
-    addSet: addSetReducer,
+    addOrUpdateSet: addOrUpdateSetReducer,
     deleteSet: deleteSetReducer,
     updateSet: updateSetReducer,
     incrementCurrentLiftIndex: incrementCurrentLiftIndexReducer,
@@ -137,11 +141,6 @@ const getEstimatedOneRepMax = createSelector(
   }
 );
 
-// TODO - Delete after testing is finished
-const testState = {
-  currentWorkout: { ...initialState }
-};
-
 const { actions, reducer } = currentWorkout;
 
 // Overwite generate actions with custom actions.
@@ -150,6 +149,7 @@ actions.startRestTimer = startRestTimer;
 
 export {
   getSetsForCurrentLift,
+  getCurrentLiftIndex,
   getCurrentLift,
   atBeginning,
   atEnd,
