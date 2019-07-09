@@ -24,52 +24,6 @@ const Workout = props => {
   const [newLiftModal, setNewLiftModal] = useState(false);
   const [timesModal, setTimesModal] = useState(false);
   const [restTimerModal, setRestTimerModal] = useState(false);
-  const [timers, setTimers] = useState([
-    {
-      name: 'rest',
-      decrement: true,
-      started: false,
-      finished: false,
-      seconds: 0
-    }
-  ]);
-  //update times every second
-
-  useInterval(() => {
-    setTimers(
-      timers.map(timer => {
-        if (timer.started) {
-          if (timer.decrement && timer.seconds > 0) {
-            return Object.assign(timer, { seconds: timer.seconds - 1 });
-          } else if (timer.decrement) {
-            return Object.assign(timer, { finished: true });
-          } else if (!timer.decrement) {
-            return Object.assign(timer, { seconds: timer.seconds + 1 });
-          } else {
-            return timer;
-          }
-        } else {
-          return timer;
-        }
-      })
-    );
-  }, 1000);
-
-  function startIndividualTimer(timerName, newSeconds) {
-    setTimers(
-      timers.map(timer => {
-        if (timer.name === timerName) {
-          return Object.assign(timer, {
-            seconds: newSeconds,
-            started: true,
-            finished: false
-          });
-        } else {
-          return timer;
-        }
-      })
-    );
-  }
 
   function closeSetModal() {
     setNewSetModal(false);
@@ -104,17 +58,7 @@ const Workout = props => {
     setEditLiftModal(!editLiftModal);
   }
 
-  function addSet(newWeight, newReps, newRpe) {
-    const newSet = {
-      weight: newWeight,
-      reps: newReps,
-      rpe: newRpe
-    };
-  }
-
   const test = isBlurred ? 'blurred' : '';
-
-  const restTimer = timers.find(timer => timer.name === 'rest');
 
   useEffect(() => {
     if (
@@ -138,7 +82,7 @@ const Workout = props => {
             &larr;
           </button>
         </Link>
-        <RestTimer secondsRemaining={restTimer.seconds} />
+        <RestTimer />
         <button
           type="button"
           onClick={toggleTimesModal}
@@ -179,7 +123,6 @@ const Workout = props => {
         <Modal toggleButton={false} id="new-rest-timer-modal">
           <NewRestTimer
             toggleModal={toggleRestTimerModal}
-            startTimer={startIndividualTimer}
           />
         </Modal>
       )}
