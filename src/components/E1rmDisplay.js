@@ -1,7 +1,6 @@
 import React from 'react';
 import './E1rmDisplay.scss';
 import { connect } from 'react-redux';
-import { calculateE1RM } from '../utils/calculations.js';
 import { getEstimatedOneRepMax } from '../redux/slices/currentWorkout';
 
 const E1rmDisplay = props => {

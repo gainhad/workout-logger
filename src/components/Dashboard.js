@@ -1,7 +1,6 @@
 import React from 'react';
 import RecentActivity from './RecentActivity';
 import { Link } from 'react-router-dom';
-import Modal from './Modal';
 
 const Dashboard = () => {
   return (

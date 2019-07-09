@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import './RestTimer.scss';
-import { prettyDisplayTime } from '../utils/displayHelpers';
 import { useInterval } from '../utils/customHooks';
 import soundFile from '../assets/audio/bell.wav';
 import RestTimerDisplay from './RestTimerDisplay';
@@ -30,7 +29,7 @@ const RestTimer = props => {
     } else if (secondsRemaining > 0 && notificationSoundPlayed) {
       setNotificationSoundPlayed(false);
     }
-  }, [secondsRemaining]);
+  }, [secondsRemaining, notificationSoundPlayed]);
 
   // Render based on seconds remaining.
   if (secondsRemaining > 0) {

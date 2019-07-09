@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { prettyDisplayTime } from '../utils/displayHelpers';
 import { useInterval } from '../utils/customHooks';

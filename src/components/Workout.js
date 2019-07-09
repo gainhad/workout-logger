@@ -34,7 +34,7 @@ const Workout = props => {
       </button>
       <Modal
         isOpen={timesDisplayModalOpen}
-        registerClose={() => setTimesDisplayModalOpen(false)}
+        onClose={() => setTimesDisplayModalOpen(false)}
         id="times-modal"
       >
         <TimesDisplay />

@@ -10,7 +10,7 @@ const Modal = props => {
   const dispatch = useDispatch();
   const closeModal = () => {
     setIsOpen(false);
-    props.registerClose();
+    props.onClose();
     dispatch(globalUIActions.isBlurred(false));
   };
 
@@ -20,7 +20,7 @@ const Modal = props => {
     if (props.isOpen) {
       dispatch(globalUIActions.isBlurred(true));
     }
-  }, [props.isOpen]);
+  }, [props.isOpen, dispatch]);
 
   if (isOpen) {
     return ReactDOM.createPortal(
