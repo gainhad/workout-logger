@@ -8,6 +8,7 @@ import {
 } from '../redux/slices/currentWorkout';
 import Modal from './Modal';
 import NewSet from './NewSet';
+import SetForm from './SetForm';
 import NewLift from './NewLift';
 
 const LiftLog = props => {
@@ -30,14 +31,18 @@ const LiftLog = props => {
         currentLift={lift}
         selectPreviousLift={selectPreviousLift}
         selectNextLift={selectNextLift}
-        toggleNewLiftModal={props.toggleNewLiftModal}
       />
       <InfoDisplay
-        //editable={liftEditable}
+        editable={liftEditable}
+        setEditable={setLiftEditable}
         setEditSetModal={props.setEditSetModal}
         sets={lift.sets}
       />
-      <button type="button" id="edit-button" onClick={() => null}>
+      <button
+        type="button"
+        id="edit-button"
+        onClick={() => setLiftEditable(!liftEditable)}
+      >
         EDIT
       </button>
       <button
@@ -48,7 +53,7 @@ const LiftLog = props => {
       >
         &#65291;
       </button>
-      <Modal isOpen={setModalOpen} registerClose={() => setSetModalOpen(false)}>
+      <Modal isOpen={setModalOpen} onClose={() => setSetModalOpen(false)}>
         <NewSet />
       </Modal>
     </div>
@@ -89,7 +94,7 @@ const LiftSelector = props => {
       )}
       <Modal
         isOpen={newLiftModalOpen}
-        registerClose={() => setNewLiftModalOpen(false)}
+        onClose={() => setNewLiftModalOpen(false)}
       >
         <NewLift />
       </Modal>
@@ -99,13 +104,18 @@ const LiftSelector = props => {
 
 // TODO - Break this off into it's own component.
 const InfoDisplay = props => {
+  const [editSetModal, setEditSetModal] = useState(false);
+  const [editSetIndex, setEditSetIndex] = useState(NaN);
   const setList = props.sets.map((set, index) => (
     <div
       className={props.editable ? 'set editable' : 'set'}
       key={index}
-      onClick={() =>
+      onClick={
         props.editable
-          ? props.setEditSetModal({ display: true, index: index })
+          ? () => {
+              setEditSetModal(true);
+              setEditSetIndex(index);
+            }
           : null
       }
     >
@@ -120,7 +130,20 @@ const InfoDisplay = props => {
       </div>
     </div>
   ));
-  return <div id="info-display">{setList}</div>;
+  return (
+    <div id="info-display">
+      {setList}
+      <Modal
+        isOpen={editSetModal}
+        onClose={() => {
+          setEditSetModal(false);
+          props.setEditable(false);
+        }}
+      >
+        <SetForm setIndex={editSetIndex} />
+      </Modal>
+    </div>
+  );
 };
 
 export default LiftLog;

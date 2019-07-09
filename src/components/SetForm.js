@@ -1,12 +1,23 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getCurrentLiftIndex, currentWorkoutActions } from '../redux/slices/currentWorkout';
+import {
+  getCurrentLiftIndex,
+  getSetsForCurrentLift,
+  currentWorkoutActions
+} from '../redux/slices/currentWorkout';
 import './SetForm.scss';
 
-const SetForm = ({ setIndex = null, closeForm, onSetSubmit}) => {
-  const currentLiftIndex = useSelector(state => getCurrentLiftIndex(state)); 
+const SetForm = ({
+  setIndex = undefined,
+  closeForm,
+  closeModal,
+  onSetSubmit = null
+}) => {
+  const currentLiftIndex = useSelector(state => getCurrentLiftIndex(state));
   const dispatch = useDispatch();
   const submitSet = set => dispatch(currentWorkoutActions.addOrUpdateSet(set));
+  const currentLiftSets = useSelector(state => getSetsForCurrentLift(state));
+  const currentSet = isNaN(setIndex) ? null : currentLiftSets[setIndex];
 
   function onSubmit(event) {
     event.preventDefault();
@@ -19,19 +30,50 @@ const SetForm = ({ setIndex = null, closeForm, onSetSubmit}) => {
         rpe: Number(event.target.rpe.value)
       }
     });
-    onSetSubmit();
+    if (onSetSubmit) {
+      onSetSubmit();
+    } else {
+      closeModal();
+    }
   }
 
   return (
-    <form onSubmit={onSubmit} id="new-set">
-      <input name="weight" type="number" required={true} placeholder="weight" />
-      <input name="reps" type="number" required={true} placeholder="reps" />
-      <input name="rpe" type="number" required={true} placeholder="rpe" />
+    <form onSubmit={onSubmit} id="set-form">
+      <div className="input-section">
+        <label for="weight">WEIGHT:</label>
+        <input
+          name="weight"
+          id="weight"
+          type="number"
+          required={true}
+          defaultValue={currentSet ? currentSet.weight : null}
+        />
+      </div>
+      <div className="input-section">
+        <label for="reps">REPS:</label>
+        <input
+          name="reps"
+          id="reps"
+          type="number"
+          required={true}
+          defaultValue={currentSet ? currentSet.reps : null}
+        />
+      </div>
+      <div className="input-section">
+        <label for="rpe">RPE:</label>
+        <input
+          name="rpe"
+          id="rpe"
+          type="number"
+          required={true}
+          defaultValue={currentSet ? currentSet.rpe : null}
+        />
+      </div>
       <input
         type="button"
         value="CANCEL"
         className="cancel-button"
-        onClick={closeForm}
+        onClick={closeModal}
       />
       <input type="submit" value="ENTER" />
     </form>

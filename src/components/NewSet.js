@@ -11,7 +11,7 @@ const NewSet = props => {
 
   if (!setEntered) {
     return (
-      <SetForm closeForm={props.closeModal} onSetSubmit={onSetSubmit}/>
+      <SetForm closeModal={props.closeModal} onSetSubmit={onSetSubmit}/>
     );
   } else {
     return <NewRestTimer closeModal={props.closeModal} />;

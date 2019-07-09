@@ -8,7 +8,6 @@ import TimesDisplay from './TimesDisplay';
 import './Workout.scss';
 
 const Workout = props => {
-  //Keep!
   const [timesDisplayModalOpen, setTimesDisplayModalOpen] = useState(false);
 
   return (
