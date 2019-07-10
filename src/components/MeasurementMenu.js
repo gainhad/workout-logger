@@ -17,16 +17,33 @@ const MeasurementMenu = () => {
           </button>
         </Link>
         <div id="measurement-selection">
-          <button type="button" className="button-one measurment-button" onClick={()=>{setMeasurementType('WEIGHT'); setMeasurementModalOpen(true);}}>
+          <button
+            type="button"
+            className="button-one measurement-button"
+            onClick={() => {
+              setMeasurementType('weight');
+              setMeasurementModalOpen(true);
+            }}
+          >
             LOG WEIGHT
           </button>
-          <button type="button" className="button-one measurment-button" onClick={()=>{setMeasurementType('WAIST'); setMeasurementModalOpen(true);}}>
+          <button
+            type="button"
+            className="button-one measurement-button"
+            onClick={() => {
+              setMeasurementType('waist');
+              setMeasurementModalOpen(true);
+            }}
+          >
             LOG WAIST
           </button>
         </div>
       </div>
-    <Modal isOpen={measurementModalOpen} onClose={()=>setMeasurementModalOpen(false)}>
-        <MeasurementForm type={measurementType}/>
+      <Modal
+        isOpen={measurementModalOpen}
+        onClose={() => setMeasurementModalOpen(false)}
+      >
+        <MeasurementForm type={measurementType} />
       </Modal>
     </>
   );

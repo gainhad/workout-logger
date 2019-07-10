@@ -17,11 +17,10 @@ const initialState = {
   currentLiftIndex: 0,
   restTimer: {
     timeStarted: NaN,
-    duration: NaN 
+    duration: NaN
   },
   timeStarted: 1562756097322
 };
-
 
 function addOrRenameLiftReducer(state, { payload }) {
   if (isNaN(payload.liftIndex)) {
@@ -74,7 +73,7 @@ function startRestTimer(duration) {
       timeStarted: Date.now(),
       duration: duration
     }
-  }
+  };
 }
 
 function startRestTimerReducer(state, { payload }) {
@@ -102,7 +101,7 @@ const currentWorkout = createSlice({
     decrementCurrentLiftIndex: decrementCurrentLiftIndexReducer,
     startRestTimer: startRestTimerReducer,
     addTimeStarted: addTimeStartedReducer
-  },
+  }
 });
 
 // Selectors
@@ -155,7 +154,6 @@ const { actions, reducer } = currentWorkout;
 
 // Overwite generate actions with custom actions.
 actions.startRestTimer = startRestTimer;
-
 
 export {
   getSetsForCurrentLift,
