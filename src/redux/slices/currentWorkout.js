@@ -18,7 +18,8 @@ const initialState = {
   restTimer: {
     timeStarted: NaN,
     duration: NaN 
-  }
+  },
+  timeStarted: 1562756097322
 };
 
 
@@ -83,6 +84,10 @@ function startRestTimerReducer(state, { payload }) {
   };
 }
 
+function addTimeStartedReducer(state, { payload }) {
+  state.timeStarted = payload;
+}
+
 const currentWorkout = createSlice({
   slice: 'currentWorkout',
   initialState: initialState,
@@ -95,7 +100,8 @@ const currentWorkout = createSlice({
     updateSet: updateSetReducer,
     incrementCurrentLiftIndex: incrementCurrentLiftIndexReducer,
     decrementCurrentLiftIndex: decrementCurrentLiftIndexReducer,
-    startRestTimer: startRestTimerReducer
+    startRestTimer: startRestTimerReducer,
+    addTimeStarted: addTimeStartedReducer
   },
 });
 

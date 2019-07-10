@@ -19,7 +19,7 @@ const RestTimerDisplay = props => {
 
   if (secondsRemaining > 0) {
     return (
-      <div className="rest-timer-display">
+      <div className="timer rest-timer-display">
         REST COUNTDOWN: {prettyDisplayTime(secondsRemaining)}
       </div>
     );
