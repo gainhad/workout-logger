@@ -16,6 +16,7 @@
       color: rgba(255, 255, 255, .5);
     }
     &:active,
+    &:focus,
     &:hover {
       outline: none;
       background: rgba(255, 255, 255, 0.1);

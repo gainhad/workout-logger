@@ -29,6 +29,39 @@ a {
   font-size: 80%;
 }
 
+.form-button {
+  width: 6em;
+  height: 2em;
+  margin: .5em;
+  outline: 1px solid $fg-1;
+  font-size: 1em;
+}
+
+.form-one {
+   input {
+    &[type=number]{
+      height: 5vh;
+      align-self: end;
+      font: 100% $font-stack;
+      text-align: center;
+      background: none;
+      color: $fg-1;
+      border: none;
+      border-bottom: 1px solid $fg-1;
+      margin: 0 30px 0 1em;
+    }
+    &::placeholder {
+      color: rgba(255, 255, 255, .5);
+    }
+    &:active,
+    &:focus,
+    &:hover {
+      outline: none;
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
 .arrow-button {
   font: 200% $font-stack;
   line-height: 0.5;

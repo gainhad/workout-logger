@@ -47,6 +47,7 @@ const SetForm = ({
           type="number"
           required={true}
           defaultValue={currentSet ? currentSet.weight : null}
+          autoFocus
         />
       </div>
       <div className="input-section">
