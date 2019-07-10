@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import LiftLog from './LiftLog';
 import Modal from './Modal';
 import E1rmDisplay from './E1rmDisplay';
 import RestTimer from './RestTimer';
 import TimesDisplay from './TimesDisplay';
+import ExitMenu from './ExitMenu';
 import { useDispatch } from 'react-redux';
 import { currentWorkoutActions } from '../redux/slices/currentWorkout';
 import './Workout.scss';
@@ -12,6 +12,7 @@ import './Workout.scss';
 const Workout = props => {
   const dispatch = useDispatch();
   const [timesDisplayModalOpen, setTimesDisplayModalOpen] = useState(false);
+  const [exitModalOpen, setExitModalOpen] = useState(false);
   const [workoutStarted, setWorkoutStarted] = useState(false);
   useEffect(() => {
     if (!workoutStarted) {
@@ -23,9 +24,14 @@ const Workout = props => {
   return (
     <>
       <div id="workout-screen">
-          <button type="button" className="button-one" id="exit-button">
-            EXIT
-          </button>
+        <button
+          type="button"
+          className="button-one"
+          id="exit-button"
+          onClick={() => setExitModalOpen(true)}
+        >
+          EXIT
+        </button>
         <RestTimer />
         <button type="button" id="finish-button" className="button-one">
           FINISH
@@ -50,6 +56,13 @@ const Workout = props => {
         id="times-modal"
       >
         <TimesDisplay />
+      </Modal>
+      <Modal
+        isOpen={exitModalOpen}
+        onClose={() => setExitModalOpen(false)}
+        id="exit-modal"
+      >
+        <ExitMenu />
       </Modal>
     </>
   );

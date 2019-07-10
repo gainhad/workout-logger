@@ -1,0 +1,19 @@
+@import './colors';
+
+#confirm-exit {
+  width: 5em;
+}
+
+#cancel-exit {
+  width: 5em;
+  padding: unset;
+}
+
+#exit-menu {
+  width: 50vw;
+  margin: 1em;
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+}
