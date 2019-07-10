@@ -18,29 +18,32 @@ const Workout = props => {
       dispatch(currentWorkoutActions.addTimeStarted(Date.now()));
       setWorkoutStarted(true);
     }
-  })
+  }, [workoutStarted, dispatch]);
 
   return (
-    <div id="workout-screen">
-      <Link to="/" className="upper-left">
-        <button type="button" className="arrow-button">
-          &larr;
+    <>
+      <div id="workout-screen">
+          <button type="button" className="button-one" id="exit-button">
+            EXIT
+          </button>
+        <RestTimer />
+        <button type="button" id="finish-button" className="button-one">
+          FINISH
         </button>
-      </Link>
-      <RestTimer />
-      <button
-        type="button"
-        onClick={() => setTimesDisplayModalOpen(true)}
-        className="upper-right button-underline"
-        id="times-toggle"
-      >
-        TIMES
-      </button>
-      <LiftLog />
-      <E1rmDisplay />
-      <button type="button" id="lift-history-button" className="arrow-button">
-        Lift History
-      </button>
+        <LiftLog />
+        <E1rmDisplay />
+        <button
+          type="button"
+          onClick={() => setTimesDisplayModalOpen(true)}
+          className="upper-right button-underline"
+          id="times-toggle"
+        >
+          TIMES
+        </button>
+        <button type="button" id="lift-history-button" className="arrow-button">
+          Lift History
+        </button>
+      </div>
       <Modal
         isOpen={timesDisplayModalOpen}
         onClose={() => setTimesDisplayModalOpen(false)}
@@ -48,7 +51,7 @@ const Workout = props => {
       >
         <TimesDisplay />
       </Modal>
-    </div>
+    </>
   );
 };
 

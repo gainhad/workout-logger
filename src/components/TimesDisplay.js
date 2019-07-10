@@ -17,17 +17,17 @@ const TimesDisplay = props => {
 
   return (
     <div id="times-display">
-      <button
-        type="button"
-        onClick={props.closeModal}
-        className="upper-right button-underline times-title"
-      >
-        TIMES
-      </button>
       <RestTimerDisplay />
       <div className="timer total-workout-time">
         TOTAL WORKOUT TIME: {prettyDisplayTime(totalSeconds)}
       </div>
+      <button
+        type="button"
+        onClick={props.closeModal}
+        className="button-underline times-title"
+      >
+        TIMES
+      </button>
     </div>
   );
 };

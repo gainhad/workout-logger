@@ -1,8 +1,8 @@
 @import './colors';
 
 #times-modal {
-  bottom: unset;
-  left: unset;
+  top: unset;
+  right: unset;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -20,17 +20,31 @@
 #lift-history-button {
   align-self: end;
   font-size: 1.5em;
-  grid-column: 1 / 4;
+  grid-column: 2 / 3;
   grid-row-end: 5;
   padding: 10px;
   margin: 10px;
 }
 
 #times-toggle {
-  grid-column-end: 4;
+  grid-column-start: 1;
+  align-self: end;
+  justify-self: start;
+  margin: 0 0 1em 1em;
   &:focus {
     outline: none
   }
+}
+
+#finish-button {
+  grid-column-end: 4;
+  width: max-content;
+  padding: .5em;
+}
+
+#exit-button {
+  width: max-content;
+  padding: .5em;
 }
 
 .cancel-button {
