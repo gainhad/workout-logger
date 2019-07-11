@@ -1,47 +1,145 @@
 const percentageTable = [
   {
     rpe: 6.5,
-    percentages: [0, .878, .85, .824, .799, .774, .751, .723, .694, .667, .64]
+    percentages: [
+      0,
+      0.878,
+      0.85,
+      0.824,
+      0.799,
+      0.774,
+      0.751,
+      0.723,
+      0.694,
+      0.667,
+      0.64
+    ]
   },
   {
     rpe: 7,
-    percentages: [0, .892, .863, .837, .811, .786, .762, .739, .707, .680, .653]
+    percentages: [
+      0,
+      0.892,
+      0.863,
+      0.837,
+      0.811,
+      0.786,
+      0.762,
+      0.739,
+      0.707,
+      0.68,
+      0.653
+    ]
   },
   {
     rpe: 7.5,
-    percentages: [0, .907, .878, .850, .824, .799, .774, .751, .723, .694, .667]
+    percentages: [
+      0,
+      0.907,
+      0.878,
+      0.85,
+      0.824,
+      0.799,
+      0.774,
+      0.751,
+      0.723,
+      0.694,
+      0.667
+    ]
   },
   {
     rpe: 8,
-    percentages: [0, .922, .892, .863, .837, .811, .786, .762, .739, .707, .680]
+    percentages: [
+      0,
+      0.922,
+      0.892,
+      0.863,
+      0.837,
+      0.811,
+      0.786,
+      0.762,
+      0.739,
+      0.707,
+      0.68
+    ]
   },
   {
     rpe: 8.5,
-    percentages: [0, .939, .907, .878, .850, .824, .799, .774, .751, .723, .694]
+    percentages: [
+      0,
+      0.939,
+      0.907,
+      0.878,
+      0.85,
+      0.824,
+      0.799,
+      0.774,
+      0.751,
+      0.723,
+      0.694
+    ]
   },
   {
     rpe: 9,
-    percentages: [0, .955, .922, .892, .863, .837, .811, .786, .762, .739, .707]
+    percentages: [
+      0,
+      0.955,
+      0.922,
+      0.892,
+      0.863,
+      0.837,
+      0.811,
+      0.786,
+      0.762,
+      0.739,
+      0.707
+    ]
   },
   {
     rpe: 9.5,
-    percentages: [0, .978, .939, .907, .878, .850, .824, .799, .774, .751, .723]
+    percentages: [
+      0,
+      0.978,
+      0.939,
+      0.907,
+      0.878,
+      0.85,
+      0.824,
+      0.799,
+      0.774,
+      0.751,
+      0.723
+    ]
   },
   {
     rpe: 10,
-    percentages: [0, .100, .955, .922, .892, .863, .837, .811, .786, .762, .739]
+    percentages: [
+      0,
+      0.1,
+      0.955,
+      0.922,
+      0.892,
+      0.863,
+      0.837,
+      0.811,
+      0.786,
+      0.762,
+      0.739
+    ]
   }
 ];
 
 function calculateE1RM(weight, reps, rpe) {
   if (rpe < 6.5 || rpe > 10) {
-    throw new RangeError("RPE must be between 6.5 and 10 for E1RM calculation");
-  } else if (rpe % .5 !== 0) {
-      throw new Error("RPE must be a whole or half number");
+    throw new RangeError('RPE must be between 6.5 and 10 for E1RM calculation');
+  } else if (rpe % 0.5 !== 0) {
+    throw new Error(`RPE must be a whole or half number. You sent: ${rpe}`);
   } else if (reps > 12) {
-    throw new RangeError("Reps must be less than 12 for an E1RM calculation");
+    throw new RangeError('Reps must be less than 12 for an E1RM calculation');
   }
-  return weight / percentageTable.find(e => e.rpe === rpe).percentages[reps];
+  return Math.round(
+    weight / percentageTable.find(e => e.rpe === rpe).percentages[reps]
+  );
 }
 
 export { calculateE1RM };

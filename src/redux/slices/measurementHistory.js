@@ -1,42 +1,48 @@
 import { createSlice, createSelector } from 'redux-starter-kit';
 
 const initialState = {
-  weight: [
-    {
-      timestamp: 1562783942272,
-      measurement: 160
-    },
-    {
-      timestamp: 1562797642272,
-      measurement: 190
-    },
-    {
-      timestamp: 1562123042272,
-      measurement: 80
-    },
-    {
-      timestamp: 1562782452272,
-      measurement: 480
-    }
-  ],
-  waist: [
-    {
-      timestamp: 1562783942272,
-      measurement: 60
-    },
-    {
-      timestamp: 1562797642272,
-      measurement: 90
-    },
-    {
-      timestamp: 1562123042272,
-      measurement: 30
-    },
-    {
-      timestamp: 1562782452272,
-      measurement: 80
-    }
-  ]
+  weight: {
+    measurements: [
+      {
+        timestamp: 1562783942272,
+        entry: 160
+      },
+      {
+        timestamp: 1562797642272,
+        entry: 190
+      },
+      {
+        timestamp: 1562123042272,
+        entry: 80
+      },
+      {
+        timestamp: 1562782452272,
+        entry: 480
+      }
+    ],
+    unit: 'lbs'
+  },
+  waist: {
+    measurements: [
+      {
+        timestamp: 1562783942272,
+        entry: 60
+      },
+      {
+        timestamp: 1562797642272,
+        entry: 90
+      },
+      {
+        timestamp: 1562123042272,
+        entry: 30
+      },
+      {
+        timestamp: 1562782452272,
+        entry: 80
+      }
+    ],
+    unit: 'in'
+  }
 };
 
 // Custom Actions
@@ -71,9 +77,28 @@ const measurementHistory = createSlice({
   }
 });
 
+const getMeasurementHistory = (state, props) => {
+  console.log('selector called');
+  let newMeasurements = state.measurementHistory[props.name].measurements.map(
+    e => {
+      return { ...e };
+    }
+  );
+  return {
+    entries: newMeasurements,
+    unit: state.measurementHistory[props.name].unit
+  };
+};
+
 const getMeasurementTypesAlphabetized = createSelector(
   ['measurementHistory'],
-  history => Object.keys(history).sort()
+  history => {
+    return Object.keys(history)
+      .sort()
+      .map(name => {
+        return { name: name, unit: history[name].unit };
+      });
+  }
 );
 
 const { actions, reducer } = measurementHistory;
@@ -81,6 +106,6 @@ const { actions, reducer } = measurementHistory;
 // Overwite generated actions with custom actions.
 actions.addOrUpdateMeasurement = addOrUpdateMeasurement;
 
-export { getMeasurementTypesAlphabetized };
+export { getMeasurementTypesAlphabetized, getMeasurementHistory };
 export { actions as measurementHistoryActions };
 export default reducer;

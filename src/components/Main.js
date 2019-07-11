@@ -5,7 +5,7 @@ import Dashboard from './Dashboard';
 import Login from './Login';
 import Workout from './Workout';
 import MeasurementMenu from './MeasurementMenu';
-import SingleMeasurementView from './SingleMeasurementView';
+import SingleDataView from './SingleDataView';
 import ViewDataMenu from './ViewDataMenu';
 import { useSelector } from 'react-redux';
 
@@ -19,7 +19,7 @@ function Main() {
         <Route path="/workout" component={Workout} />
         <Route path="/measurement" component={MeasurementMenu} />
         <Route path="/view" exact component={ViewDataMenu} />
-        <Route path="/view/:dataItem" component={SingleMeasurementView} />
+        <Route path="/view/:dataType/:dataItem" component={SingleDataView} />
       </Router>
     </div>
   );

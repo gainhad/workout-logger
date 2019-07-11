@@ -7,7 +7,7 @@ import { getMeasurementTypesAlphabetized } from '../redux/slices/measurementHist
 
 const ViewDataMenu = () => {
   const liftNames = useSelector(state => getLiftNamesAlphabetized(state));
-  const measurementNames = useSelector(state =>
+  const measurementNamesAndUnits = useSelector(state =>
     getMeasurementTypesAlphabetized(state)
   );
   return (
@@ -22,7 +22,7 @@ const ViewDataMenu = () => {
         <ul id="lift-names" className="data-selection-list">
           {liftNames.map((lift, key) => (
             <li key={key}>
-              <Link to={`/view/${lift}`}>
+              <Link to={`/view/lift/${lift}`}>
                 <button type="button">{lift.toUpperCase()}</button>
               </Link>
             </li>
@@ -32,11 +32,11 @@ const ViewDataMenu = () => {
       <div className="data-selection-menu">
         <h2 className="menu-header">MEASUREMENTS</h2>
         <ul id="measurement-names" className="data-selection-list">
-          {measurementNames.map((name, key) => (
+          {measurementNamesAndUnits.map((entry, key) => (
             <li key={key}>
-              <button type="button" onClick={() => alert(name)}>
-                {name.toUpperCase()}
-              </button>
+              <Link to={`/view/measurement/${entry.name}`}>
+                <button type="button">{entry.name.toUpperCase()}</button>
+              </Link>
             </li>
           ))}
         </ul>

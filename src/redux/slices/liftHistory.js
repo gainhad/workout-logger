@@ -1,4 +1,5 @@
 import { createSlice, createSelector } from 'redux-starter-kit';
+import { calculateE1RM } from '../../utils/calculations.js';
 
 const initialState = {
   squat: {
@@ -6,17 +7,17 @@ const initialState = {
       0: {
         sets: [
           {
-            weight: 255,
+            weight: 200,
             reps: 8,
             rpe: 8
           },
           {
-            weight: 255,
+            weight: 175,
             reps: 8,
             rpe: 8
           },
           {
-            weight: 255,
+            weight: 225,
             reps: 8,
             rpe: 8
           }
@@ -26,17 +27,17 @@ const initialState = {
       1: {
         sets: [
           {
-            weight: 255,
+            weight: 200,
             reps: 8,
             rpe: 8
           },
           {
-            weight: 255,
+            weight: 205,
             reps: 8,
             rpe: 8
           },
           {
-            weight: 255,
+            weight: 235,
             reps: 8,
             rpe: 8
           }
@@ -46,17 +47,17 @@ const initialState = {
       2: {
         sets: [
           {
-            weight: 255,
+            weight: 205,
             reps: 8,
             rpe: 8
           },
           {
-            weight: 255,
+            weight: 205,
             reps: 8,
             rpe: 8
           },
           {
-            weight: 255,
+            weight: 215,
             reps: 8,
             rpe: 8
           }
@@ -66,17 +67,17 @@ const initialState = {
       3: {
         sets: [
           {
-            weight: 255,
+            weight: 205,
             reps: 8,
             rpe: 8
           },
           {
-            weight: 255,
+            weight: 205,
             reps: 8,
             rpe: 8
           },
           {
-            weight: 255,
+            weight: 235,
             reps: 8,
             rpe: 8
           }
@@ -86,17 +87,17 @@ const initialState = {
       4: {
         sets: [
           {
-            weight: 255,
+            weight: 205,
             reps: 8,
             rpe: 8
           },
           {
-            weight: 255,
+            weight: 205,
             reps: 8,
             rpe: 8
           },
           {
-            weight: 255,
+            weight: 245,
             reps: 8,
             rpe: 8
           }
@@ -329,7 +330,10 @@ const getLiftNamesAlphabetized = createSelector(
   lifts => Object.keys(lifts).sort()
 );
 
-const getLift = (state, props) => state.liftHistory[props.liftName];
+const getLift = (state, props) => {
+  console.log('get lift selector called');
+  return state.liftHistory[props.name];
+};
 
 const getHistoryForLift = createSelector(
   [getLift],
@@ -339,12 +343,51 @@ const getHistoryForLift = createSelector(
     )
 );
 
+const getHeaviestSetHistoryForLift = createSelector(
+  [getHistoryForLift],
+  liftHistory =>
+    liftHistory.map(entry => {
+      return {
+        heaviestSet: entry.sets
+          .slice()
+          .sort((setA, setB) => setB.weight - setA.weight)[0],
+        timestamp: entry.timestamp
+      };
+    })
+);
+
+const getE1RMHistoryForLift = createSelector(
+  [getHeaviestSetHistoryForLift],
+  heaviestSets => {
+    return {
+      entries: heaviestSets
+        .filter(entry => entry.heaviestSet.rpe >= 6.5)
+        .map(entry => {
+          return {
+            e1rm: calculateE1RM(
+              entry.heaviestSet.weight,
+              entry.heaviestSet.reps,
+              entry.heaviestSet.rpe
+            ),
+            timestamp: entry.timestamp
+          };
+        }),
+      unit: 'lbs'
+    };
+  }
+);
+
 const testState = {
   liftHistory: { ...initialState }
 };
 
 const { actions, reducer } = liftHistory;
 
-export { getLiftNamesAlphabetized, getHistoryForLift };
+export {
+  getLiftNamesAlphabetized,
+  getHistoryForLift,
+  getHeaviestSetHistoryForLift,
+  getE1RMHistoryForLift
+};
 export { actions as liftHistoryActions };
 export default reducer;
