@@ -18,12 +18,20 @@ const DashboardMenu = () => {
   return (
     <div id="dashboard-menu">
       <Link to="/workout">
-        <button type="button" className="button-one">Start Workout</button>
+        <button type="button" className="button-one">
+          Start Workout
+        </button>
       </Link>
       <Link to="/measurement">
-        <button type="button" className="button-one">Log Measurement</button>
+        <button type="button" className="button-one">
+          Log Measurement
+        </button>
       </Link>
-      <button type="button" className="button-one">View Data</button>
+      <Link to="/view">
+        <button type="button" className="button-one">
+          View Data
+        </button>
+      </Link>
     </div>
   );
 };

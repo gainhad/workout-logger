@@ -71,10 +71,16 @@ const measurementHistory = createSlice({
   }
 });
 
+const getMeasurementTypesAlphabetized = createSelector(
+  ['measurementHistory'],
+  history => Object.keys(history).sort()
+);
+
 const { actions, reducer } = measurementHistory;
 
 // Overwite generated actions with custom actions.
 actions.addOrUpdateMeasurement = addOrUpdateMeasurement;
 
+export { getMeasurementTypesAlphabetized };
 export { actions as measurementHistoryActions };
 export default reducer;
