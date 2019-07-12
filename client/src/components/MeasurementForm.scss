@@ -1,0 +1,26 @@
+@import './colors';
+
+#measurement-form {
+  display: grid;
+  width: 70vw;
+  grid-template-rows: 1fr 1.5fr;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.measurement-form-button {
+  grid-column: span 3;
+  align-self: end;
+  justify-self: center;
+}
+
+.measurement-form-label {
+  grid-column: span 2;
+  justify-self: end;
+  align-self: end;
+}
+
+#measurement-input {
+  grid-column: span 4;
+  align-self: end;
+  margin-top: 10px;
+}

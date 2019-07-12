@@ -1,0 +1,18 @@
+@import './colors';
+
+#measurement-menu {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr 5fr;
+}
+
+#measurement-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+
+.measurement-button {
+  margin: 2vh;
+}
