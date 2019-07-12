@@ -18,5 +18,8 @@
   "homepage": "https://github.com/gainhad/workout-logger#readme",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "husky": "^3.0.0"
   }
 }
