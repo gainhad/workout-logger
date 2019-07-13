@@ -1,0 +1,7 @@
+# -*- restclient -*-
+
+# Test the main api route
+GET http://localhost:5000/api
+
+# Get history for a lift
+GET http://localhost:5000/api/user-data/demoUser/lift-history/deadlift
