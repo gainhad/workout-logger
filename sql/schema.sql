@@ -2,16 +2,17 @@ DROP TABLE users CASCADE;
 DROP TABLE workouts CASCADE;
 DROP TABLE lifts CASCADE;
 DROP TABLE sets CASCADE;
+DROP TABLE measurements CASCADE;
 
 CREATE TABLE users(
   username VARCHAR(20) PRIMARY KEY
 );
 
 CREATE TABLE workouts(
-  id INT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   username VARCHAR(20) REFERENCES users(username),
   time_completed TIMESTAMP NOT NULL,
-  duration SMALLINT NOT NULL
+  duration SMALLINT
 );
 
 CREATE TABLE lifts(
@@ -30,4 +31,13 @@ CREATE TABLE sets(
   weight SMALLINT NOT NULL,
   reps SMALLINT NOT NULL,
   rpe SMALLINT NOT NULL
+);
+
+CREATE TABLE measurements(
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(20) REFERENCES users(username) NOT NULL,
+  time_taken TIMESTAMP NOT NULL,
+  measurement_type VARCHAR(40) NOT NULL,
+  measurement INT NOT NULL,
+  unit VARCHAR(20) NOT NULL
 );

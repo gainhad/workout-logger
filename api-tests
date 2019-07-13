@@ -4,4 +4,74 @@
 GET http://localhost:5000/api
 
 # Get history for a lift
-GET http://localhost:5000/api/user-data/demoUser/lift-history/deadlift
+GET http://localhost:5000/api/user-data/demoUser/lift-history/squat
+
+# Post history for a lift
+POST http://localhost:5000/api/user-data/demoUser/workout-history/
+Content-Type: application/json
+
+{
+  "lifts": 
+  [
+    {
+      "name": "squat",
+      "sets": 
+      [ 
+        {
+          "weight": 225,
+          "reps": 7,
+          "rpe": 9,
+	  "timeCompleted": 1562673566000 
+	},
+        {
+          "weight": 235,
+          "reps": 7,
+          "rpe": 10,
+	  "timeCompleted": 1562674226000 
+	}
+      ]
+    },
+    {
+      "name": "deadlift",
+      "sets": 
+      [ 
+        {
+          "weight": 325,
+          "reps": 5,
+          "rpe": 9,
+	  "timeCompleted": 1562673566000 
+	},
+        {
+          "weight": 335,
+          "reps": 6,
+          "rpe": 10,
+	  "timeCompleted": 1562674226000 
+	}
+      ]
+    }
+  ],
+  "duration": 4000
+}
+
+# Get history for a measurement
+GET http://localhost:5000/api/user-data/demoUser/measurement-history/weight
+
+# Post a new weight measurement
+POST http://localhost:5000/api/user-data/demoUser/measurement-history/weight
+Content-Type: application/json
+
+{
+	"measurement": 180,
+	"unit": "pounds",
+	"time_taken": 1562673566000
+}
+
+# Post a new waist measurement
+POST http://localhost:5000/api/user-data/demoUser/measurement-history/waist
+Content-Type: application/json
+
+{
+	"measurement": 36,
+	"unit": "inches",
+	"time_taken": 1562673566000
+}
