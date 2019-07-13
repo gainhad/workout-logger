@@ -1,4 +1,5 @@
 DROP TABLE users CASCADE;
+
 DROP TABLE workouts CASCADE;
 DROP TABLE lifts CASCADE;
 DROP TABLE sets CASCADE;
@@ -12,7 +13,7 @@ CREATE TABLE workouts(
   id SERIAL PRIMARY KEY,
   username VARCHAR(20) REFERENCES users(username),
   time_completed TIMESTAMP NOT NULL,
-  duration SMALLINT
+  duration SMALLINT NOT NULL
 );
 
 CREATE TABLE lifts(
