@@ -15,6 +15,7 @@ const db = pgp({
 });
 
 router.get("/", (req, res) => {
+  console.log("request received");
   res.json({ lift_history: "/api/user-data/:user/lift-history/deadlift" });
 });
 
@@ -41,6 +42,47 @@ router.route("/user-data/:username/lift-history/:liftName").get((req, res) => {
         sets: data.sets[index]
       }))
     );
+  });
+});
+
+router.route("/user-data/:username/lift-history").get((req, res) => {
+  db.task(async task => {
+    let lifts = await task.any(
+      "SELECT id, liftName FROM lifts WHERE username = $1",
+      req.params.username
+    );
+    let sets = await Promise.all(
+      lifts.map(lift => {
+        return task.any(
+          "SELECT id, weight, reps, rpe, time_completed FROM sets WHERE liftId = $1",
+          lift.id
+        );
+      })
+    );
+    return { lifts, sets };
+  }).then(data => {
+    let returnData = {};
+    data.lifts = data.lifts.map((lift, index) => ({
+      ...lift,
+      sets: data.sets[index]
+    }));
+    data.lifts.map((lift, index) => {
+      let name = lift.liftname;
+      delete lift.liftname;
+      if (returnData.hasOwnProperty(name)) {
+        returnData[name]["byId"] = {
+          ...returnData[name]["byId"],
+          [lift.id]: { ...lift }
+        };
+        returnData[name]["allIds"].push(lift.id);
+      } else {
+        returnData[name] = {
+          byId: { [lift.id]: { ...lift } },
+          allIds: [lift.id]
+        };
+      }
+    });
+    res.json(returnData);
   });
 });
 

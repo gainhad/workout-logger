@@ -1,7 +1,7 @@
-import React from 'react';
-import Main from './components/Main';
-import store from './redux/store.js';
-import { Provider } from 'react-redux';
+import React from "react";
+import Main from "./components/Main";
+import store from "./redux/store.js";
+import { Provider } from "react-redux";
 
 function App() {
   return (

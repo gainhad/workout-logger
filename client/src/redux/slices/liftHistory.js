@@ -1,6 +1,7 @@
-import { createSlice, createSelector } from 'redux-starter-kit';
-import { calculateE1RM } from '../../utils/calculations.js';
+import { createSlice, createSelector } from "redux-starter-kit";
+import { calculateE1RM } from "../../utils/calculations.js";
 
+/**
 const initialState = {
   squat: {
     byId: {
@@ -318,20 +319,56 @@ const initialState = {
     allIds: [0, 1, 2, 3, 4]
   }
 };
+**/
+
+const initialState = {
+  data: {},
+  isFetching: false,
+  isError: false
+};
+
+//Reducers
+function isFetchingReducer(state) {
+  state.isFetching = true;
+}
+
+function isErrorReducer(state) {
+  state.isError = true;
+}
+
+function dataReducer(state, { payload }) {
+  state.data = payload;
+  state.isFetching = false;
+}
 
 const liftHistory = createSlice({
-  slice: 'liftHistory',
+  slice: "liftHistory",
   initialState: initialState,
-  reducers: {}
+  reducers: {
+    data: dataReducer,
+    isFetching: isFetchingReducer,
+    isError: isErrorReducer
+  }
 });
 
+// Actions
+function fetchLiftHistory(user) {
+  return dispatch => {
+    dispatch(liftHistory.actions.isFetching());
+    fetch(`/api/user-data/${user}/lift-history`)
+      .then(res => res.json())
+      .then(json => dispatch(liftHistory.actions.data(json)))
+      .catch(error => dispatch(liftHistory.actions.isError(error)));
+  };
+}
+
 const getLiftNamesAlphabetized = createSelector(
-  ['liftHistory'],
+  ["liftHistory"],
   lifts => Object.keys(lifts).sort()
 );
 
 const getLift = (state, props) => {
-  console.log('get lift selector called');
+  console.log("get lift selector called");
   return state.liftHistory[props.name];
 };
 
@@ -372,7 +409,7 @@ const getE1RMHistoryForLift = createSelector(
             timestamp: entry.timestamp
           };
         }),
-      unit: 'lbs'
+      unit: "lbs"
     };
   }
 );
@@ -382,6 +419,8 @@ const testState = {
 };
 
 const { actions, reducer } = liftHistory;
+
+actions.fetchLiftHistory = fetchLiftHistory;
 
 export {
   getLiftNamesAlphabetized,

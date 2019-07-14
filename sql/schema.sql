@@ -13,7 +13,8 @@ CREATE TABLE workouts(
   id SERIAL PRIMARY KEY,
   username VARCHAR(20) REFERENCES users(username),
   time_completed TIMESTAMP NOT NULL,
-  duration SMALLINT NOT NULL
+  duration SMALLINT NOT NULL,
+  session_rpe SMALLINT
 );
 
 CREATE TABLE lifts(

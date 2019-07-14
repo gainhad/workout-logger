@@ -1,11 +1,11 @@
 INSERT INTO users(username) VALUES('demoUser');
 
-INSERT INTO workouts(username, time_completed, duration)
-VALUES('demoUser', to_timestamp(1562954788), 3600);
-INSERT INTO workouts(username, time_completed, duration)
-VALUES('demoUser', to_timestamp(1562868388), 3600);
-INSERT INTO workouts(username, time_completed, duration)
-VALUES('demoUser', to_timestamp(1562781988), 3600);
+INSERT INTO workouts(username, time_completed, duration, session_rpe)
+VALUES('demoUser', to_timestamp(1562954788), 3600, 8);
+INSERT INTO workouts(username, time_completed, duration, session_rpe)
+VALUES('demoUser', to_timestamp(1562868388), 3600, 9);
+INSERT INTO workouts(username, time_completed, duration, session_rpe)
+VALUES('demoUser', to_timestamp(1562781988), 3600, 10);
 
 INSERT INTO lifts (username, workoutID, liftName, duration) VALUES('demoUser', 1, 'squat', 600);
 INSERT INTO lifts (username, workoutID, liftName, duration) VALUES('demoUser', 1, 'deadlift', 600);
