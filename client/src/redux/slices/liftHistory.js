@@ -1,7 +1,7 @@
 import { createSlice, createSelector } from "redux-starter-kit";
 import { calculateE1RM } from "../../utils/calculations.js";
 
-/**
+/*
 const initialState = {
   squat: {
     byId: {
@@ -319,10 +319,11 @@ const initialState = {
     allIds: [0, 1, 2, 3, 4]
   }
 };
-**/
+*/
 
 const initialState = {
   data: {},
+  fetched: false,
   isFetching: false,
   isError: false
 };
@@ -332,12 +333,17 @@ function isFetchingReducer(state) {
   state.isFetching = true;
 }
 
+function fetchedReducer(state) {
+  state.fetched = true;
+}
+
 function isErrorReducer(state) {
   state.isError = true;
 }
 
 function dataReducer(state, { payload }) {
   state.data = payload;
+  state.fetched = true;
   state.isFetching = false;
 }
 
@@ -364,54 +370,60 @@ function fetchLiftHistory(user) {
 
 const getLiftNamesAlphabetized = createSelector(
   ["liftHistory"],
-  lifts => Object.keys(lifts).sort()
+  liftHistory => Object.keys(liftHistory.data).sort()
 );
 
 const getLift = (state, props) => {
-  console.log("get lift selector called");
-  return state.liftHistory[props.name];
+  return state.liftHistory.data[props.name];
 };
 
 const getHistoryForLift = createSelector(
   [getLift],
   liftData =>
-    Object.values(liftData.byId).sort(
-      (liftA, liftB) => liftB.timestamp - liftA.timestamp
-    )
+    !liftData
+      ? liftData
+      : Object.values(liftData.byId).sort(
+          (liftA, liftB) =>
+            liftB.sets[0].time_completed - liftA.sets[0].time_completed
+        )
 );
 
 const getHeaviestSetHistoryForLift = createSelector(
   [getHistoryForLift],
   liftHistory =>
-    liftHistory.map(entry => {
-      return {
-        heaviestSet: entry.sets
-          .slice()
-          .sort((setA, setB) => setB.weight - setA.weight)[0],
-        timestamp: entry.timestamp
-      };
-    })
+    !liftHistory
+      ? liftHistory
+      : liftHistory.map(entry => {
+          let heaviestSet = entry.sets
+            .slice()
+            .sort((setA, setB) => setB.weight - setA.weight)[0];
+          return {
+            heaviestSet: heaviestSet
+          };
+        })
 );
 
 const getE1RMHistoryForLift = createSelector(
   [getHeaviestSetHistoryForLift],
-  heaviestSets => {
-    return {
-      entries: heaviestSets
-        .filter(entry => entry.heaviestSet.rpe >= 6.5)
-        .map(entry => {
-          return {
-            e1rm: calculateE1RM(
-              entry.heaviestSet.weight,
-              entry.heaviestSet.reps,
-              entry.heaviestSet.rpe
-            ),
-            timestamp: entry.timestamp
-          };
-        }),
-      unit: "lbs"
-    };
-  }
+  heaviestSets =>
+    !heaviestSets
+      ? heaviestSets
+      : {
+          entries: heaviestSets
+            .filter(entry => entry.heaviestSet.rpe >= 6.5)
+            .map(entry => {
+              return {
+                e1rm: calculateE1RM(
+                  entry.heaviestSet.weight,
+                  entry.heaviestSet.reps,
+                  entry.heaviestSet.rpe
+                ),
+                timestamp: entry.heaviestSet.time_completed,
+                id: entry.heaviestSet.id
+              };
+            }),
+          unit: "lbs"
+        }
 );
 
 const testState = {

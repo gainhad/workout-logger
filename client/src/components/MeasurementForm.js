@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { measurementHistoryActions } from '../redux/slices/measurementHistory';
-import './MeasurementForm.scss';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { measurementHistoryActions } from "../redux/slices/measurementHistory";
+import "./MeasurementForm.scss";
 
 const MeasurementForm = props => {
   const [measurement, setMeasurement] = useState(null);
   const dispatch = useDispatch();
+  const unit = props.type === "weight" ? "pounds" : "inches";
   function onSubmit(event) {
     event.preventDefault();
     props.closeModal();
@@ -13,6 +14,7 @@ const MeasurementForm = props => {
       measurementHistoryActions.addOrUpdateMeasurement(
         undefined,
         props.type,
+        unit,
         measurement
       )
     );
