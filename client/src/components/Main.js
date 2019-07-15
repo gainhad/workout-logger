@@ -9,10 +9,20 @@ import SingleDataView from "./SingleDataView";
 import ViewDataMenu from "./ViewDataMenu";
 import { useSelector, useDispatch } from "react-redux";
 import { liftHistoryActions } from "../redux/slices/liftHistory.js";
+import { measurementHistoryActions } from "../redux/slices/measurementHistory.js";
 
 function Main() {
+  const measurementHistoryFetched = useSelector(
+    state => state.measurementHistory.fetched
+  );
+  const liftHistoryFetched = useSelector(state => state.liftHistory.fetched);
   const dispatch = useDispatch();
-  dispatch(liftHistoryActions.fetchLiftHistory("demoUser"));
+  if (!liftHistoryFetched) {
+    dispatch(liftHistoryActions.fetchLiftHistory("demoUser"));
+  }
+  if (!measurementHistoryFetched) {
+    dispatch(measurementHistoryActions.fetchMeasurementHistory("demoUser"));
+  }
   const isBlurred = useSelector(state => state.globalUI.isBlurred);
   return (
     <div className={isBlurred ? "blurred" : null} id="App">
