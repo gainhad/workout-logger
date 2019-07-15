@@ -94,12 +94,13 @@ router.route("/user-data/:username/lift-history").get((req, res) => {
 router.route("/user-data/:username/workout-history").post(async (req, res) => {
   const lifts = req.body.lifts;
   const lastLift = lifts[lifts.length - 1];
-  const timestamp =
-    lastLift.sets[lastLift.sets.length - 1].timeCompleted / 1000;
-  const { id: workoutId } = await db.one(
-    "INSERT INTO workouts (username, time_completed, duration) VALUES ('demoUser', to_timestamp($1), $2) RETURNING id",
-    [timestamp, req.body.duration]
-  );
+  const timestamp = lastLift.sets[lastLift.sets.length - 1].timestamp / 1000;
+  const { id: workoutId } = await db
+    .one(
+      "INSERT INTO workouts (username, time_completed, duration) VALUES ('demoUser', to_timestamp($1), $2) RETURNING id",
+      [timestamp, req.body.duration]
+    )
+    .catch(e => console.log(e));
   let liftIds = await Promise.all(
     lifts.map(lift =>
       db.one(
@@ -107,7 +108,7 @@ router.route("/user-data/:username/workout-history").post(async (req, res) => {
         [workoutId, lift.name]
       )
     )
-  );
+  ).catch(e => console.log(e));
   // Remove nesting from liftIds. Ex: [{id: 2}. {id: 3}] to [2, 3]
   liftIds = liftIds.map(liftId => liftId.id);
   let setIds = [];
@@ -116,13 +117,7 @@ router.route("/user-data/:username/workout-history").post(async (req, res) => {
       let newIds = lift.sets.map(set =>
         db.one(
           "INSERT INTO sets (username, liftId, time_completed, weight, reps, rpe) VALUES ('demoUser', $1, to_timestamp($2), $3, $4, $5) RETURNING id",
-          [
-            liftIds[index],
-            set.timeCompleted / 1000,
-            set.weight,
-            set.reps,
-            set.rpe
-          ]
+          [liftIds[index], set.timestamp / 1000, set.weight, set.reps, set.rpe]
         )
       );
       newIds = await Promise.all(newIds);
@@ -191,6 +186,42 @@ router
       [req.params.username, req.params.type]
     ).then(data => res.json(data));
   });
+
+/*
+router.route("/user-data/:username/workout-history").post((req, res) => {
+  console.log("here");
+  db.task(async task => {
+    const workoutId = await task.one(
+      "INSERT INTO workouts (username, time_completed, duration) VALUES ($1, to_timesta($2), $3)RETURNING id",
+      ["demoUser", req.params.time_completed / 1000, req.params.duration]
+    );
+    let liftIds = req.params.lifts.map(lift =>
+      task.one(
+        "INSERT INTO lifts (username, workoutId, liftName) VALUES ($1, $3, $3) RETURNING id",
+        ["demoUser", workoutId, lift.name]
+      )
+    );
+    liftIds = await Promise.all(liftIds);
+    liftIds.map((liftId, index) =>
+      req.lifts[index].sets.map(set =>
+        task.none(
+          "INSERT INTO sets (username, liftID, time_completed, weight, reps, rpe) VALUES ($1, $2, to_timestamp($3), $4, $5, $6)",
+          [
+            "demoUser",
+            liftId,
+            set.timestamp / 1000,
+            set.weight,
+            set.reps,
+            set.rpe
+          ]
+        )
+      )
+    );
+  })
+    .then(data => data)
+    .catch(e => console.log(e));
+});
+*/
 
 app.use("/api", router);
 

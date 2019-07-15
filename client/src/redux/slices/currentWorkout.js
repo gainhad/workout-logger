@@ -1,18 +1,26 @@
-import { createSlice, createSelector } from 'redux-starter-kit';
-import { calculateE1RM } from '../../utils/calculations.js';
+import { createSlice, createSelector } from "redux-starter-kit";
+import { calculateE1RM } from "../../utils/calculations.js";
+import { liftHistoryActions } from "./liftHistory.js";
+import axios from "axios";
 
 const initialState = {
   lifts: [
     {
-      name: 'SQUAT',
+      name: "squat",
       sets: [
-        { weight: 255, reps: 10, rpe: 6 },
-        { weight: 287, reps: 7, rpe: 7 },
-        { weight: 287, reps: 8, rpe: 8 }
+        { weight: 255, reps: 10, rpe: 6, timestamp: 1562952114000 },
+        { weight: 287, reps: 7, rpe: 7, timestamp: 1562952114000 },
+        { weight: 287, reps: 8, rpe: 8, timestamp: 1562952114000 }
       ]
     },
-    { name: 'DEADLIFT', sets: [] },
-    { name: 'BENCH PRESS', sets: [] }
+    {
+      name: "deadlift",
+      sets: [{ weight: 144, reps: 5, rpe: 8, timestamp: 1562952114000 }]
+    },
+    {
+      name: "bench press",
+      sets: [{ weight: 255, reps: 6, rpe: 9, timestamp: 1562952114000 }]
+    }
   ],
   currentLiftIndex: 0,
   restTimer: {
@@ -40,6 +48,7 @@ function renameLiftReducer(state, { payload }) {
 
 function addOrUpdateSetReducer(state, { payload }) {
   if (isNaN(payload.setIndex)) {
+    payload.set.timestamp = Date.now();
     state.lifts[payload.liftIndex].sets.push(payload.set);
   } else {
     state.lifts[payload.liftIndex].sets[payload.setIndex] = payload.set;
@@ -66,16 +75,6 @@ function decrementCurrentLiftIndexReducer(state) {
   }
 }
 
-function startRestTimer(duration) {
-  return {
-    type: 'currentWorkout/startRestTimer',
-    payload: {
-      timeStarted: Date.now(),
-      duration: duration
-    }
-  };
-}
-
 function startRestTimerReducer(state, { payload }) {
   state.restTimer = {
     timeStarted: payload.timeStarted,
@@ -83,12 +82,19 @@ function startRestTimerReducer(state, { payload }) {
   };
 }
 
-function addTimeStartedReducer(state, { payload }) {
-  state.timeStarted = payload;
+function startWorkoutReducer(state) {
+  state.lifts = initialState.lifts;
+  state.currentLiftIndex = initialState.currentLiftIndex;
+  state.restTimer = initialState.restTimer;
+  state.timeStarted = Date.now();
+}
+
+function finishWorkoutReducer(state) {
+  console.log("finished");
 }
 
 const currentWorkout = createSlice({
-  slice: 'currentWorkout',
+  slice: "currentWorkout",
   initialState: initialState,
   reducers: {
     addOrRenameLift: addOrRenameLiftReducer,
@@ -100,38 +106,71 @@ const currentWorkout = createSlice({
     incrementCurrentLiftIndex: incrementCurrentLiftIndexReducer,
     decrementCurrentLiftIndex: decrementCurrentLiftIndexReducer,
     startRestTimer: startRestTimerReducer,
-    addTimeStarted: addTimeStartedReducer
+    startWorkout: startWorkoutReducer,
+    finishWorkout: finishWorkoutReducer
   }
 });
 
+// Action creators
+function finishWorkout() {
+  return (dispatch, getState) => {
+    let user = "demoUser";
+    const workoutData = getState().currentWorkout;
+    let success = false;
+    // Add current workout data to database
+    axios
+      .post(`/api/user-data/${user}/workout-history`, {
+        ...workoutData,
+        duration: Date.now() - workoutData.timeStarted
+      })
+      .then(data => (success = true))
+      .catch(error => console.log(error));
+    if (success) {
+      dispatch({
+        type: "currentWorkout/finishWorkout"
+      });
+    }
+    dispatch(liftHistoryActions.fetchLiftHistory());
+  };
+}
+
+function startRestTimer(duration) {
+  return {
+    type: "currentWorkout/startRestTimer",
+    payload: {
+      timeStarted: Date.now(),
+      duration: duration
+    }
+  };
+}
 // Selectors
 const getCurrentLiftIndex = createSelector(
-  ['currentWorkout.currentLiftIndex'],
+  ["currentWorkout.currentLiftIndex"],
   index => index
 );
 
 const getCurrentLift = createSelector(
-  ['currentWorkout.currentLiftIndex', 'currentWorkout.lifts'],
+  ["currentWorkout.currentLiftIndex", "currentWorkout.lifts"],
   (index, lifts) => lifts[index]
 );
 
 const getSetsForCurrentLift = createSelector(
-  ['currentWorkout.currentLiftIndex', 'currentWorkout.lifts'],
+  ["currentWorkout.currentLiftIndex", "currentWorkout.lifts"],
   (index, lifts) => lifts[index].sets
 );
 
 const atEnd = createSelector(
-  ['currentWorkout.currentLiftIndex', 'currentWorkout.lifts'],
+  ["currentWorkout.currentLiftIndex", "currentWorkout.lifts"],
   (index, lifts) => index === lifts.length - 1
 );
 
 const atBeginning = createSelector(
-  ['currentWorkout.currentLiftIndex'],
+  ["currentWorkout.currentLiftIndex"],
   index => index === 0
 );
 
 const getHeaviestSet = createSelector(
-  ['currentWorkout.currentLiftIndex', 'currentWorkout.lifts'],
+  ["currentWorkout.currentLiftIndex", "currentWorkout.lifts"],
   (index, lifts) => {
     if (lifts[index].sets.length) {
       return lifts[index].sets.reduce((setA, setB) => {
@@ -154,6 +193,7 @@ const { actions, reducer } = currentWorkout;
 
 // Overwite generate actions with custom actions.
 actions.startRestTimer = startRestTimer;
+actions.finishWorkout = finishWorkout;
 
 export {
   getSetsForCurrentLift,

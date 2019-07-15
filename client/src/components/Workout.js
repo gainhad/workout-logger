@@ -14,7 +14,7 @@ const Workout = props => {
   const dispatch = useDispatch();
   const [timesDisplayModalOpen, setTimesDisplayModalOpen] = useState(false);
   const [exitModalOpen, setExitModalOpen] = useState(false);
-  const [finishModalOpen, setFinishModalOpen] = useState(true);
+  const [finishModalOpen, setFinishModalOpen] = useState(false);
   const [workoutStarted, setWorkoutStarted] = useState(false);
   useEffect(() => {
     if (!workoutStarted) {

@@ -1,5 +1,6 @@
 import { createSlice, createSelector } from "redux-starter-kit";
 import { calculateE1RM } from "../../utils/calculations.js";
+import axios from "axios";
 
 /*
 const initialState = {
@@ -360,10 +361,12 @@ const liftHistory = createSlice({
 // Actions
 function fetchLiftHistory(user) {
   return dispatch => {
+    user = "demoUser";
     dispatch(liftHistory.actions.isFetching());
-    fetch(`/api/user-data/${user}/lift-history`)
-      .then(res => res.json())
-      .then(json => dispatch(liftHistory.actions.data(json)))
+    axios(`/api/user-data/${user}/lift-history`)
+      .then(res => {
+        dispatch(liftHistory.actions.data(res.data));
+      })
       .catch(error => dispatch(liftHistory.actions.isError(error)));
   };
 }
