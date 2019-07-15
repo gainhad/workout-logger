@@ -12,7 +12,7 @@ package.json
 /client/coverage
 
 # production
-client/**
+client/build
 
 # misc
 .DS_Store
