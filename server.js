@@ -59,6 +59,11 @@ router.route("/user-data/:username/lift-history").get((req, res) => {
         );
       })
     );
+    sets.forEach(setGroup =>
+      setGroup.forEach(
+        set => (set.time_completed = new Date(set.time_completed).getTime())
+      )
+    );
     return { lifts, sets };
   }).then(data => {
     let returnData = {};
@@ -137,19 +142,54 @@ router.route("/user-data/:username/workout-history").post(async (req, res) => {
 });
 
 router
+  .route("/user-data/:username/measurement-history")
+  .get((req, res) => {
+    db.any(
+      "SELECT id, measurement_type, time_taken, measurement, unit FROM measurements WHERE username = $1",
+      req.params.username
+    ).then(measurements => {
+      let responseData = {};
+      measurements.map(entry => {
+        let name = entry.measurement_type;
+        let unit = entry.unit;
+        entry.timestamp = new Date(entry.time_taken).getTime();
+        delete entry.measurement_type;
+        delete entry.unit;
+        delete entry.time_taken;
+        if (responseData.hasOwnProperty(name)) {
+          responseData[name].measurements.push(entry);
+        } else {
+          responseData[name] = {
+            measurements: [{ ...entry }],
+            unit: unit
+          };
+        }
+      });
+      res.json(responseData);
+    });
+  })
+  .post((req, res) => {
+    const timestamp = req.body.timestamp / 1000;
+    db.one(
+      "INSERT INTO measurements(username, time_taken, measurement_type, measurement, unit) VALUES ('demoUser', to_timestamp($1), $2, $3, $4) RETURNING id",
+      [timestamp, req.body.type, req.body.measurement, req.body.unit]
+    ).then(data =>
+      res.json({
+        name: req.body.type,
+        measurement: req.body.measurement,
+        timestamp: req.body.timestamp,
+        id: data.id
+      })
+    );
+  });
+
+router
   .route("/user-data/:username/measurement-history/:type")
   .get((req, res) => {
     db.any(
       "SELECT id, time_taken, measurement, unit FROM measurements WHERE username = $1 AND measurement_type = $2",
       [req.params.username, req.params.type]
     ).then(data => res.json(data));
-  })
-  .post((req, res) => {
-    const timestamp = req.body.time_taken / 1000;
-    db.none(
-      "INSERT INTO measurements(username, time_taken, measurement_type, measurement, unit) VALUES ('demoUser', to_timestamp($1), $2, $3, $4)",
-      [timestamp, req.params.type, req.body.measurement, req.body.unit]
-    ).then(data => res.json({ status: "success!" }));
   });
 
 app.use("/api", router);
