@@ -37,3 +37,8 @@
     text-align: center;
   }
 }
+
+#loading-message {
+    grid-row-start: 3;
+    align-self: end;
+}
