@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import LiftLog from './LiftLog';
-import Modal from './Modal';
-import E1rmDisplay from './E1rmDisplay';
-import RestTimer from './RestTimer';
-import TimesDisplay from './TimesDisplay';
-import ExitMenu from './ExitMenu';
-import { useDispatch } from 'react-redux';
-import { currentWorkoutActions } from '../redux/slices/currentWorkout';
-import './Workout.scss';
+import React, { useState, useEffect } from "react";
+import LiftLog from "./LiftLog";
+import Modal from "./Modal";
+import E1rmDisplay from "./E1rmDisplay";
+import RestTimer from "./RestTimer";
+import TimesDisplay from "./TimesDisplay";
+import ExitMenu from "./ExitMenu";
+import FinishWorkoutMenu from "./FinishWorkoutMenu.js";
+import { useDispatch } from "react-redux";
+import { currentWorkoutActions } from "../redux/slices/currentWorkout";
+import "./Workout.scss";
 
 const Workout = props => {
   const dispatch = useDispatch();
   const [timesDisplayModalOpen, setTimesDisplayModalOpen] = useState(false);
   const [exitModalOpen, setExitModalOpen] = useState(false);
+  const [finishModalOpen, setFinishModalOpen] = useState(true);
   const [workoutStarted, setWorkoutStarted] = useState(false);
   useEffect(() => {
     if (!workoutStarted) {
-      dispatch(currentWorkoutActions.addTimeStarted(Date.now()));
+      dispatch(currentWorkoutActions.startWorkout());
       setWorkoutStarted(true);
     }
   }, [workoutStarted, dispatch]);
@@ -33,7 +35,12 @@ const Workout = props => {
           EXIT
         </button>
         <RestTimer />
-        <button type="button" id="finish-button" className="button-one">
+        <button
+          type="button"
+          onClick={() => setFinishModalOpen(true)}
+          id="finish-button"
+          className="button-one"
+        >
           FINISH
         </button>
         <LiftLog />
@@ -63,6 +70,13 @@ const Workout = props => {
         id="exit-modal"
       >
         <ExitMenu />
+      </Modal>
+      <Modal
+        isOpen={finishModalOpen}
+        onClose={() => setFinishModalOpen(false)}
+        id="finish-workout-modal"
+      >
+        <FinishWorkoutMenu />
       </Modal>
     </>
   );
