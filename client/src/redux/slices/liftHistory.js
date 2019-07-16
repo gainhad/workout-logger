@@ -359,11 +359,10 @@ const liftHistory = createSlice({
 });
 
 // Actions
-function fetchLiftHistory(user) {
-  return (dispatch, getState) => {
-    const userId = getState().userData.userId;
+function fetchLiftHistory() {
+  return dispatch => {
     dispatch(liftHistory.actions.isFetching());
-    axios(`/api/user-data/${userId}/lift-history`)
+    axios(`/api/user-data/lift-history`)
       .then(res => {
         dispatch(liftHistory.actions.data(res.data));
       })

@@ -12,16 +12,17 @@ import { liftHistoryActions } from "../redux/slices/liftHistory.js";
 import { measurementHistoryActions } from "../redux/slices/measurementHistory.js";
 
 function Main() {
+  const isAuthenticated = useSelector(state => state.userData.isAuthenticated);
   const measurementHistoryFetched = useSelector(
     state => state.measurementHistory.fetched
   );
   const liftHistoryFetched = useSelector(state => state.liftHistory.fetched);
   const dispatch = useDispatch();
-  if (!liftHistoryFetched) {
-    dispatch(liftHistoryActions.fetchLiftHistory("demoUser"));
+  if (!liftHistoryFetched && isAuthenticated) {
+    dispatch(liftHistoryActions.fetchLiftHistory());
   }
-  if (!measurementHistoryFetched) {
-    dispatch(measurementHistoryActions.fetchMeasurementHistory("demoUser"));
+  if (!measurementHistoryFetched && isAuthenticated) {
+    dispatch(measurementHistoryActions.fetchMeasurementHistory());
   }
   const isBlurred = useSelector(state => state.globalUI.isBlurred);
   return (

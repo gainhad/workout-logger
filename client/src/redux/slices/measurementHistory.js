@@ -96,10 +96,9 @@ const measurementHistory = createSlice({
 
 // Custom Actions
 function fetchMeasurementHistory() {
-  return (dispatch, getState) => {
-    const userId = getState().userData.userId;
+  return dispatch => {
     dispatch(measurementHistory.actions.isFetching());
-    fetch(`/api/user-data/${userId}/measurement-history`)
+    fetch(`/api/user-data/measurement-history`)
       .then(res => res.json())
       .then(json => dispatch(measurementHistory.actions.data(json)))
       .catch(error => dispatch(measurementHistory.actions.isError(error)));
@@ -110,7 +109,7 @@ function addOrUpdateMeasurement(index, type, unit, measurement) {
   return dispatch => {
     const timestamp = Date.now();
     axios
-      .post(`/api/user-data/demoUser/measurement-history/`, {
+      .post(`/api/user-data/measurement-history/`, {
         type: type,
         measurement: measurement,
         timestamp: timestamp,

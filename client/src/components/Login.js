@@ -1,19 +1,21 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
 import { clientId } from "../config";
+import { userDataActions } from "../redux/slices/userData";
+import "./Login.scss";
 import axios from "axios";
 
 const Login = () => {
+  const dispatch = useDispatch();
   function onSignIn(googleUser) {
-    console.log(googleUser.getBasicProfile().getId());
     let idToken = googleUser.getAuthResponse().id_token;
-    console.log(idToken);
     axios({
       method: "get",
       url: "/api/user-data/get-user-id",
       headers: { Authorization: "bearer " + idToken }
-    }).then(res => console.log(res.data));
+    }).then(res => dispatch(userDataActions.userId(res.data.userId)));
   }
   function onFailure(response) {
     console.log(response);
@@ -24,6 +26,7 @@ const Login = () => {
       <GoogleLogin
         clientId={clientId}
         buttonText="Login"
+        className="login-button"
         onSuccess={onSignIn}
         onFailure={onFailure}
         cookiePolicy={"single_host_origin"}
