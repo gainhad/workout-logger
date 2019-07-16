@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Modal from './Modal';
-import MeasurementForm from './MeasurementForm';
-import './MeasurementMenu.scss';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Modal from "./Modal";
+import MeasurementForm from "./MeasurementForm";
+import "./MeasurementMenu.scss";
 
 const MeasurementMenu = () => {
   const [measurementModalOpen, setMeasurementModalOpen] = useState(false);
-  const [measurementType, setMeasurementType] = useState('');
+  const [measurementType, setMeasurementType] = useState("");
 
   return (
     <>
@@ -21,21 +21,21 @@ const MeasurementMenu = () => {
             type="button"
             className="button-one measurement-button"
             onClick={() => {
-              setMeasurementType('weight');
+              setMeasurementType("waist");
               setMeasurementModalOpen(true);
             }}
           >
-            LOG WEIGHT
+            LOG WAIST
           </button>
           <button
             type="button"
             className="button-one measurement-button"
             onClick={() => {
-              setMeasurementType('waist');
+              setMeasurementType("weight");
               setMeasurementModalOpen(true);
             }}
           >
-            LOG WAIST
+            LOG WEIGHT
           </button>
         </div>
       </div>
