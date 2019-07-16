@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
-import { clientId } from "../../../config";
+import { clientId } from "../config";
 import axios from "axios";
 
 const Login = () => {
