@@ -61,7 +61,6 @@ router.route("/get-user-id").get(async (req, res) => {
           .then(data => data.userid);
       }
     });
-  console.log(userId);
   /*
   console.log(userId);
   console.log(!userId);
@@ -71,6 +70,7 @@ router.route("/get-user-id").get(async (req, res) => {
       .then(data => data.userid);
   }
 */
+  req.session.userId = userId;
   res.json({ userId: userId });
 });
 
@@ -101,11 +101,11 @@ router
     });
   });
 
-router.route("/:userId/lift-history").get((req, res) => {
+router.route("/lift-history").get((req, res) => {
   db.task(async task => {
     let lifts = await task.any(
       "SELECT id, liftName FROM lifts WHERE userId = $1",
-      req.params.userId
+      req.session.userId
     );
     let sets = await Promise.all(
       lifts.map(lift => {
@@ -193,11 +193,11 @@ router.route("/:userId/workout-history").post(async (req, res) => {
 });
 
 router
-  .route("/:userId/measurement-history")
+  .route("/measurement-history")
   .get((req, res) => {
     db.any(
       "SELECT id, measurement_type, time_taken, measurement, unit FROM measurements WHERE userId = $1",
-      req.params.userId
+      req.session.userId
     ).then(measurements => {
       let responseData = {};
       measurements.map(entry => {
@@ -222,8 +222,14 @@ router
   .post((req, res) => {
     const timestamp = req.body.timestamp / 1000;
     db.one(
-      "INSERT INTO measurements(userId, time_taken, measurement_type, measurement, unit) VALUES (1, timestamp($1), $2, $3, $4) RETURNING id",
-      [timestamp, req.body.type, req.body.measurement, req.body.unit]
+      "INSERT INTO measurements(userId, time_taken, measurement_type, measurement, unit) VALUES ($1, to_timestamp($2), $3, $4, $5) RETURNING id",
+      [
+        req.session.userId,
+        timestamp,
+        req.body.type,
+        req.body.measurement,
+        req.body.unit
+      ]
     ).then(data =>
       res.json({
         name: req.body.type,
