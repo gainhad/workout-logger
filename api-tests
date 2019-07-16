@@ -4,13 +4,13 @@
 GET http://localhost:5000/api
 
 # Get history for all lifts
-GET http://localhost:5000/api/user-data/demoUser/lift-history
+GET http://localhost:5000/api/user-data/1/lift-history
 
 # Get history for a lift
-GET http://localhost:5000/api/user-data/demoUser/lift-history/squat
+GET http://localhost:5000/api/user-data/1/lift-history/squat
 
 # Post history for a lift
-POST http://localhost:5000/api/user-data/demoUser/workout-history/
+POST http://localhost:5000/api/user-data/1/workout-history/
 Content-Type: application/json
 
 {
@@ -57,10 +57,10 @@ Content-Type: application/json
 }
 
 # Get history for a measurement
-GET http://localhost:5000/api/user-data/demoUser/measurement-history/weight
+GET http://localhost:5000/api/user-data/1/measurement-history/weight
 
 # Post a new weight measurement
-POST http://localhost:5000/api/user-data/demoUser/measurement-history/weight
+POST http://localhost:5000/api/user-data/1/measurement-history/weight
 Content-Type: application/json
 
 {
@@ -70,7 +70,7 @@ Content-Type: application/json
 }
 
 # Post a new waist measurement
-POST http://localhost:5000/api/user-data/demoUser/measurement-history/waist
+POST http://localhost:5000/api/user-data/1/measurement-history/waist
 Content-Type: application/json
 
 {

@@ -95,10 +95,11 @@ const measurementHistory = createSlice({
 });
 
 // Custom Actions
-function fetchMeasurementHistory(user) {
-  return dispatch => {
+function fetchMeasurementHistory() {
+  return (dispatch, getState) => {
+    const userId = getState().userData.userId;
     dispatch(measurementHistory.actions.isFetching());
-    fetch(`/api/user-data/${user}/measurement-history`)
+    fetch(`/api/user-data/${userId}/measurement-history`)
       .then(res => res.json())
       .then(json => dispatch(measurementHistory.actions.data(json)))
       .catch(error => dispatch(measurementHistory.actions.isError(error)));

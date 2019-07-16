@@ -21,7 +21,11 @@
     "axios": "^0.19.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "pg-promise": "^8.7.4"
+    "google-auth-library": "^4.2.5",
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^2.0.0",
+    "pg-promise": "^8.7.4",
+    "react-google-login": "^5.0.4"
   },
   "devDependencies": {
     "husky": "^3.0.0",

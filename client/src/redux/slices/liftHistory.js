@@ -360,10 +360,10 @@ const liftHistory = createSlice({
 
 // Actions
 function fetchLiftHistory(user) {
-  return dispatch => {
-    user = "demoUser";
+  return (dispatch, getState) => {
+    const userId = getState().userData.userId;
     dispatch(liftHistory.actions.isFetching());
-    axios(`/api/user-data/${user}/lift-history`)
+    axios(`/api/user-data/${userId}/lift-history`)
       .then(res => {
         dispatch(liftHistory.actions.data(res.data));
       })
