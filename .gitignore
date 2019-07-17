@@ -9,6 +9,9 @@ config.js
 // Emacs files
 .#*
 
+*.yaml
+.env
+
 node_modules/
 
 package.json

@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const pgp = require("pg-promise")();
 const cookieSession = require("cookie-session");
 const bodyParser = require("body-parser");
@@ -15,9 +16,16 @@ app.use(bodyParser.json());
 app.use(
   cookieSession({
     secret: cookieSecret,
-    secure: app.get("env") === "production"
+    secure: true
   })
 );
+app.set("trust proxy", 1); // trust first proxy
+
+app.use(express.static(path.join(__dirname, "client/build")));
+
+app.get("/", function(req, res) {
+  res.sendFile(path.join(__dirname, "client/build", "index.html"));
+});
 
 const client = new OAuth2Client(clientId);
 
@@ -36,7 +44,9 @@ async function verifyRequest(req, res, next) {
     res.json({ status: " request must come with authorization token" });
   } else {
     const token = req.headers.authorization.split(" ")[1];
-    const idToken = await verifyToken(token).catch(error => console.log(error));
+    const idToken = await verifyToken(token).catch(error =>
+      console.error(error)
+    );
     const userId = Number(req.params.userId);
     const idMatch = await db
       .one("SELECT userId FROM users WHERE googleId = $1", idToken)

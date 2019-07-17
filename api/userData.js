@@ -1,11 +1,14 @@
 const express = require("express");
 const pgp = require("pg-promise")();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 const db = pgp({
-  host: "localhost",
-  port: 5432,
-  database: "workout_logger",
-  username: "hadley"
+  host: `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`,
+  database: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS
 });
 
 const router = express.Router();
@@ -25,7 +28,9 @@ async function verifyRequest(req, res, next) {
     res.json({ status: " request must come with authorization token" });
   } else {
     const token = req.headers.authorization.split(" ")[1];
-    const idToken = await verifyToken(token).catch(error => console.log(error));
+    const idToken = await verifyToken(token).catch(error =>
+      console.error(error)
+    );
     const userId = Number(req.params.userId);
     const idMatch = await db
       .one("SELECT userId FROM users WHERE googleId = $1", idToken)
@@ -42,6 +47,7 @@ async function verifyRequest(req, res, next) {
 }
 
 router.route("/").get(async (req, res) => {
+  console.log(req);
   const token = req.headers.authorization.split(" ")[1];
   const idToken = await verifyToken(token).catch(error => console.log(error));
   let userId = await db
@@ -91,24 +97,32 @@ router
 
 router.route("/lift-history").get((req, res) => {
   db.task(async task => {
-    let lifts = await task.any(
-      "SELECT id, liftName FROM lifts WHERE userId = $1",
-      req.session.userId
-    );
-    let sets = await Promise.all(
-      lifts.map(lift => {
-        return task.any(
-          "SELECT id, weight, reps, rpe, time_completed FROM sets WHERE liftId = $1",
-          lift.id
+    try {
+      let lifts = await task
+        .any(
+          "SELECT id, liftName FROM lifts WHERE userId = $1",
+          req.session.userId
+        )
+        .catch(error =>
+          console.error("this is the error: ", error, req.session)
         );
-      })
-    );
-    sets.forEach(setGroup =>
-      setGroup.forEach(
-        set => (set.time_completed = new Date(set.time_completed).getTime())
-      )
-    );
-    return { lifts, sets };
+      let sets = await Promise.all(
+        lifts.map(lift => {
+          return task.any(
+            "SELECT id, weight, reps, rpe, time_completed FROM sets WHERE liftId = $1",
+            lift.id
+          );
+        })
+      );
+      sets.forEach(setGroup =>
+        setGroup.forEach(
+          set => (set.time_completed = new Date(set.time_completed).getTime())
+        )
+      );
+      return { lifts, sets };
+    } catch (error) {
+      console.error(error);
+    }
   }).then(data => {
     let returnData = {};
     data.lifts = data.lifts.map((lift, index) => ({
@@ -145,7 +159,7 @@ router.route("/workout-history").post(async (req, res) => {
       "INSERT INTO workouts (userId, time_completed, duration) VALUES ($1, to_timestamp($2), $3) RETURNING id",
       [req.session.userId, timestamp, req.body.duration]
     )
-    .catch(e => console.log(e));
+    .catch(e => console.error(e));
   let liftIds = await Promise.all(
     lifts.map(lift =>
       db.one(
@@ -153,7 +167,7 @@ router.route("/workout-history").post(async (req, res) => {
         [req.session.userId, workoutId, lift.name]
       )
     )
-  ).catch(e => console.log(e));
+  ).catch(e => console.error(e));
   // Remove nesting from liftIds. Ex: [{id: 2}. {id: 3}] to [2, 3]
   liftIds = liftIds.map(liftId => liftId.id);
   let setIds = [];
@@ -179,7 +193,7 @@ router.route("/workout-history").post(async (req, res) => {
     });
     setIds = await Promise.all(setIds);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
   res.json({
     status: "success!",
