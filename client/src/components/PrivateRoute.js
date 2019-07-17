@@ -4,6 +4,7 @@ import { Route, Redirect } from "react-router-dom";
 import "./PrivateRoute.scss";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
+  console.log("here");
   const isLoggedIn = useSelector(state => state.userData.isLoggedIn);
   const authenticationChecked = useSelector(
     state => state.userData.authenticationChecked

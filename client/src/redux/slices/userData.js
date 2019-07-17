@@ -45,7 +45,16 @@ function checkAuthentication() {
   };
 }
 
+function logOut() {
+  return dispatch => {
+    axios
+      .get("/api/logout")
+      .then(res => dispatch({ type: "userData/isLoggedIn", payload: false }));
+  };
+}
+
 const { actions, reducer } = userData;
 actions.checkAuthentication = checkAuthentication;
+actions.logOut = logOut;
 export { actions as userDataActions };
 export default reducer;

@@ -1,15 +1,22 @@
-import React from 'react';
-import RecentActivity from './RecentActivity';
-import { Link } from 'react-router-dom';
+import React from "react";
+import RecentActivity from "./RecentActivity";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userDataActions } from "../redux/slices/userData";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
   return (
     <div id="dashboard">
-      <Link to="/login" className="left-nav">
+      <button
+        type="button"
+        id="logout-button"
+        onClick={() => dispatch(userDataActions.logOut())}
+        className="left-nav"
+      >
         Logout
-      </Link>
+      </button>
       <DashboardMenu />
-      <RecentActivity />
     </div>
   );
 };

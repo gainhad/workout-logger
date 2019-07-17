@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './ViewDataMenu.scss';
-import { useSelector } from 'react-redux';
-import { getLiftNamesAlphabetized } from '../redux/slices/liftHistory';
-import { getMeasurementTypesAlphabetized } from '../redux/slices/measurementHistory';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./ViewDataMenu.scss";
+import { useSelector } from "react-redux";
+import { getLiftNamesAlphabetized } from "../redux/slices/liftHistory";
+import { getMeasurementTypesAlphabetized } from "../redux/slices/measurementHistory";
 
 const ViewDataMenu = () => {
   const liftNames = useSelector(state => getLiftNamesAlphabetized(state));

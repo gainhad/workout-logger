@@ -65,6 +65,11 @@ app.get("/api/check-authentication", (req, res) => {
   res.json({ status: !!req.session.userId });
 });
 
+app.get("/api/logout", (req, res) => {
+  req.session = null;
+  res.json({ statu: "logged out" });
+});
+
 app.get("/api/login", async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   const idToken = await verifyToken(token).catch(error => console.log(error));
