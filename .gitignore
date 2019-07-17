@@ -6,6 +6,9 @@
 
 config.js
 
+// Emacs files
+.#*
+
 node_modules/
 
 package.json

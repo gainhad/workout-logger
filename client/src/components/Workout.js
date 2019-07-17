@@ -18,7 +18,7 @@ const Workout = props => {
   const [workoutStarted, setWorkoutStarted] = useState(false);
   useEffect(() => {
     if (!workoutStarted) {
-      dispatch(currentWorkoutActions.startWorkout());
+      dispatch(currentWorkoutActions.startWorkout({ timeStarted: Date.now() }));
       setWorkoutStarted(true);
     }
   }, [workoutStarted, dispatch]);

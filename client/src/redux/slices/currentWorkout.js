@@ -82,16 +82,14 @@ function startRestTimerReducer(state, { payload }) {
   };
 }
 
-function startWorkoutReducer(state) {
+function startWorkoutReducer(state, { payload }) {
   state.lifts = initialState.lifts;
   state.currentLiftIndex = initialState.currentLiftIndex;
   state.restTimer = initialState.restTimer;
-  state.timeStarted = Date.now();
+  state.timeStarted = payload.timeStarted;
 }
 
-function finishWorkoutReducer(state) {
-  console.log("finished");
-}
+function finishWorkoutReducer(state) {}
 
 const currentWorkout = createSlice({
   slice: "currentWorkout",
@@ -114,23 +112,21 @@ const currentWorkout = createSlice({
 // Action creators
 function finishWorkout() {
   return (dispatch, getState) => {
-    let user = "demoUser";
     const workoutData = getState().currentWorkout;
     let success = false;
     // Add current workout data to database
     axios
-      .post(`/api/user-data/${user}/workout-history`, {
+      .post(`/api/user-data/workout-history`, {
         ...workoutData,
         duration: Date.now() - workoutData.timeStarted
       })
-      .then(data => (success = true))
+      .then(data => dispatch(liftHistoryActions.fetchLiftHistory()))
       .catch(error => console.log(error));
     if (success) {
       dispatch({
         type: "currentWorkout/finishWorkout"
       });
     }
-    dispatch(liftHistoryActions.fetchLiftHistory());
   };
 }
 

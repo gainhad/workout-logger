@@ -1,35 +1,51 @@
 import { createSlice } from "redux-starter-kit";
+import axios from "axios";
 
 const initialState = {
-  userId: undefined,
-  isAuthenticated: false,
-  authentificationInProgress: false,
-  authentificationFailed: false
+  isLoggedIn: false,
+  authenticationChecked: false,
+  authenticationInProgress: false,
+  authenticationError: false
 };
 
-function userIdReducer(state, { payload }) {
-  state.userId = payload;
-  state.isAuthenticated = true;
+function isLoggedInReducer(state, { payload }) {
+  state.isLoggedIn = payload;
+  state.authenticationChecked = true;
+  state.authenticationInProgress = false;
 }
 
-function authentificationInProgressReducer(state) {
-  state.authentificationInProgress = true;
+function authenticationInProgressReducer(state) {
+  state.authenticationInProgress = true;
 }
 
-function authentificationFailedReducer(state) {
-  state.authentificationFailed = true;
+function authenticationErrorReducer(state) {
+  state.authenticationError = true;
 }
 
 const userData = createSlice({
   slice: "userData",
   initialState: initialState,
   reducers: {
-    userId: userIdReducer,
-    authentificationInProgress: authentificationInProgressReducer,
-    authentificationFailed: authentificationFailedReducer
+    isLoggedIn: isLoggedInReducer,
+    authenticationInProgress: authenticationInProgressReducer,
+    authenticationError: authenticationErrorReducer
   }
 });
 
+// Actions
+function checkAuthentication() {
+  return dispatch => {
+    dispatch({ type: "userData/authenticationInProgress" });
+    axios.get("/api/check-authentication").then(res => {
+      dispatch({
+        type: "userData/isLoggedIn",
+        payload: res.data.status
+      });
+    });
+  };
+}
+
 const { actions, reducer } = userData;
+actions.checkAuthentication = checkAuthentication;
 export { actions as userDataActions };
 export default reducer;

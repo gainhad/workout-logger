@@ -1,10 +1,5 @@
 const express = require("express");
 const pgp = require("pg-promise")();
-const { OAuth2Client } = require("google-auth-library");
-const { clientId } = require("../config");
-
-const client = new OAuth2Client(clientId);
-const router = express.Router();
 
 const db = pgp({
   host: "localhost",
@@ -12,6 +7,8 @@ const db = pgp({
   database: "workout_logger",
   username: "hadley"
 });
+
+const router = express.Router();
 
 async function verifyToken(token) {
   const ticket = await client.verifyIdToken({
@@ -44,7 +41,7 @@ async function verifyRequest(req, res, next) {
   }
 }
 
-router.route("/get-user-id").get(async (req, res) => {
+router.route("/").get(async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   const idToken = await verifyToken(token).catch(error => console.log(error));
   let userId = await db
@@ -61,15 +58,6 @@ router.route("/get-user-id").get(async (req, res) => {
           .then(data => data.userid);
       }
     });
-  /*
-  console.log(userId);
-  console.log(!userId);
-  if (!userId) {
-    userId = await db
-      .one("INSERT INTO users (googleId) VALUES ($1) RETURNING userID", idToken)
-      .then(data => data.userid);
-  }
-*/
   req.session.userId = userId;
   res.json({ userId: userId });
 });
@@ -147,21 +135,22 @@ router.route("/lift-history").get((req, res) => {
   });
 });
 
-router.route("/:userId/workout-history").post(async (req, res) => {
+router.route("/workout-history").post(async (req, res) => {
+  console.log(req.session);
   const lifts = req.body.lifts;
   const lastLift = lifts[lifts.length - 1];
   const timestamp = lastLift.sets[lastLift.sets.length - 1].timestamp / 1000;
   const { id: workoutId } = await db
     .one(
-      "INSERT INTO workouts (userId, time_completed, duration) VALUES (1, to_timestamp($1), $2) RETURNING id",
-      [timestamp, req.body.duration]
+      "INSERT INTO workouts (userId, time_completed, duration) VALUES ($1, to_timestamp($2), $3) RETURNING id",
+      [req.session.userId, timestamp, req.body.duration]
     )
     .catch(e => console.log(e));
   let liftIds = await Promise.all(
     lifts.map(lift =>
       db.one(
-        "INSERT INTO lifts (userId, workoutId, liftName) VALUES(1, $1, $2) RETURNING id",
-        [workoutId, lift.name]
+        "INSERT INTO lifts (userId, workoutId, liftName) VALUES($1, $2, $3) RETURNING id",
+        [req.session.userId, workoutId, lift.name]
       )
     )
   ).catch(e => console.log(e));
@@ -170,10 +159,18 @@ router.route("/:userId/workout-history").post(async (req, res) => {
   let setIds = [];
   try {
     setIds = lifts.map(async (lift, index) => {
+      console.log("here");
       let newIds = lift.sets.map(set =>
         db.one(
-          "INSERT INTO sets (userId, liftId, time_completed, weight, reps, rpe) VALUES (userId, $1, to_timestamp($2), $3, $4, $5) RETURNING id",
-          [liftIds[index], set.timestamp / 1000, set.weight, set.reps, set.rpe]
+          "INSERT INTO sets (userId, liftId, time_completed, weight, reps, rpe) VALUES ($1, $2, to_timestamp($3), $4, $5, $6) RETURNING id",
+          [
+            req.session.userId,
+            liftIds[index],
+            set.timestamp / 1000,
+            set.weight,
+            set.reps,
+            set.rpe
+          ]
         )
       );
       newIds = await Promise.all(newIds);
@@ -247,4 +244,5 @@ router.route("/:userId/measurement-history/:type").get((req, res) => {
   ).then(data => res.json(data));
 });
 
-module.exports = router;
+module.exports.userDataRouter = router;
+module.exports.db = db;

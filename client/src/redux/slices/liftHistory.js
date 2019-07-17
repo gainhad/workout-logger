@@ -364,6 +364,7 @@ function fetchLiftHistory() {
     dispatch(liftHistory.actions.isFetching());
     axios(`/api/user-data/lift-history`)
       .then(res => {
+        console.log(res.data);
         dispatch(liftHistory.actions.data(res.data));
       })
       .catch(error => dispatch(liftHistory.actions.isError(error)));
