@@ -20,7 +20,7 @@ a {
 #dashboard {
   font: 150% $font-stack;
   display: grid;
-  grid-template-rows: 1fr 45% 50%;
+  grid-template-rows: 5% 1fr 5%;
   height: 100%;
 }
 
@@ -105,8 +105,8 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 15vw 0 1vw 0;
+  justify-content: space-around;
+  padding: 30% 0 50% 0;
 }
 
 #recent-activity {
