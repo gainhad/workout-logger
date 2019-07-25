@@ -1,0 +1,31 @@
+@import "../../style/colors";
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: min-content 1fr;
+  width: 80vw;
+  max-width: 300px;
+  padding: 10px;
+  font-size: 1.1rem;
+  p {
+    margin-top: 0;
+  }
+}
+
+.button {
+  font-size: 1.2rem;
+}
+
+.loginButton {
+  padding: 0.2rem;
+  margin: 0.2rem;
+  span {
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 1.2rem;
+  }
+}
+
+.message {
+  grid-column: span 2;
+}

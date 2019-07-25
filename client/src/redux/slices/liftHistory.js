@@ -334,10 +334,6 @@ function isFetchingReducer(state) {
   state.isFetching = true;
 }
 
-function fetchedReducer(state) {
-  state.fetched = true;
-}
-
 function isErrorReducer(state) {
   state.isError = true;
 }
@@ -428,10 +424,6 @@ const getE1RMHistoryForLift = createSelector(
           unit: "lbs"
         }
 );
-
-const testState = {
-  liftHistory: { ...initialState }
-};
 
 const { actions, reducer } = liftHistory;
 

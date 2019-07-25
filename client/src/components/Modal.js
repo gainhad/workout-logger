@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import { useDispatch } from 'react-redux';
-import { globalUIActions } from '../redux/slices/globalUI';
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
+import { useDispatch } from "react-redux";
+import { globalUIActions } from "../redux/slices/globalUI";
 
-import './Modal.scss';
+import "./Modal.scss";
 
 const Modal = props => {
   const [isOpen, setIsOpen] = useState(props.isOpen);
@@ -15,7 +15,7 @@ const Modal = props => {
   };
 
   // Update isOpen when props.isOpen changes.
-  useEffect(() =>{
+  useEffect(() => {
     setIsOpen(props.isOpen);
     if (props.isOpen) {
       dispatch(globalUIActions.isBlurred(true));
@@ -24,15 +24,17 @@ const Modal = props => {
 
   if (isOpen) {
     return ReactDOM.createPortal(
-      <div className="modal" id={props.id}>
-        {props.toggleButton && (
-          <button type="button" onClick={closeModal} id="close-modal-button">
-            X
-          </button>
-        )}
-        {React.cloneElement(props.children, { closeModal: closeModal })}
+      <div className="modal-background">
+        <div className="modal" id={props.id}>
+          {props.toggleButton && (
+            <button type="button" onClick={closeModal} id="close-modal-button">
+              X
+            </button>
+          )}
+          {React.cloneElement(props.children, { closeModal: closeModal })}
+        </div>
       </div>,
-      document.getElementById('root')
+      document.getElementById("root")
     );
   } else {
     return null;

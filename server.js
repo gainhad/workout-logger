@@ -16,16 +16,12 @@ app.use(bodyParser.json());
 app.use(
   cookieSession({
     secret: cookieSecret,
-    secure: true
+    secure: !!process.env.NODE_ENV === "production"
   })
 );
 app.set("trust proxy", 1); // trust first proxy
 
 app.use(express.static(path.join(__dirname, "client/build")));
-
-app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, "client/build", "index.html"));
-});
 
 const client = new OAuth2Client(clientId);
 
@@ -89,14 +85,23 @@ app.get("/api/login", async (req, res) => {
       if (data[0]) {
         return data[0].userid;
       } else {
+        /*
         return await db
           .one(
             "INSERT INTO users (googleId) VALUES ($1) RETURNING userId",
             idToken
           )
           .then(data => data.userid);
+	*/
       }
     });
   req.session.userId = userId;
+  console.log(req.session.userId);
   res.json({ status: true });
+});
+
+app.get("api/demo", async (req, res) => {});
+
+app.get("/*", function(req, res) {
+  res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });

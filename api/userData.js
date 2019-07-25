@@ -5,7 +5,9 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const db = pgp({
-  host: `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`,
+  //host: `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`j
+  //host: `127.0.0.1:5432/${process.env.CLOUD_SQL_CONNECTION_NAME}`,
+  host: "127.0.0.1",
   database: process.env.DB_NAME,
   user: process.env.DB_USER,
   password: process.env.DB_PASS
@@ -47,7 +49,6 @@ async function verifyRequest(req, res, next) {
 }
 
 router.route("/").get(async (req, res) => {
-  console.log(req);
   const token = req.headers.authorization.split(" ")[1];
   const idToken = await verifyToken(token).catch(error => console.log(error));
   let userId = await db
@@ -61,9 +62,11 @@ router.route("/").get(async (req, res) => {
             "INSERT INTO users (googleId) VALUES ($1) RETURNING userId",
             idToken
           )
-          .then(data => data.userid);
+          .then(data => data.userid)
+          .catch(error => console.error(error));
       }
-    });
+    })
+    .catch(error => console.error(error));
   req.session.userId = userId;
   res.json({ userId: userId });
 });
@@ -96,6 +99,7 @@ router
   });
 
 router.route("/lift-history").get((req, res) => {
+  console.log(req.session);
   db.task(async task => {
     try {
       let lifts = await task
@@ -103,9 +107,7 @@ router.route("/lift-history").get((req, res) => {
           "SELECT id, liftName FROM lifts WHERE userId = $1",
           req.session.userId
         )
-        .catch(error =>
-          console.error("this is the error: ", error, req.session)
-        );
+        .catch(error => console.error("lift-history: 112", error));
       let sets = await Promise.all(
         lifts.map(lift => {
           return task.any(
@@ -150,7 +152,6 @@ router.route("/lift-history").get((req, res) => {
 });
 
 router.route("/workout-history").post(async (req, res) => {
-  console.log(req.session);
   const lifts = req.body.lifts;
   const lastLift = lifts[lifts.length - 1];
   const timestamp = lastLift.sets[lastLift.sets.length - 1].timestamp / 1000;
