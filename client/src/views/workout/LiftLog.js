@@ -11,6 +11,7 @@ import Modal from "../../components/Modal";
 import NewSet from "./NewSet";
 import SetForm from "./SetForm";
 import LiftForm from "./LiftForm";
+import styles from "./liftLog.module.scss";
 
 const LiftLog = props => {
   const [liftEditable, setLiftEditable] = useState(false);
@@ -25,7 +26,7 @@ const LiftLog = props => {
   const [setModalOpen, setSetModalOpen] = useState(false);
 
   return (
-    <div id="lift-log">
+    <div id={styles.liftLog}>
       <LiftSelector
         atBeginning={atFirstLift}
         atEnd={atLastLift}
@@ -43,8 +44,8 @@ const LiftLog = props => {
       />
       <button
         type="button"
-        id="edit-button"
-        className={liftEditable ? "cancel-button" : null}
+        id={styles.editButton}
+        className={liftEditable ? styles.cancelButton : null}
         onClick={() => setLiftEditable(!liftEditable)}
       >
         {liftEditable ? "CANCEL" : "EDIT"}
@@ -53,7 +54,7 @@ const LiftLog = props => {
         type="button"
         onClick={() => setSetModalOpen(true)}
         className="arrow-button"
-        id="add-set-button"
+        id={styles.addSetButton}
       >
         &#65291;
       </button>
@@ -69,7 +70,7 @@ const LiftSelector = props => {
   const [newLiftModalOpen, setNewLiftModalOpen] = useState(false);
   const currentLiftIndex = useSelector(state => getCurrentLiftIndex(state));
   return (
-    <div id="lift-selector">
+    <div id={styles.liftSelector}>
       {!props.atEnd ? (
         <button
           type="button"
@@ -80,7 +81,11 @@ const LiftSelector = props => {
         </button>
       ) : null}
       <h2
-        className={props.editable ? "liftName editable" : "liftName"}
+        className={
+          props.editable
+            ? styles.liftName.concat(" ", styles.editable)
+            : styles.liftName
+        }
         onClick={
           props.editable
             ? () => {
@@ -130,7 +135,9 @@ const InfoDisplay = props => {
   const [editSetIndex, setEditSetIndex] = useState(NaN);
   const setList = props.sets.map((set, index) => (
     <div
-      className={props.editable ? "set editable" : "set"}
+      className={
+        props.editable ? styles.set.concat(" ", styles.editable) : styles.set
+      }
       key={index}
       onClick={
         props.editable
@@ -141,19 +148,19 @@ const InfoDisplay = props => {
           : null
       }
     >
-      <div className="set-weight grid-left">
+      <div className="grid-left">
         <b>{set.weight}</b> <span>lbs</span>
       </div>
-      <div className="set-reps">
+      <div>
         <b>{set.reps}</b> <span>reps</span>
       </div>
-      <div className="set-rpe grid-left">
+      <div className="grid-left">
         <span>@</span> <b>{set.rpe}</b>
       </div>
     </div>
   ));
   return (
-    <div id="info-display">
+    <div id={styles.infoDisplay}>
       {setList}
       <Modal
         isOpen={editSetModal}

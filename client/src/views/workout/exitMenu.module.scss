@@ -1,16 +1,19 @@
 @import "../../style/colors";
 
-#confirm-exit {
+#confirmExit {
   width: 5em;
+  font-size: 1.2rem;
 }
 
-#cancel-exit {
+#cancelExit {
   width: 5em;
-  padding: unset;
+  font-size: 1.2rem;
+  background: adjust-color($fg-red, $alpha: -0.3);
 }
 
-#exit-menu {
-  width: 50vw;
+#exitMenu {
+  width: 80vw;
+  max-width: 300px;
   margin: 1em;
   display: grid;
   grid-template-rows: repeat(2, auto);

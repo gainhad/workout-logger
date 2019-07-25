@@ -4,7 +4,8 @@ import {
   currentWorkoutActions,
   getCurrentLift
 } from "../../redux/slices/currentWorkout";
-import "./LiftForm.scss";
+import styles from "./liftForm.module.scss";
+import ButtonOne from "../../components/ButtonOne";
 
 const LiftForm = ({ liftIndex = undefined, closeModal }) => {
   const currrentLiftName = useSelector(state => getCurrentLift(state)).name;
@@ -23,36 +24,41 @@ const LiftForm = ({ liftIndex = undefined, closeModal }) => {
   }
 
   return (
-    <form id="new-lift" onSubmit={onSubmit}>
-      {liftList.map(lift => {
-        return (
-          <label
-            className={
-              "lift-option" + (lift === selectedLift ? " selected" : "")
-            }
-          >
-            <input
-              type="radio"
-              value={lift}
-              id={lift}
-              checked={lift === selectedLift}
-              onChange={() => setSelectedLift(lift)}
-            />
-            {lift}
-          </label>
-        );
-      })}
-      <input
+    <form id={styles.newLift} onSubmit={onSubmit}>
+      <div id={styles.liftOptions}>
+        {liftList.map(lift => {
+          return (
+            <label
+              className={
+                styles.option +
+                " " +
+                (lift === selectedLift ? styles.selected : null)
+              }
+            >
+              <input
+                type="radio"
+                className={styles.input}
+                value={lift}
+                id={lift}
+                checked={lift === selectedLift}
+                onChange={() => setSelectedLift(lift)}
+              />
+              {lift}
+            </label>
+          );
+        })}
+      </div>
+      <ButtonOne
         type="button"
-        className="button-one cancel-button"
-        value="CANCEL"
+        className={styles.button}
+        id={styles.cancelButton}
         onClick={closeModal}
-      />
-      <input
-        type="submit"
-        className="button-one"
-        value={isNaN(liftIndex) ? "ADD" : "UPDATE"}
-      />
+      >
+        CANCEL
+      </ButtonOne>
+      <ButtonOne type="submit" className={styles.button}>
+        {isNaN(liftIndex) ? "ADD" : "UPDATE"}
+      </ButtonOne>
     </form>
   );
 };

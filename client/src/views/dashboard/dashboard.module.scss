@@ -1,0 +1,32 @@
+@import "../../style/colors";
+
+#dashboard {
+  font: 150% $font-stack;
+  display: grid;
+  grid-template-rows: 5% 1fr 5%;
+  height: 100%;
+}
+
+#dashboardMenu {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  align-items: center;
+  justify-content: space-around;
+  padding: 25vh 0 25vh 0;
+}
+
+.menuButton {
+  font-size: 2rem;
+  width: 80vw;
+  max-width: 500px;
+  height: 4rem;
+}
+
+#logoutButton {
+  background: none;
+  width: min-content;
+  border: none;
+  font-size: 1.2rem;
+  margin-left: 20px;
+}

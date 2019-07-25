@@ -1,0 +1,22 @@
+@import "../../style/colors";
+
+#finishButton {
+  font-size: 1.3rem;
+  width: 100px;
+}
+
+#cancelButton {
+  font-size: 1.3rem;
+  width: 100px;
+  background: adjust-color($fg-red, $alpha: -0.3);
+}
+
+#finishWorkoutMenu {
+  width: 80vw;
+  max-width: 300px;
+  margin: 1em;
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+}

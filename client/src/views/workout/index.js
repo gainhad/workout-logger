@@ -9,7 +9,7 @@ import FinishWorkoutMenu from "./FinishWorkoutMenu.js";
 import { useDispatch } from "react-redux";
 import { currentWorkoutActions } from "../../redux/slices/currentWorkout";
 import ButtonOne from "../../components/ButtonOne";
-import "./Workout.scss";
+import styles from "./workout.module.scss";
 
 const Workout = props => {
   const dispatch = useDispatch();
@@ -33,11 +33,10 @@ const Workout = props => {
 
   return (
     <>
-      <div id="workout-screen">
+      <div id={styles.workoutScreen}>
         <ButtonOne
           type="button"
-          className="button-one"
-          id="exit-button"
+          id={styles.exitButton}
           onClick={() => setExitModalOpen(true)}
         >
           EXIT
@@ -46,8 +45,7 @@ const Workout = props => {
         <ButtonOne
           type="button"
           onClick={() => setFinishModalOpen(true)}
-          id="finish-button"
-          className="button-one"
+          id={styles.finishButton}
         >
           FINISH
         </ButtonOne>
@@ -57,32 +55,36 @@ const Workout = props => {
           type="button"
           onClick={() => setTimesDisplayModalOpen(true)}
           className="upper-right button-underline"
-          id="times-toggle"
+          id={styles.timesToggle}
         >
           TIMES
         </button>
-        <button type="button" id="lift-history-button" className="arrow-button">
+        <button
+          type="button"
+          id={styles.liftHistoryButton}
+          className="arrow-button"
+        >
           Lift History
         </button>
       </div>
       <Modal
         isOpen={timesDisplayModalOpen}
         onClose={() => setTimesDisplayModalOpen(false)}
-        id="times-modal"
+        id={styles.timesModal}
       >
         <TimesDisplay />
       </Modal>
       <Modal
         isOpen={exitModalOpen}
         onClose={() => setExitModalOpen(false)}
-        id="exit-modal"
+        id={styles.exitModal}
       >
         <ExitMenu />
       </Modal>
       <Modal
         isOpen={finishModalOpen}
         onClose={() => setFinishModalOpen(false)}
-        id="finish-workout-modal"
+        id={styles.finishWorkoutModal}
       >
         <FinishWorkoutMenu />
       </Modal>

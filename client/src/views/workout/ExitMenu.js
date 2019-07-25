@@ -1,31 +1,32 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './ExitMenu.scss';
+import React from "react";
+import { Link } from "react-router-dom";
+import styles from "./exitMenu.module.scss";
+import ButtonOne from "../../components/ButtonOne";
 
 const ExitMenu = props => {
   return (
-    <div id="exit-menu">
+    <div id={styles.exitMenu}>
       <p className="modal-message">
-        Are you sure you want to exit the workout?{' '}
+        Are you sure you want to exit the workout?{" "}
         <b>The workout data will not be saved.</b>
       </p>
-      <button
+      <ButtonOne
         type="button"
         className="button-one"
-        id="cancel-exit"
+        id={styles.cancelExit}
         onClick={props.closeModal}
       >
         CANCEL
-      </button>
+      </ButtonOne>
       <Link to="/">
-        <button
+        <ButtonOne
           type="button"
           className="button-one"
-          id="confirm-exit"
+          id={styles.confirmExit}
           onClick={props.closeModal}
         >
           EXIT
-        </button>
+        </ButtonOne>
       </Link>
     </div>
   );

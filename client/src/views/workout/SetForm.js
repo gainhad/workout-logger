@@ -5,7 +5,8 @@ import {
   getSetsForCurrentLift,
   currentWorkoutActions
 } from "../../redux/slices/currentWorkout";
-import "./SetForm.scss";
+import ButtonOne from "../../components/ButtonOne";
+import styles from "./setForm.module.scss";
 
 const SetForm = ({
   setIndex = undefined,
@@ -38,8 +39,8 @@ const SetForm = ({
   }
 
   return (
-    <form onSubmit={onSubmit} id="set-form">
-      <div className="input-section">
+    <form onSubmit={onSubmit} id={styles.setForm}>
+      <div className={styles.inputSection}>
         <label for="weight">WEIGHT:</label>
         <input
           name="weight"
@@ -50,7 +51,7 @@ const SetForm = ({
           autoFocus
         />
       </div>
-      <div className="input-section">
+      <div className={styles.inputSection}>
         <label for="reps">REPS:</label>
         <input
           name="reps"
@@ -60,7 +61,7 @@ const SetForm = ({
           defaultValue={currentSet ? currentSet.reps : null}
         />
       </div>
-      <div className="input-section">
+      <div className={styles.inputSection}>
         <label for="rpe">RPE:</label>
         <input
           name="rpe"
@@ -70,13 +71,17 @@ const SetForm = ({
           defaultValue={currentSet ? currentSet.rpe : null}
         />
       </div>
-      <input
+      <ButtonOne
         type="button"
-        value="CANCEL"
-        className="cancel-button"
+        className={styles.button}
+        id={styles.cancelButton}
         onClick={closeModal}
-      />
-      <input type="submit" value="ENTER" />
+      >
+        CANCEL
+      </ButtonOne>
+      <ButtonOne type="submit" className={styles.button}>
+        ENTER
+      </ButtonOne>
     </form>
   );
 };

@@ -2,7 +2,8 @@ import React from "react";
 import { currentWorkoutActions } from "../../redux/slices/currentWorkout.js";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import "./FinishWorkoutMenu.scss";
+import styles from "./finishWorkoutMenu.module.scss";
+import ButtonOne from "../../components/ButtonOne";
 
 const FinishWorkoutMenu = props => {
   const dispatch = useDispatch();
@@ -12,25 +13,17 @@ const FinishWorkoutMenu = props => {
   }
 
   return (
-    <div id="finish-workout-menu">
+    <div id={styles.finishWorkoutMenu}>
       <p className="modal-message">
         Are you sure you want to finish the workout?
       </p>
-      <button
-        onClick={props.closeModal}
-        className="button-one"
-        id="cancel-finish-button"
-      >
+      <ButtonOne onClick={props.closeModal} id={styles.cancelButton}>
         CANCEL
-      </button>
+      </ButtonOne>
       <Link to="/">
-        <button
-          className="button-one"
-          onClick={finishWorkout}
-          id="finish-workout-button"
-        >
+        <ButtonOne onClick={finishWorkout} id={styles.finishButton}>
           FINISH
-        </button>
+        </ButtonOne>
       </Link>
     </div>
   );

@@ -1,0 +1,87 @@
+@import "../../style/colors";
+
+#liftLog {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: 20% 60% 20%;
+  grid-column: 1 / 4;
+  width: 83%;
+  max-width: 400px;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  align-self: start;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+#editButton {
+  color: $fg-1;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  height: 50%;
+  align-self: end;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
+  &:active,
+  &:focus {
+    outline: none;
+  }
+  &.cancelButton {
+    background: adjust-color($fg-red, $alpha: -0.2);
+  }
+}
+
+#addSetButton {
+  height: 1.5em;
+  width: 1.5em;
+  background: rgba(255, 255, 255, 0.1);
+  justify-self: center;
+  align-self: end;
+  margin-top: 10px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
+}
+
+.liftName {
+  padding: 5px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.editable {
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.set {
+  font: 150% $font-stack;
+  color: white;
+  display: grid;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  grid-template-columns: 3fr 3fr 2fr;
+  place-items: center;
+  margin: 5px 2px 5px 2px;
+  padding-left: 20px;
+  span {
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+#infoDisplay {
+  grid-column: 1 / 4;
+  max-height: 52vh;
+  overflow-y: auto;
+}
+
+#liftSelector {
+  display: grid;
+  grid-template-columns: 1fr 80% 1fr;
+  grid-column: 1 / 4;
+  width: 100%;
+  justify-items: center;
+  align-items: center;
+  border-bottom: 1px solid $fg-1;
+  padding-bottom: 5px;
+  h2 {
+    font-size: 2em;
+    grid-column-start: 2;
+    text-align: center;
+    margin: 0;
+  }
+}

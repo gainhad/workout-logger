@@ -1,23 +1,34 @@
 @import "../../style/colors";
 
-#times-modal {
-  top: unset;
-  right: unset;
+#workoutScreen {
+  display: grid;
+  grid-template-rows: minmax(8vh, auto) auto auto 1fr;
+  grid-template-columns: 1fr max-content 1fr;
+  height: 100%;
+  width: 100%;
+  justify-items: center;
+  align-items: center;
+}
+
+#timesModal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   box-shadow: -2px 5px 2px 1px rgba(255, 255, 255, 0.1);
-  .upper-right {
+  .upperRight {
     align-self: unset;
   }
 }
 
-#set-modal {
+#setModal {
   display: flex;
   flex-direction: column;
 }
 
-#lift-history-button {
+#liftHistoryButton {
   align-self: end;
   font-size: 1.5em;
   grid-column: 2 / 3;
@@ -26,7 +37,7 @@
   margin: 10px;
 }
 
-#times-toggle {
+#timesToggle {
   grid-column-start: 1;
   grid-row-start: 4;
   align-self: end;
@@ -37,17 +48,21 @@
   }
 }
 
-#finish-button {
+#finishButton {
   grid-column-end: 4;
   width: max-content;
   padding: 0.5em;
+  justify-self: end;
+  margin-right: 10px;
 }
 
-#exit-button {
+#exitButton {
   width: max-content;
   padding: 0.5em;
+  justify-self: start;
+  margin-left: 10px;
 }
 
-.cancel-button {
+.cancelButton {
   background: rgba(240, 93, 94, 0.5);
 }

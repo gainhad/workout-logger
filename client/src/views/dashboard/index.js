@@ -3,16 +3,16 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userDataActions } from "../../redux/slices/userData";
 import ButtonOne from "../../components/ButtonOne";
+import styles from "./dashboard.module.scss";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   return (
-    <div id="dashboard">
+    <div id={styles.dashboard}>
       <button
         type="button"
-        id="logout-button"
+        id={styles.logoutButton}
         onClick={() => dispatch(userDataActions.logOut())}
-        className="left-nav"
       >
         Logout
       </button>
@@ -23,19 +23,19 @@ const Dashboard = () => {
 
 const DashboardMenu = () => {
   return (
-    <div id="dashboard-menu">
+    <div id={styles.dashboardMenu}>
       <Link to="/workout">
-        <ButtonOne type="button" className="button-one">
+        <ButtonOne type="button" className={styles.menuButton}>
           Start Workout
         </ButtonOne>
       </Link>
       <Link to="/measurement">
-        <ButtonOne type="button" className="button-one">
+        <ButtonOne type="button" className={styles.menuButton}>
           Log Measurement
         </ButtonOne>
       </Link>
       <Link to="/view">
-        <ButtonOne type="button" className="button-one">
+        <ButtonOne type="button" className={styles.menuButton}>
           View Data
         </ButtonOne>
       </Link>
