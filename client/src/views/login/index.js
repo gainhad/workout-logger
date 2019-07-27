@@ -9,7 +9,7 @@ import Modal from "../../components/Modal";
 import LoginForm from "./LoginForm.js";
 import axios from "axios";
 
-const Login = () => {
+const L
   const dispatch = useDispatch();
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   function onSignIn(googleUser) {
@@ -20,7 +20,18 @@ const Login = () => {
       headers: { Authorization: "bearer " + idToken }
     })
       .then(res => {
-        dispatch(userDataActions.isLoggedIn(res.data));
+        dispatch(userDataActions.isLoggedIn(res.data.isLoggedIn));
+      })
+      .then(res => dispatch(globalUIActions.isBlurred(false)));
+  }
+  function demoSignIn() {
+    axios({
+      method: "get",
+      url: "/api/login",
+      headers: { authorization: "bearer 1" }
+    })
+      .then(res => {
+        dispatch(userDataActions.isLoggedIn(res.data.isLoggedIn));
       })
       .then(res => dispatch(globalUIActions.isBlurred(false)));
   }
@@ -41,7 +52,9 @@ const Login = () => {
       <Modal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)}>
         <LoginForm onSignIn={onSignIn} onFailure={onFailure} />
       </Modal>
-      <ButtonOne className={styles.button}>DEMO</ButtonOne>
+      <ButtonOne className={styles.button} onClick={demoSignIn}>
+        DEMO
+      </ButtonOne>
     </div>
   );
 };

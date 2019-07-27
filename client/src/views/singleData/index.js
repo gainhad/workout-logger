@@ -11,7 +11,7 @@ import {
   YAxis,
   Tooltip
 } from "recharts";
-import "./SingleDataView.scss";
+import styles from "./singleDataView.module.scss";
 
 const SingleDataView = props => {
   const name = props.match.params.dataItem;
@@ -34,14 +34,14 @@ const SingleDataView = props => {
       entry.timestamp = formatDate(entry.timestamp);
     });
     return (
-      <div id="single-measurement-view">
-        <Link to="/view" className="upper-left">
-          <button type="button" className="arrow-button">
+      <div id={styles.singleMeasurementView}>
+        <Link to="/view" className={styles.upperLeft}>
+          <button type="button" className={styles.backButton}>
             &larr;
           </button>
         </Link>
-        <h1 className="lift-title">{name.toUpperCase()}</h1>
-        <div className="graph-area">
+        <h1 className={styles.liftTitle}>{name.toUpperCase()}</h1>
+        <div className={styles.graphArea}>
           <ResponsiveContainer>
             <LineChart
               data={data.entries}
@@ -67,7 +67,7 @@ const SingleDataView = props => {
             </LineChart>
           </ResponsiveContainer>
         </div>
-        <table id="e1rm-table">
+        <table id={styles.e1rmTable}>
           <thead>
             <tr>
               <th>DATE</th>
@@ -89,8 +89,8 @@ const SingleDataView = props => {
     );
   } else {
     return (
-      <div id="single-measurement-view">
-        <h1 id="loading-message">LOADING...</h1>
+      <div id={styles.singleMeasurementView}>
+        <h1 id={styles.loadingMessage}>LOADING (IMPRESSIVE!) LIFT DATA...</h1>
       </div>
     );
   }

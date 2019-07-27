@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Modal from "../../components/Modal";
 import MeasurementForm from "./MeasurementForm";
-import "./MeasurementMenu.scss";
+import styles from "./measurementMenu.module.scss";
+import ButtonOne from "../../components/ButtonOne";
 
 const MeasurementMenu = () => {
   const [measurementModalOpen, setMeasurementModalOpen] = useState(false);
@@ -10,33 +11,33 @@ const MeasurementMenu = () => {
 
   return (
     <>
-      <div id="measurement-menu">
+      <div id={styles.measurementMenu}>
         <Link to="/">
-          <button type="button" className="arrow-button upper-left">
+          <button type="button" className={styles.backButton}>
             &larr;
           </button>
         </Link>
-        <div id="measurement-selection">
-          <button
+        <div id={styles.measurementSelection}>
+          <ButtonOne
             type="button"
-            className="button-one measurement-button"
+            className={styles.measurementButton}
             onClick={() => {
               setMeasurementType("waist");
               setMeasurementModalOpen(true);
             }}
           >
-            LOG WAIST
-          </button>
-          <button
+            Log Waist
+          </ButtonOne>
+          <ButtonOne
             type="button"
-            className="button-one measurement-button"
+            className={styles.measurementButton}
             onClick={() => {
               setMeasurementType("weight");
               setMeasurementModalOpen(true);
             }}
           >
-            LOG WEIGHT
-          </button>
+            Log Weight
+          </ButtonOne>
         </div>
       </div>
       <Modal

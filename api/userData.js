@@ -8,8 +8,10 @@ const db = pgp({
   //host: `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`j
   //host: `127.0.0.1:5432/${process.env.CLOUD_SQL_CONNECTION_NAME}`,
   host: "127.0.0.1",
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
+  //database: process.env.DB_NAME,
+  database: "workout_logger",
+  //user: process.env.DB_USER,
+  user: "hadley",
   password: process.env.DB_PASS
 });
 

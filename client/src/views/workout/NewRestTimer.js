@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { currentWorkoutActions } from "../../redux/slices/currentWorkout";
-import "./NewRestTimer.scss";
+import styles from "./newRestTimer.module.scss";
 import { prettyDisplayTime } from "../../utils/displayHelpers";
+import ButtonOne from "../../components/ButtonOne";
 
 const NewRestTimer = props => {
   const [totalSeconds, setTotalSeconds] = useState(180);
@@ -17,15 +18,15 @@ const NewRestTimer = props => {
   }
 
   return (
-    <div id="new-rest-timer">
-      <div id="timer">
-        <div className="timer-display">
+    <div id={styles.newRestTimer}>
+      <div id={styles.timer}>
+        <div className={styles.timerDisplay}>
           <b>{prettyDisplayTime(totalSeconds)}</b>
         </div>
-        <button
+        <ButtonOne
           type="button"
-          className="button-one time-change-button"
-          id="minus-30"
+          className={styles.timeChangeButton}
+          id={styles.minus30}
           onClick={() => {
             if (totalSeconds >= 30) {
               setTotalSeconds(totalSeconds - 30);
@@ -33,30 +34,31 @@ const NewRestTimer = props => {
           }}
         >
           - 30 Sec
-        </button>
-        <button
+        </ButtonOne>
+        <ButtonOne
           type="button"
-          className="button-one time-change-button"
-          id="plus-30"
+          className={styles.timeChangeButton}
+          id={styles.plus30}
           onClick={() => setTotalSeconds(totalSeconds + 30)}
         >
           + 30 Sec
-        </button>
+        </ButtonOne>
       </div>
-      <button
+      <ButtonOne
         type="button"
         onClick={props.closeModal}
-        className="button-one action-button"
+        className={styles.actionButton}
+        id={styles.skipButton}
       >
         SKIP
-      </button>
-      <button
+      </ButtonOne>
+      <ButtonOne
         type="button"
         onClick={startTimer}
-        className="button-one action-button"
+        className={styles.actionButton}
       >
         START
-      </button>
+      </ButtonOne>
     </div>
   );
 };

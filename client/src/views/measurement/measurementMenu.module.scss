@@ -1,0 +1,33 @@
+@import "../../style/colors";
+
+#measurementMenu {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 5% 1fr 5%;
+}
+
+#measurementSelection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 25vh 0 25vh 0;
+}
+
+.measurementButton {
+  font-size: 2rem;
+  width: 80vw;
+  max-width: 500px;
+  height: 4rem;
+  margin: 2vh;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  font-size: 2em;
+  line-height: 0.5;
+  margin-left: 20px;
+  margin-top: 10px;
+}

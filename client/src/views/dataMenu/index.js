@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./ViewDataMenu.scss";
+import styles from "./viewDataMenu.module.scss";
 import { useSelector } from "react-redux";
 import { getLiftNamesAlphabetized } from "../../redux/slices/liftHistory";
 import { getMeasurementTypesAlphabetized } from "../../redux/slices/measurementHistory";
@@ -11,15 +11,15 @@ const ViewDataMenu = () => {
     getMeasurementTypesAlphabetized(state)
   );
   return (
-    <div id="view-data-menu">
+    <div id={styles.viewDataMenu}>
       <Link to="/">
-        <button type="button" className="arrow-button upper-left">
+        <button type="button" className={styles.backButton}>
           &larr;
         </button>
       </Link>
-      <div className="data-selection-menu">
-        <h2 className="menu-header">LIFTS</h2>
-        <ul id="lift-names" className="data-selection-list">
+      <div className={styles.dataSelectionMenu}>
+        <h2 className={styles.menuHeader}>LIFTS</h2>
+        <ul className={styles.dataSelectionList}>
           {liftNames.map((lift, key) => (
             <li key={key}>
               <Link to={`/view/lift/${lift}`}>
@@ -29,9 +29,9 @@ const ViewDataMenu = () => {
           ))}
         </ul>
       </div>
-      <div className="data-selection-menu">
-        <h2 className="menu-header">MEASUREMENTS</h2>
-        <ul id="measurement-names" className="data-selection-list">
+      <div className={styles.dataSelectionMenu}>
+        <h2 className={styles.menuHeader}>MEASUREMENTS</h2>
+        <ul className={styles.dataSelectionList}>
           {measurementNamesAndUnits.map((entry, key) => (
             <li key={key}>
               <Link to={`/view/measurement/${entry.name}`}>
@@ -41,7 +41,11 @@ const ViewDataMenu = () => {
           ))}
         </ul>
       </div>
-      <button type="button" className="button-one" id="graph-multiple-button">
+      <button
+        type="button"
+        className="button-one"
+        id={styles.graphMultipleButton}
+      >
         <h2>GRAPH MULTIPLE</h2>
       </button>
     </div>

@@ -3,12 +3,12 @@
 #confirmExit {
   width: 5em;
   font-size: 1.2rem;
+  background: adjust-color($fg-red, $alpha: -0.4);
 }
 
 #cancelExit {
   width: 5em;
   font-size: 1.2rem;
-  background: adjust-color($fg-red, $alpha: -0.3);
 }
 
 #exitMenu {

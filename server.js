@@ -60,11 +60,9 @@ async function verifyRequest(req, res, next) {
 
 app.use("/api/user-data", userDataRouter);
 
-app
-  .get("/api/", (req, res) => {
-    res.json({ lift_history: "/api/user-data/:userId/lift-history/:liftName" });
-  })
-  .post("/api/", (req, res) => console.log(req.headers));
+app.get("/api/", (req, res) => {
+  res.json({ lift_history: "/api/user-data/:userId/lift-history/:liftName" });
+});
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 
 app.get("/api/check-authentication", (req, res) => {
@@ -78,26 +76,29 @@ app.get("/api/logout", (req, res) => {
 
 app.get("/api/login", async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
-  const idToken = await verifyToken(token).catch(error => console.log(error));
+  const idToken =
+    token === "1"
+      ? "1" // Change to count of number of users
+      : await verifyToken(token).catch(error => console.log(error));
+  console.log("id token: ", idToken);
   let userId = await db
     .any("SELECT userId FROM users WHERE googleId = $1", idToken)
     .then(async data => {
       if (data[0]) {
         return data[0].userid;
-      } else {
-        /*
+      } else if (token === "1") {
         return await db
           .one(
             "INSERT INTO users (googleId) VALUES ($1) RETURNING userId",
             idToken
           )
           .then(data => data.userid);
-	*/
       }
     });
-  req.session.userId = userId;
-  console.log(req.session.userId);
-  res.json({ status: true });
+  if (userId) {
+    req.session.userId = userId;
+  }
+  res.json({ isLoggedIn: !!userId });
 });
 
 app.get("api/demo", async (req, res) => {});

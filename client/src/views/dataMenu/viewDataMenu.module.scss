@@ -1,26 +1,39 @@
 @import "../../style/colors";
 
-#view-data-menu {
+#viewDataMenu {
   height: 100%;
+  width: 100%;
   display: grid;
   grid-template-rows: 5% min-content minmax(min-content, 1fr) 15%;
 }
 
-.menu-header {
+.backButton {
+  background: none;
+  border: none;
+  font-size: 2em;
+  line-height: 0.5;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.menuHeader {
   font-size: 2rem;
   border-bottom: 1px solid $fg-1;
   margin: 1rem 0 0 0;
   padding-left: 1rem;
-  width: 80%;
+  width: 100%;
 }
 
-.data-selection-menu {
+.dataSelectionMenu {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 85vw;
+  max-width: 700px;
+  justify-self: center;
 }
 
-.data-selection-list {
+.dataSelectionList {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,7 +42,8 @@
   width: 100%;
   padding: 0;
   li {
-    width: 70%;
+    width: 80%;
+    max-width: 400px;
   }
   button {
     background: rgba(255, 255, 255, 0.15);
@@ -42,7 +56,7 @@
   }
 }
 
-#graph-multiple-button {
+#graphMultipleButton {
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(0, 0, 0, 0.3);
   height: 4rem;

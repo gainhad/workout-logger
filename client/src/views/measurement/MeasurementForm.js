@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { measurementHistoryActions } from "../../redux/slices/measurementHistory";
-import "./MeasurementForm.scss";
+import styles from "./measurementForm.module.scss";
+import ButtonOne from "../../components/ButtonOne";
 
 const MeasurementForm = props => {
   const [measurement, setMeasurement] = useState(null);
@@ -21,27 +22,30 @@ const MeasurementForm = props => {
   }
 
   return (
-    <form id="measurement-form" className="form-one" onSubmit={onSubmit}>
-      <label htmlFor="measurement-input" className="measurement-form-label">
+    <form id={styles.measurementForm} className="form-one" onSubmit={onSubmit}>
+      <label
+        htmlFor={styles.measurementInput}
+        className={styles.measurementFormLabel}
+      >
         {props.type}:
       </label>
       <input
-        id="measurement-input"
+        id={styles.measurementInput}
         type="number"
         required={true}
         onChange={event => setMeasurement(Number(event.target.value))}
         autoFocus
       />
-      <button
+      <ButtonOne
         type="button"
-        className="form-button measurement-form-button"
+        className={styles.button}
         onClick={props.closeModal}
       >
         CANCEL
-      </button>
-      <button type="submit" className="form-button measurement-form-button">
+      </ButtonOne>
+      <ButtonOne type="submit" className={styles.button}>
         ENTER
-      </button>
+      </ButtonOne>
     </form>
   );
 };
