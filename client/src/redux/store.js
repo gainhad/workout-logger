@@ -1,4 +1,5 @@
-import { configureStore } from "redux-starter-kit";
+import { configureStore, getDefaultMiddleware } from "redux-starter-kit";
+import LogRocket from "logrocket";
 import currentWorkoutReducer, {
   currentWorkoutActions
 } from "./slices/currentWorkout";
@@ -17,6 +18,7 @@ const store = configureStore({
     globalUI: globalUIReducer,
     userData: userDataReducer
   },
+  middleware: [...getDefaultMiddleware(), LogRocket.reduxMiddleware()],
   devTools: {
     actionCreators: {
       ...currentWorkoutActions,
