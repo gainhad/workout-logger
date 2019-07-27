@@ -9,7 +9,7 @@ import Modal from "../../components/Modal";
 import LoginForm from "./LoginForm.js";
 import axios from "axios";
 
-const L
+const Login = () => {
   const dispatch = useDispatch();
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   function onSignIn(googleUser) {
