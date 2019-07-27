@@ -209,6 +209,7 @@ router.route("/workout-history").post(async (req, res) => {
 router
   .route("/measurement-history")
   .get((req, res) => {
+    console.log("userId: ", req.session.userId);
     db.any(
       "SELECT id, measurement_type, time_taken, measurement, unit FROM measurements WHERE userId = $1",
       req.session.userId
@@ -244,14 +245,16 @@ router
         req.body.measurement,
         req.body.unit
       ]
-    ).then(data =>
-      res.json({
-        name: req.body.type,
-        measurement: req.body.measurement,
-        timestamp: req.body.timestamp,
-        id: data.id
-      })
-    );
+    )
+      .then(data =>
+        res.json({
+          name: req.body.type,
+          measurement: req.body.measurement,
+          timestamp: req.body.timestamp,
+          id: data.id
+        })
+      )
+      .catch(error => console.error(error));
   });
 
 router.route("/:userId/measurement-history/:type").get((req, res) => {

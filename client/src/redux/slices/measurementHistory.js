@@ -58,6 +58,10 @@ const initialState = {
 // Reducers
 function addOrUpdateMeasurementReducer(state, { payload, meta }) {
   if (isNaN(meta.index)) {
+    // Handle first data entry
+    if (!state.data[meta.type]) {
+      state.data[meta.type] = {};
+    }
     state.data[meta.type].measurements.unshift(payload);
   } else {
     state.data[meta.type][meta.index].measurement = payload.measurement;
