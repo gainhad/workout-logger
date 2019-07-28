@@ -20,6 +20,12 @@ const Login = () => {
       headers: { Authorization: "bearer " + idToken }
     })
       .then(res => {
+        if (!res.data.isLoggedIn) {
+          alert(
+            "Not accepting new users (yet!). Try the demo and check back soon :)"
+          );
+          // TODO: throw an error here
+        }
         dispatch(userDataActions.isLoggedIn(res.data.isLoggedIn));
       })
       .then(res => dispatch(globalUIActions.isBlurred(false)));
@@ -31,6 +37,10 @@ const Login = () => {
       headers: { authorization: "bearer 1" }
     })
       .then(res => {
+        if (!res.data.isLoggedIn) {
+          alert("Error logging in. Please try again");
+        }
+        // TODO: throw an error here
         dispatch(userDataActions.isLoggedIn(res.data.isLoggedIn));
       })
       .then(res => dispatch(globalUIActions.isBlurred(false)));
