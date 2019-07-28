@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const Sentry = require("@sentry/node");
 const path = require("path");
 const pgp = require("pg-promise")();
 const cookieSession = require("cookie-session");
@@ -9,10 +10,14 @@ const { cookieSecret } = require("./config");
 const { OAuth2Client } = require("google-auth-library");
 const { clientId } = require("./config");
 
+Sentry.init({
+  dsn: "https://a15edc738d0642adb52d091e005ac6cb@sentry.io/1514072"
+});
+
 const PORT = process.env.PORT || 5000;
 
+app.use(Sentry.Handlers.requestHandler());
 app.use(bodyParser.json());
-
 app.use(
   cookieSession({
     secret: cookieSecret,
@@ -272,4 +277,10 @@ function addDemoData(userId) {
 
 app.get("/*", function(req, res) {
   res.sendFile(path.join(__dirname, "client/build", "index.html"));
+});
+
+app.use(Sentry.Handlers.errorHandler());
+app.use(function onError(err, req, res, next) {
+  res.statusCode = 500;
+  res.end(res.sentry + "\n");
 });
