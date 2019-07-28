@@ -1,1 +1,7 @@
 runtime: nodejs10
+
+env_variables:
+  DB_USER: 'postgres'
+  DB_PASS: 'O0oo4FchP4oBOtqH'
+  DB_NAME: 'user-data'
+  CLOUD_SQL_CONNECTION_NAME: 'totemic-courage-246615:us-central1:workout-logger-database'
