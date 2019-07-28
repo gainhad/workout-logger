@@ -1,4 +1,7 @@
 import { createSlice } from "redux-starter-kit";
+import { measurementHistoryActions } from "./measurementHistory";
+import { liftHistoryActions } from "./liftHistory";
+import { currentWorkoutActions } from "./currentWorkout";
 import axios from "axios";
 
 const initialState = {
@@ -47,9 +50,12 @@ function checkAuthentication() {
 
 function logOut() {
   return dispatch => {
-    axios
-      .get("/api/logout")
-      .then(res => dispatch({ type: "userData/isLoggedIn", payload: false }));
+    axios.get("/api/logout").then(res => {
+      dispatch({ type: "userData/isLoggedIn", payload: false });
+      dispatch(measurementHistoryActions.reset());
+      dispatch(liftHistoryActions.reset());
+      dispatch(currentWorkoutActions.reset());
+    });
   };
 }
 

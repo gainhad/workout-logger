@@ -91,6 +91,13 @@ function startWorkoutReducer(state, { payload }) {
 
 function finishWorkoutReducer(state) {}
 
+function resetReducer(state) {
+  state.lifts = initialState.lifts;
+  state.currentLiftIndex = initialState.currentLiftIndex;
+  state.restTimer = initialState.restTimer;
+  state.timeStarted = initialState.timeStarted;
+}
+
 const currentWorkout = createSlice({
   slice: "currentWorkout",
   initialState: initialState,
@@ -105,7 +112,8 @@ const currentWorkout = createSlice({
     decrementCurrentLiftIndex: decrementCurrentLiftIndexReducer,
     startRestTimer: startRestTimerReducer,
     startWorkout: startWorkoutReducer,
-    finishWorkout: finishWorkoutReducer
+    finishWorkout: finishWorkoutReducer,
+    reset: resetReducer
   }
 });
 

@@ -86,6 +86,13 @@ function dataReducer(state, { payload }) {
   state.fetched = true;
 }
 
+function resetReducer(state) {
+  state.data = initialState.data;
+  state.fetched = initialState.fetched;
+  state.isFetched = initialState.isFetched;
+  state.isError = initialState.isError;
+}
+
 const measurementHistory = createSlice({
   slice: "measurementHistory",
   initialState: initialState,
@@ -94,7 +101,8 @@ const measurementHistory = createSlice({
     fetched: fetchedReducer,
     isFetching: isFetchingReducer,
     isError: isErrorReducer,
-    addOrUpdateMeasurement: addOrUpdateMeasurementReducer
+    addOrUpdateMeasurement: addOrUpdateMeasurementReducer,
+    reset: resetReducer
   }
 });
 

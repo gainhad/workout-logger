@@ -344,13 +344,21 @@ function dataReducer(state, { payload }) {
   state.isFetching = false;
 }
 
+function resetReducer(state) {
+  state.data = initialState.data;
+  state.fetched = initialState.fetched;
+  state.isFetching = initialState.isFetching;
+  state.isError = initialState.isError;
+}
+
 const liftHistory = createSlice({
   slice: "liftHistory",
   initialState: initialState,
   reducers: {
     data: dataReducer,
     isFetching: isFetchingReducer,
-    isError: isErrorReducer
+    isError: isErrorReducer,
+    reset: resetReducer
   }
 });
 
@@ -360,7 +368,6 @@ function fetchLiftHistory() {
     dispatch(liftHistory.actions.isFetching());
     axios(`/api/user-data/lift-history`)
       .then(res => {
-        console.log(res.data);
         dispatch(liftHistory.actions.data(res.data));
       })
       .catch(error => dispatch(liftHistory.actions.isError(error)));

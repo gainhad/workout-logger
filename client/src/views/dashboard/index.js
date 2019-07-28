@@ -7,13 +7,12 @@ import styles from "./dashboard.module.scss";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  function logout() {
+    dispatch(userDataActions.logOut());
+  }
   return (
     <div id={styles.dashboard}>
-      <button
-        type="button"
-        id={styles.logoutButton}
-        onClick={() => dispatch(userDataActions.logOut())}
-      >
+      <button type="button" id={styles.logoutButton} onClick={logout}>
         Logout
       </button>
       <DashboardMenu />

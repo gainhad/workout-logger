@@ -18,17 +18,22 @@ function Main() {
   const authenticationChecked = useSelector(
     state => state.userData.authenticationChecked
   );
+
   const isLoggedIn = useSelector(state => state.userData.isLoggedIn);
+
   if (!authenticationChecked) {
     dispatch(userDataActions.checkAuthentication());
   }
   const measurementHistoryFetched = useSelector(
     state => state.measurementHistory.fetched
   );
+
   const liftHistoryFetched = useSelector(state => state.liftHistory.fetched);
+
   if (!liftHistoryFetched && isLoggedIn && authenticationChecked) {
     dispatch(liftHistoryActions.fetchLiftHistory());
   }
+
   if (!measurementHistoryFetched && isLoggedIn && authenticationChecked) {
     dispatch(measurementHistoryActions.fetchMeasurementHistory());
   }
