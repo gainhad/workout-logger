@@ -115,162 +115,163 @@ app.get("/api/login", async (req, res) => {
 });
 
 function addDemoData(userId) {
-  db.task(task => {
-    task.none(
-      "INSERT INTO workouts(userId, time_completed, duration, session_rpe) VALUES($1, to_timestamp(1562954788), 3600, 8)",
+  db.task(async task => {
+    // TODO: Make this async by grouping promises into array
+    const { id: workoutOneId } = await task.one(
+      "INSERT INTO workouts(userId, time_completed, duration, session_rpe) VALUES($1, to_timestamp(1562954788), 3600, 8) RETURNING id",
       userId
     );
-    task.none(
-      "INSERT INTO workouts(userId, time_completed, duration, session_rpe) VALUES($1, to_timestamp(1562868388), 3600, 9)",
+    const { id: workoutTwoId } = await task.one(
+      "INSERT INTO workouts(userId, time_completed, duration, session_rpe) VALUES($1, to_timestamp(1562868388), 3600, 9) RETURNING id",
       userId
     );
-    task.none(
-      "INSERT INTO workouts(userId, time_completed, duration, session_rpe) VALUES($1, to_timestamp(1562781988), 3600, 10)",
+    const { id: workoutThreeId } = await task.one(
+      "INSERT INTO workouts(userId, time_completed, duration, session_rpe) VALUES($1, to_timestamp(1562781988), 3600, 10) RETURNING id",
       userId
     );
-    task.none(
-      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, 1, 'squat', 600)",
-      userId
+    const { id: liftOneId } = await task.one(
+      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'squat', 600) RETURNING id",
+      [userId, workoutOneId]
+    );
+    const { id: liftTwoId } = await task.one(
+      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'deadlift', 600) RETURNING id",
+      [userId, workoutTwoId]
+    );
+    const { id: liftThreeId } = await task.one(
+      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'bench press', 600) RETURNING id",
+      [userId, workoutThreeId]
+    );
+    const { id: liftFourId } = await task.one(
+      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'squat', 600) RETURNING id",
+      [userId, workoutOneId]
+    );
+    const { id: liftFiveId } = await task.one(
+      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'deadlift', 600) RETURNING id",
+      [userId, workoutTwoId]
+    );
+    const { id: liftSixId } = await task.one(
+      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'bench press', 600) RETURNING id",
+      [userId, workoutThreeId]
+    );
+    const { id: liftSevenId } = await task.one(
+      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'squat', 600) RETURNING id",
+      [userId, workoutOneId]
+    );
+    const { id: liftEightId } = await task.one(
+      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'deadlift', 600) RETURNING id",
+      [userId, workoutTwoId]
+    );
+    const { id: liftNineId } = await task.one(
+      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'bench press', 600) RETURNING id",
+      [userId, workoutThreeId]
     );
     task.none(
-      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, 1, 'deadlift', 600)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1562951728), 125, 5, 6)",
+      [userId, liftOneId]
     );
     task.none(
-      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, 1, 'bench press', 600)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1562951728), 135, 5, 7)",
+      [userId, liftOneId]
     );
     task.none(
-      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, 2, 'squat', 600)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1562951728), 145, 5, 8)",
+      [userId, liftOneId]
     );
     task.none(
-      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, 2, 'deadlift', 600)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1562952628), 125, 5, 6)",
+      [userId, liftTwoId]
     );
     task.none(
-      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, 2, 'bench press', 600)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1562952628), 135, 5, 7)",
+      [userId, liftTwoId]
     );
     task.none(
-      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, 3, 'squat', 600)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1562952628), 145, 5, 8)",
+      [userId, liftTwoId]
     );
     task.none(
-      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, 3, 'deadlift', 600)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1562953528), 125, 5, 6)",
+      [userId, liftThreeId]
     );
     task.none(
-      "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, 3, 'bench press', 600)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1562953528), 135, 5, 7)",
+      [userId, liftThreeId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 1, to_timestamp(1562951728), 125, 5, 6)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1562953528), 145, 5, 8)",
+      [userId, liftThreeId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 1, to_timestamp(1562951728), 135, 5, 7)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563059325), 125, 5, 6)",
+      [userId, liftFourId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 1, to_timestamp(1562951728), 145, 5, 8)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563059325), 135, 5, 7)",
+      [userId, liftFourId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 2, to_timestamp(1562952628), 125, 5, 6)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563059325), 145, 5, 8)",
+      [userId, liftFourId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 2, to_timestamp(1562952628), 135, 5, 7)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563059325), 125, 5, 6)",
+      [userId, liftFiveId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 2, to_timestamp(1562952628), 145, 5, 8)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563059325), 135, 5, 7)",
+      [userId, liftFiveId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 3, to_timestamp(1562953528), 125, 5, 6)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563059325), 145, 5, 8)",
+      [userId, liftFiveId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 3, to_timestamp(1562953528), 135, 5, 7)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563059325), 125, 5, 6)",
+      [userId, liftSixId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 3, to_timestamp(1562953528), 145, 5, 8)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563059325), 135, 5, 7)",
+      [userId, liftSixId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 4, to_timestamp(1563059325), 125, 5, 6)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563059325), 145, 5, 8)",
+      [userId, liftSixId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 4, to_timestamp(1563059325), 135, 5, 7)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563145725), 125, 5, 6)",
+      [userId, liftSevenId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 4, to_timestamp(1563059325), 145, 5, 8)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563145725), 135, 5, 7)",
+      [userId, liftSevenId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 5, to_timestamp(1563059325), 125, 5, 6)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563145725), 145, 5, 8)",
+      [userId, liftSevenId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 5, to_timestamp(1563059325), 135, 5, 7)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563145725), 125, 5, 6)",
+      [userId, liftEightId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 5, to_timestamp(1563059325), 145, 5, 8)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563145725), 135, 5, 7)",
+      [userId, liftEightId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 6, to_timestamp(1563059325), 125, 5, 6)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563145725), 145, 5, 8)",
+      [userId, liftEightId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 6, to_timestamp(1563059325), 135, 5, 7)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563145725), 125, 5, 6)",
+      [userId, liftNineId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 6, to_timestamp(1563059325), 145, 5, 8)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563145725), 135, 5, 7)",
+      [userId, liftNineId]
     );
     task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 7, to_timestamp(1563145725), 125, 5, 6)",
-      userId
-    );
-    task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 7, to_timestamp(1563145725), 135, 5, 7)",
-      userId
-    );
-    task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 7, to_timestamp(1563145725), 145, 5, 8)",
-      userId
-    );
-    task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 8, to_timestamp(1563145725), 125, 5, 6)",
-      userId
-    );
-    task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 8, to_timestamp(1563145725), 135, 5, 7)",
-      userId
-    );
-    task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 8, to_timestamp(1563145725), 145, 5, 8)",
-      userId
-    );
-    task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 9, to_timestamp(1563145725), 125, 5, 6)",
-      userId
-    );
-    task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 9, to_timestamp(1563145725), 135, 5, 7)",
-      userId
-    );
-    task.none(
-      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, 9, to_timestamp(1563145725), 145, 5, 8)",
-      userId
+      "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1563145725), 145, 5, 8)",
+      [userId, liftNineId]
     );
   });
 }
