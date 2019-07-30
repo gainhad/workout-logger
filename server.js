@@ -117,54 +117,80 @@ app.get("/api/login", async (req, res) => {
 function addDemoData(userId) {
   db.task(async task => {
     // TODO: Make this async by grouping promises into array
-    const { id: workoutOneId } = await task.one(
+    const workoutOneIdPromise = task.one(
       "INSERT INTO workouts(userId, time_completed, duration, session_rpe) VALUES($1, to_timestamp(1562954788), 3600, 8) RETURNING id",
       userId
     );
-    const { id: workoutTwoId } = await task.one(
+    const workoutTwoIdPromise = task.one(
       "INSERT INTO workouts(userId, time_completed, duration, session_rpe) VALUES($1, to_timestamp(1562868388), 3600, 9) RETURNING id",
       userId
     );
-    const { id: workoutThreeId } = await task.one(
+    const workoutThreeIdPromise = task.one(
       "INSERT INTO workouts(userId, time_completed, duration, session_rpe) VALUES($1, to_timestamp(1562781988), 3600, 10) RETURNING id",
       userId
     );
-    const { id: liftOneId } = await task.one(
+    const [workoutOneId, workoutTwoId, workoutThreeId] = await Promise.all([
+      workoutOneIdPromise,
+      workoutTwoIdPromise,
+      workoutThreeIdPromise
+    ]).then(arr => arr.map(e => e.id));
+    const liftOneIdPromise = task.one(
       "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'squat', 600) RETURNING id",
       [userId, workoutOneId]
     );
-    const { id: liftTwoId } = await task.one(
+    const liftTwoIdPromise = task.one(
       "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'deadlift', 600) RETURNING id",
       [userId, workoutTwoId]
     );
-    const { id: liftThreeId } = await task.one(
+    const liftThreeIdPromise = task.one(
       "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'bench press', 600) RETURNING id",
       [userId, workoutThreeId]
     );
-    const { id: liftFourId } = await task.one(
+    const liftFourIdPromise = task.one(
       "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'squat', 600) RETURNING id",
       [userId, workoutOneId]
     );
-    const { id: liftFiveId } = await task.one(
+    const liftFiveIdPromise = task.one(
       "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'deadlift', 600) RETURNING id",
       [userId, workoutTwoId]
     );
-    const { id: liftSixId } = await task.one(
+    const liftSixIdPromise = task.one(
       "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'bench press', 600) RETURNING id",
       [userId, workoutThreeId]
     );
-    const { id: liftSevenId } = await task.one(
+    const liftSevenIdPromise = task.one(
       "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'squat', 600) RETURNING id",
       [userId, workoutOneId]
     );
-    const { id: liftEightId } = await task.one(
+    const liftEightIdPromise = task.one(
       "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'deadlift', 600) RETURNING id",
       [userId, workoutTwoId]
     );
-    const { id: liftNineId } = await task.one(
+    const liftNineIdPromise = task.one(
       "INSERT INTO lifts (userId, workoutID, liftName, duration) VALUES($1, $2, 'bench press', 600) RETURNING id",
       [userId, workoutThreeId]
     );
+    const [
+      liftOneId,
+      liftTwoId,
+      liftThreeId,
+      liftFourId,
+      liftFiveId,
+      liftSixId,
+      liftSevenId,
+      liftEightId,
+      liftNineId
+    ] = await Promise.all([
+      liftOneIdPromise,
+      liftTwoIdPromise,
+      liftThreeIdPromise,
+      liftFourIdPromise,
+      liftFiveIdPromise,
+      liftSixIdPromise,
+      liftSevenIdPromise,
+      liftEightIdPromise,
+      liftNineIdPromise
+    ]).then(arr => arr.map(e => e.id));
     task.none(
       "INSERT INTO sets(userId, liftID, time_completed, weight, reps, rpe) VALUES($1, $2, to_timestamp(1562951728), 125, 5, 6)",
       [userId, liftOneId]
@@ -280,8 +306,10 @@ app.get("/*", function(req, res) {
   res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });
 
-app.use(Sentry.Handlers.errorHandler());
-app.use(function onError(err, req, res, next) {
-  res.statusCode = 500;
-  res.end(res.sentry + "\n");
-});
+if (process.env.NODE_ENV === "production") {
+  app.use(Sentry.Handlers.errorHandler());
+  app.use(function onError(err, req, res, next) {
+    res.statusCode = 500;
+    res.end(res.sentry + "\n");
+  });
+}
