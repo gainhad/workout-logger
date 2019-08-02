@@ -174,7 +174,6 @@ router.route("/workout-history").post(async (req, res) => {
   let setIds = [];
   try {
     setIds = lifts.map(async (lift, index) => {
-      console.log("here");
       let newIds = lift.sets.map(set =>
         db.one(
           "INSERT INTO sets (userId, liftId, time_completed, weight, reps, rpe) VALUES ($1, $2, to_timestamp($3), $4, $5, $6) RETURNING id",
@@ -252,7 +251,10 @@ router
           id: data.id
         })
       )
-      .catch(error => console.error(error));
+      .catch(error => {
+        res.status(500);
+        console.error(error);
+      });
   });
 
 router.route("/:userId/measurement-history/:type").get((req, res) => {

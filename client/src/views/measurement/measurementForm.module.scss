@@ -8,6 +8,14 @@
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
+#statusDisplay {
+  width: 80vw;
+  max-width: 300px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
 .button {
   grid-column: span 3;
   align-self: end;

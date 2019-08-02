@@ -1,58 +1,14 @@
 import { createSlice, createSelector } from "redux-starter-kit";
 import axios from "axios";
 
-/*
-const initialState = {
-  weight: {
-    measurements: [
-      {
-        timestamp: 1562783942272,
-        entry: 160
-      },
-      {
-        timestamp: 1562797642272,
-        entry: 190
-      },
-      {
-        timestamp: 1562123042272,
-        entry: 80
-      },
-      {
-        timestamp: 1562782452272,
-        entry: 480
-      }
-    ],
-    unit: 'lbs'
-  },
-  waist: {
-    measurements: [
-      {
-        timestamp: 1562783942272,
-        entry: 60
-      },
-      {
-        timestamp: 1562797642272,
-        entry: 90
-      },
-      {
-        timestamp: 1562123042272,
-        entry: 30
-      },
-      {
-        timestamp: 1562782452272,
-        entry: 80
-      }
-    ],
-    unit: 'in'
-  }
-};
-*/
-
 const initialState = {
   data: {},
-  fetched: false,
-  isFetching: false,
-  isError: false
+  fetchingSuccess: false,
+  fetchingInProgress: false,
+  fetchingError: false,
+  addingInProgress: false,
+  addingSuccess: false,
+  addingError: false
 };
 
 // Reducers
@@ -60,7 +16,10 @@ function addOrUpdateMeasurementReducer(state, { payload, meta }) {
   if (isNaN(meta.index)) {
     // Handle first data entry
     if (!state.data[meta.type]) {
-      state.data[meta.type] = {};
+      state.data[meta.type] = {
+        measurements: [],
+        unit: meta.unit
+      };
     }
     state.data[meta.type].measurements.unshift(payload);
   } else {
@@ -68,29 +27,52 @@ function addOrUpdateMeasurementReducer(state, { payload, meta }) {
   }
 }
 
-function isFetchingReducer(state) {
-  state.isFetching = true;
+function fetchingInProgressReducer(state) {
+  state.fetchingInProgress = true;
 }
 
-function fetchedReducer(state) {
-  state.fetched = true;
+function fetchingSuccessReducer(state) {
+  state.fetchingSuccess = true;
 }
 
-function isErrorReducer(state) {
-  state.isError = true;
+function fetchingErrorReducer(state) {
+  state.fetchingError = true;
+}
+
+function addingSuccessReducer(state) {
+  state.addingSuccess = true;
+  state.addingError = false;
+  state.addingInProgress = false;
+}
+
+function addingErrorReducer(state) {
+  state.addingError = true;
+  state.addingSuccess = false;
+  state.addingInProgress = false;
+}
+
+function addingInProgressReducer(state) {
+  state.addingInProgress = true;
 }
 
 function dataReducer(state, { payload }) {
   state.data = payload;
-  state.isFetching = false;
-  state.fetched = true;
+  state.fetchingInProgress = false;
+  state.fetchingSuccess = true;
+}
+
+function resetAddingReducer(state) {
+  state.addingInProgress = false;
+  state.addingSuccess = false;
+  state.addingError = false;
 }
 
 function resetReducer(state) {
   state.data = initialState.data;
-  state.fetched = initialState.fetched;
-  state.isFetched = initialState.isFetched;
-  state.isError = initialState.isError;
+  state.fetchingSuccess = initialState.fetchingSuccess;
+  state.fetchingInProgress = initialState.fetchingInProgress;
+  state.fetchingError = initialState.fetchingError;
+  resetAddingReducer();
 }
 
 const measurementHistory = createSlice({
@@ -98,10 +80,14 @@ const measurementHistory = createSlice({
   initialState: initialState,
   reducers: {
     data: dataReducer,
-    fetched: fetchedReducer,
-    isFetching: isFetchingReducer,
-    isError: isErrorReducer,
+    fetchingSuccess: fetchingSuccessReducer,
+    fetchingInProgress: fetchingInProgressReducer,
+    fetchingError: fetchingErrorReducer,
+    addingSuccess: addingSuccessReducer,
+    addingInProgress: addingInProgressReducer,
+    addingError: addingErrorReducer,
     addOrUpdateMeasurement: addOrUpdateMeasurementReducer,
+    resetAdding: resetAddingReducer,
     reset: resetReducer
   }
 });
@@ -109,17 +95,20 @@ const measurementHistory = createSlice({
 // Custom Actions
 function fetchMeasurementHistory() {
   return dispatch => {
-    dispatch(measurementHistory.actions.isFetching());
+    dispatch(measurementHistory.actions.fetchingInProgress());
     fetch(`/api/user-data/measurement-history`)
       .then(res => res.json())
       .then(json => dispatch(measurementHistory.actions.data(json)))
-      .catch(error => dispatch(measurementHistory.actions.isError(error)));
+      .catch(error =>
+        dispatch(measurementHistory.actions.fetchingError(error))
+      );
   };
 }
 
 function addOrUpdateMeasurement(index, type, unit, measurement) {
   return dispatch => {
     const timestamp = Date.now();
+    dispatch({ type: "measurementHistory/addingInProgress" });
     axios
       .post(`/api/user-data/measurement-history/`, {
         type: type,
@@ -127,20 +116,28 @@ function addOrUpdateMeasurement(index, type, unit, measurement) {
         timestamp: timestamp,
         unit: unit
       })
-      .then(res =>
+      .then(res => {
         dispatch({
           type: "measurementHistory/addOrUpdateMeasurement",
           meta: {
             index: index,
-            type: type
+            type: type,
+            unit: unit
           },
           payload: {
             id: res.data.id,
             measurement: measurement,
             timestamp: timestamp
           }
-        })
-      );
+        });
+        dispatch({
+          type: "measurementHistory/addingSuccess"
+        });
+      })
+      .catch(error => {
+        console.log("here");
+        dispatch({ type: "measurementHistory/addingError" });
+      });
   };
 }
 
