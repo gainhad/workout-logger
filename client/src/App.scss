@@ -145,15 +145,6 @@ h2 {
   justify-self: start;
 }
 
-.backdrop {
-  height: 100%;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1;
-  position: absolute;
-  top: 0;
-}
-
 .blurred {
   filter: blur(2px) brightness(0.5) grayscale(0.3);
 }
