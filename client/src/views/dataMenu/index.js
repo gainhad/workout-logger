@@ -4,12 +4,19 @@ import styles from "./viewDataMenu.module.scss";
 import { useSelector } from "react-redux";
 import { getLiftNamesAlphabetized } from "../../redux/slices/liftHistory";
 import { getMeasurementTypesAlphabetized } from "../../redux/slices/measurementHistory";
+import ButtonOne from "../../components/ButtonOne";
+import Loader from "../../components/Loader";
 
 const ViewDataMenu = () => {
   const liftNames = useSelector(state => getLiftNamesAlphabetized(state));
   const measurementNamesAndUnits = useSelector(state =>
     getMeasurementTypesAlphabetized(state)
   );
+  const liftDataFetching = useSelector(state => state.liftHistory.isFetching);
+  const measurementDataFetching = useSelector(
+    state => state.measurementHistory.fetchingInProgress
+  );
+
   return (
     <div id={styles.viewDataMenu}>
       <Link to="/">
@@ -19,35 +26,38 @@ const ViewDataMenu = () => {
       </Link>
       <div className={styles.dataSelectionMenu}>
         <h2 className={styles.menuHeader}>LIFTS</h2>
-        <ul className={styles.dataSelectionList}>
-          {liftNames.map((lift, key) => (
-            <li key={key}>
-              <Link to={`/view/lift/${lift}`}>
-                <button type="button">{lift.toUpperCase()}</button>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {liftDataFetching ? (
+          <Loader />
+        ) : (
+          <ul className={styles.dataSelectionList}>
+            {liftNames.map((lift, key) => (
+              <li key={key}>
+                <Link to={`/view/lift/${lift}`}>
+                  <ButtonOne type="button">{lift.toUpperCase()}</ButtonOne>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       <div className={styles.dataSelectionMenu}>
         <h2 className={styles.menuHeader}>MEASUREMENTS</h2>
-        <ul className={styles.dataSelectionList}>
-          {measurementNamesAndUnits.map((entry, key) => (
-            <li key={key}>
-              <Link to={`/view/measurement/${entry.name}`}>
-                <button type="button">{entry.name.toUpperCase()}</button>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {measurementDataFetching ? (
+          <Loader />
+        ) : (
+          <ul className={styles.dataSelectionList}>
+            {measurementNamesAndUnits.map((entry, key) => (
+              <li key={key}>
+                <Link to={`/view/measurement/${entry.name}`}>
+                  <ButtonOne type="button">
+                    {entry.name.toUpperCase()}
+                  </ButtonOne>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-      <button
-        type="button"
-        className="button-one"
-        id={styles.graphMultipleButton}
-      >
-        <h2>GRAPH MULTIPLE</h2>
-      </button>
     </div>
   );
 };
