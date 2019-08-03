@@ -25,7 +25,7 @@ function Main() {
     dispatch(userDataActions.checkAuthentication());
   }
   const measurementHistoryFetched = useSelector(
-    state => state.measurementHistory.fetched
+    state => state.measurementHistory.fetchingSuccess
   );
 
   const liftHistoryFetched = useSelector(state => state.liftHistory.fetched);
