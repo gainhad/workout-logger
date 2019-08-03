@@ -24,6 +24,11 @@
   width: 90%;
 }
 
+#cancelButton {
+  --button-one-background: rgba(240, 93, 94, 0.65);
+  --button-one-background-hover: rgba(240, 93, 94, 0.85);
+}
+
 .measurementFormLabel {
   grid-column: span 2;
   justify-self: end;

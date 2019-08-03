@@ -39,5 +39,6 @@
 }
 
 #cancelButton {
-  background: adjust-color($fg-red, $alpha: -0.3);
+  --button-one-background: rgba(240, 93, 94, 0.65);
+  --button-one-background-hover: rgba(240, 93, 94, 0.85);
 }

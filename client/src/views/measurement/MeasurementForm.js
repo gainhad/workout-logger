@@ -26,7 +26,7 @@ const MeasurementForm = props => {
     if (success || error) {
       const loaderTimeout = setTimeout(() => {
         setShowLoader(false);
-      }, 900);
+      }, 500);
       const timeout = setTimeout(
         () => {
           props.closeModal();
@@ -93,6 +93,7 @@ const MeasurementForm = props => {
         <ButtonOne
           type="button"
           className={styles.button}
+          id={styles.cancelButton}
           onClick={props.closeModal}
         >
           CANCEL

@@ -243,14 +243,14 @@ router
         req.body.unit
       ]
     )
-      .then(data =>
+      .then(data => {
         res.json({
           name: req.body.type,
           measurement: req.body.measurement,
           timestamp: req.body.timestamp,
           id: data.id
-        })
-      )
+        });
+      })
       .catch(error => {
         res.status(500);
         console.error(error);

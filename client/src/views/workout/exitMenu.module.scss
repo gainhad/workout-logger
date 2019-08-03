@@ -3,7 +3,8 @@
 #confirmExit {
   width: 5em;
   font-size: 1.2rem;
-  background: adjust-color($fg-red, $alpha: -0.4);
+  --button-one-background: rgba(240, 93, 94, 0.65);
+  --button-one-background-hover: rgba(240, 93, 94, 0.85);
 }
 
 #cancelExit {

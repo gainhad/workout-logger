@@ -29,4 +29,10 @@
   border: none;
   font-size: 1.2rem;
   margin-left: 20px;
+  outline: none;
+  transition: 0.1s;
+}
+
+.loggingOut {
+  color: rgba(255, 255, 255, 0.4);
 }

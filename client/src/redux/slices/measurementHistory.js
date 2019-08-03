@@ -72,7 +72,7 @@ function resetReducer(state) {
   state.fetchingSuccess = initialState.fetchingSuccess;
   state.fetchingInProgress = initialState.fetchingInProgress;
   state.fetchingError = initialState.fetchingError;
-  resetAddingReducer();
+  resetAddingReducer(state);
 }
 
 const measurementHistory = createSlice({

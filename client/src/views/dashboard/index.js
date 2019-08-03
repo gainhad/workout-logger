@@ -1,18 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userDataActions } from "../../redux/slices/userData";
 import ButtonOne from "../../components/ButtonOne";
 import styles from "./dashboard.module.scss";
+import Loader from "../../components/Loader";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const [loggingOut, setLoggingOut] = useState(false);
   function logout() {
-    dispatch(userDataActions.logOut());
+    setLoggingOut(true);
+    setTimeout(() => dispatch(userDataActions.logOut()), 200);
   }
   return (
     <div id={styles.dashboard}>
-      <button type="button" id={styles.logoutButton} onClick={logout}>
+      <button
+        type="button"
+        id={styles.logoutButton}
+        className={loggingOut ? styles.loggingOut : ""}
+        onClick={logout}
+      >
         Logout
       </button>
       <DashboardMenu />
