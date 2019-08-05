@@ -3,6 +3,11 @@
 #measurementMenu {
   height: 100%;
   width: 100%;
+  background: hsl(
+    var(--app-background-hue),
+    var(--app-background-saturation),
+    var(--app-background-lightness)
+  );
   display: grid;
   grid-template-rows: 5% 1fr 5%;
 }

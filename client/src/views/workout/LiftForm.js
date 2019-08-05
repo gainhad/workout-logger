@@ -8,9 +8,9 @@ import styles from "./liftForm.module.scss";
 import ButtonOne from "../../components/ButtonOne";
 
 const LiftForm = ({ liftIndex = undefined, closeModal }) => {
-  const currrentLiftName = useSelector(state => getCurrentLift(state)).name;
+  const currentLift = useSelector(state => getCurrentLift(state));
   const [selectedLift, setSelectedLift] = useState(
-    isNaN(liftIndex) ? "SQUAT" : currrentLiftName
+    isNaN(liftIndex) ? "SQUAT" : currentLift.name
   );
   const [madeSelection, setMadeSelection] = useState(false);
   const liftList = ["SQUAT", "BENCH PRESS", "OVERHEAD PRESS", "DEADLIFT"];

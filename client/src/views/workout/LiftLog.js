@@ -25,108 +25,141 @@ const LiftLog = props => {
     dispatch(currentWorkoutActions.decrementCurrentLiftIndex());
   const [setModalOpen, setSetModalOpen] = useState(false);
 
-  return (
-    <div id={styles.liftLog}>
-      <LiftSelector
-        atBeginning={atFirstLift}
-        atEnd={atLastLift}
-        currentLift={lift}
-        selectPreviousLift={selectPreviousLift}
-        selectNextLift={selectNextLift}
-        editable={liftEditable}
-        setEditable={setLiftEditable}
-      />
-      <InfoDisplay
-        editable={liftEditable}
-        setEditable={setLiftEditable}
-        setEditSetModal={props.setEditSetModal}
-        sets={lift.sets}
-      />
-      <button
-        type="button"
-        id={styles.editButton}
-        className={liftEditable ? styles.cancelButton : null}
-        onClick={() => setLiftEditable(!liftEditable)}
-      >
-        {liftEditable ? "CANCEL" : "EDIT"}
-      </button>
-      <button
-        type="button"
-        onClick={() => setSetModalOpen(true)}
-        className="arrow-button"
-        id={styles.addSetButton}
-      >
-        &#65291;
-      </button>
-      <Modal isOpen={setModalOpen} onClose={() => setSetModalOpen(false)}>
-        <NewSet />
-      </Modal>
-    </div>
-  );
+  if (lift) {
+    return (
+      <div id={styles.liftLog}>
+        <LiftSelector
+          atBeginning={atFirstLift}
+          atEnd={atLastLift}
+          currentLift={lift}
+          selectPreviousLift={selectPreviousLift}
+          selectNextLift={selectNextLift}
+          editable={liftEditable}
+          setEditable={setLiftEditable}
+        />
+        <InfoDisplay
+          editable={liftEditable}
+          setEditable={setLiftEditable}
+          setEditSetModal={props.setEditSetModal}
+          sets={lift.sets}
+        />
+        <button
+          type="button"
+          id={styles.editButton}
+          className={liftEditable ? styles.cancelButton : null}
+          onClick={() => setLiftEditable(!liftEditable)}
+        >
+          {liftEditable ? "CANCEL" : "EDIT"}
+        </button>
+        <button
+          type="button"
+          onClick={() => setSetModalOpen(true)}
+          className="arrow-button"
+          id={styles.addSetButton}
+        >
+          &#65291;
+        </button>
+        <Modal isOpen={setModalOpen} onClose={() => setSetModalOpen(false)}>
+          <NewSet />
+        </Modal>
+      </div>
+    );
+  } else {
+    return (
+      <div id={styles.liftLog}>
+        <LiftSelector empty={true} />
+      </div>
+    );
+  }
 };
 
 // TODO - Break this off into it's own component.
 const LiftSelector = props => {
   const [newLiftModalOpen, setNewLiftModalOpen] = useState(false);
   const currentLiftIndex = useSelector(state => getCurrentLiftIndex(state));
-  return (
-    <div id={styles.liftSelector}>
-      {!props.atEnd ? (
-        <button
-          type="button"
-          onClick={() => props.selectPreviousLift()}
-          className="arrow-button"
+  if (props.empty) {
+    return (
+      <>
+        <div id={styles.liftSelector}>
+          <button
+            type="button"
+            className="arrow-button"
+            id={styles.addFirstLift}
+            onClick={() => setNewLiftModalOpen(true)}
+          >
+            &#65291;
+          </button>
+        </div>
+        <Modal
+          isOpen={newLiftModalOpen}
+          onClose={() => {
+            setNewLiftModalOpen(false);
+          }}
         >
-          &larr;
-        </button>
-      ) : null}
-      <h2
-        className={
-          props.editable
-            ? styles.liftName.concat(" ", styles.editable)
-            : styles.liftName
-        }
-        onClick={
-          props.editable
-            ? () => {
-                setNewLiftModalOpen(true);
-              }
-            : null
-        }
-      >
-        {props.currentLift.name.toUpperCase()}
-      </h2>
-      {props.atBeginning ? (
-        <button
-          type="button"
-          className="arrow-button"
-          onClick={() => setNewLiftModalOpen(true)}
+          <LiftForm liftIndex={NaN} onLiftSubmit />
+        </Modal>
+      </>
+    );
+  } else {
+    return (
+      <div id={styles.liftSelector}>
+        {!props.atEnd ? (
+          <button
+            type="button"
+            onClick={() => props.selectPreviousLift()}
+            className="arrow-button"
+          >
+            &larr;
+          </button>
+        ) : null}
+        <h2
+          className={
+            props.editable
+              ? styles.liftName.concat(" ", styles.editable)
+              : styles.liftName
+          }
+          onClick={
+            props.editable
+              ? () => {
+                  setNewLiftModalOpen(true);
+                }
+              : null
+          }
         >
-          &#65291;
-        </button>
-      ) : (
-        <button
-          type="button"
-          className="arrow-button"
-          onClick={() => props.selectNextLift()}
+          {props.currentLift.name.toUpperCase()}
+        </h2>
+        {props.atBeginning ? (
+          <button
+            type="button"
+            className="arrow-button"
+            onClick={() => setNewLiftModalOpen(true)}
+          >
+            &#65291;
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="arrow-button"
+            onClick={() => props.selectNextLift()}
+          >
+            &rarr;
+          </button>
+        )}
+        <Modal
+          isOpen={newLiftModalOpen}
+          onClose={() => {
+            setNewLiftModalOpen(false);
+            props.setEditable(false);
+          }}
         >
-          &rarr;
-        </button>
-      )}
-      <Modal
-        isOpen={newLiftModalOpen}
-        onClose={() => {
-          setNewLiftModalOpen(false);
-          props.setEditable(false);
-        }}
-      >
-        <LiftForm
-          liftIndex={props.editable ? currentLiftIndex : NaN}
-          onLiftSubmit
-        />
-      </Modal>
-    </div>
-  );
+          <LiftForm
+            liftIndex={props.editable ? currentLiftIndex : NaN}
+            onLiftSubmit
+          />
+        </Modal>
+      </div>
+    );
+  }
 };
 
 // TODO - Break this off into it's own component.

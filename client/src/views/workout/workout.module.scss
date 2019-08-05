@@ -1,6 +1,11 @@
-@import "../../style/colors";
+@import "../../style/breakpoints.scss";
 
 #workoutScreen {
+  background: hsl(
+    var(--app-background-hue),
+    var(--app-background-saturation),
+    var(--app-background-lightness)
+  );
   display: grid;
   grid-template-rows: minmax(8vh, auto) auto auto 1fr;
   grid-template-columns: 1fr max-content 1fr;
@@ -8,18 +13,29 @@
   width: 100%;
   justify-items: center;
   align-items: center;
+  transition: 0.2s;
+  @media (min-width: $breakpoint) {
+    width: $breakpoint;
+    height: 80vh;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 3px rgba(0, 0, 0, 0.3);
+  }
 }
 
 #timesModal {
   position: fixed;
+  display: flex;
   bottom: 0;
   left: 0;
-  display: flex;
   flex-direction: column;
   align-items: flex-end;
-  box-shadow: -2px 5px 2px 1px rgba(255, 255, 255, 0.1);
   .upperRight {
     align-self: unset;
+  }
+  @media (min-width: $breakpoint) {
+    bottom: 10%;
+    left: calc((100vw - #{$breakpoint}) / 2);
+    border-bottom-left-radius: 10px;
   }
 }
 
@@ -50,19 +66,21 @@
 
 #finishButton {
   grid-column-end: 4;
-  width: max-content;
-  padding: 0.5em;
   justify-self: end;
   margin-right: 10px;
 }
 
 #exitButton {
-  width: max-content;
-  padding: 0.5em;
   justify-self: start;
   margin-left: 10px;
 }
 
 .cancelButton {
   background: rgba(240, 93, 94, 0.5);
+}
+
+.navButton {
+  font-size: 1em;
+  padding: 0.5em;
+  width: 100px;
 }

@@ -1,6 +1,11 @@
 @import "../../style/colors";
 
 #dashboard {
+  background: hsl(
+    var(--app-background-hue),
+    var(--app-background-saturation),
+    var(--app-background-lightness)
+  );
   font: 150% $font-stack;
   display: grid;
   grid-template-rows: 5% 1fr 5%;

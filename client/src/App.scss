@@ -7,7 +7,11 @@
 }
 
 #App {
-  background: $app-background;
+  background: hsl(
+    var(--app-background-hue),
+    var(--app-background-saturation),
+    calc(var(--app-background-lightness) * 0.4)
+  );
   height: 100%;
   font: $font-stack;
   color: $fg-1;

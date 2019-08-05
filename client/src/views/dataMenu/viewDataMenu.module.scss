@@ -2,6 +2,11 @@
 
 #viewDataMenu {
   height: 100%;
+  background: hsl(
+    var(--app-background-hue),
+    var(--app-background-saturation),
+    var(--app-background-lightness)
+  );
   width: 100%;
   display: grid;
   grid-template-rows: 5% min-content minmax(min-content, 1fr) 15%;

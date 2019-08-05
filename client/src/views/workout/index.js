@@ -37,6 +37,7 @@ const Workout = props => {
         <ButtonOne
           type="button"
           id={styles.exitButton}
+          className={styles.navButton}
           onClick={() => setExitModalOpen(true)}
         >
           EXIT
@@ -45,6 +46,7 @@ const Workout = props => {
         <ButtonOne
           type="button"
           onClick={() => setFinishModalOpen(true)}
+          className={styles.navButton}
           id={styles.finishButton}
         >
           FINISH

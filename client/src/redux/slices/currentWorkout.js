@@ -3,6 +3,7 @@ import { calculateE1RM } from "../../utils/calculations.js";
 import { liftHistoryActions } from "./liftHistory.js";
 import axios from "axios";
 
+/*
 const initialState = {
   lifts: [
     {
@@ -28,6 +29,17 @@ const initialState = {
     duration: NaN
   },
   timeStarted: 1562756097322
+};
+*/
+
+const initialState = {
+  lifts: [],
+  currentLiftIndex: 0,
+  restTimer: {
+    timeStarted: NaN,
+    duration: NaN
+  },
+  timeStarted: Date.now()
 };
 
 function addOrRenameLiftReducer(state, { payload }) {
@@ -176,7 +188,7 @@ const atBeginning = createSelector(
 const getHeaviestSet = createSelector(
   ["currentWorkout.currentLiftIndex", "currentWorkout.lifts"],
   (index, lifts) => {
-    if (lifts[index].sets.length) {
+    if (lifts[index] && lifts[index].sets.length) {
       return lifts[index].sets.reduce((setA, setB) => {
         return setA.weight >= setB.weight ? setA : setB;
       });

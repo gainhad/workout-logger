@@ -14,8 +14,13 @@
 .modal {
   height: max-content;
   width: max-content;
-  background: $app-background;
+  background: hsl(
+    var(--app-background-hue),
+    var(--app-background-saturation),
+    var(--app-background-lightness)
+  );
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.4);
+  border-radius: 3px;
 }
 
 .modal-message {

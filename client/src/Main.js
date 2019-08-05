@@ -55,24 +55,4 @@ function Main() {
   );
 }
 
-/*
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  console.log(<Component />);
-  const isLoggedIn = useSelector(state => state.userData.isLoggedIn);
-  const authenticationChecked = useSelector(
-    state => state.userData.authenticationChecked
-  );
-  let componentToRender = <AuthenticatingScreen />;
-  if (isLoggedIn) {
-    componentToRender = <Component />;
-  } else if (authenticationChecked) {
-    componentToRender = <Redirect to="/login" />;
-  }
-  return <Route {...rest} render={() => componentToRender} />;
-};
-
-const AuthenticatingScreen = props => {
-  return <h1>Authenticating...</h1>;
-};
-*/
 export default Main;
