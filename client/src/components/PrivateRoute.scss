@@ -3,7 +3,11 @@
 #authenticating-screen {
   height: 100%;
   width: 100%;
-  background: $app-background;
+  background: hsl(
+    var(--app-background-hue),
+    var(--app-background-saturation),
+    var(--app-background-lightness)
+  );
   display: flex;
   align-items: center;
   justify-content: center;

@@ -7,7 +7,6 @@
     var(--app-background-saturation),
     var(--app-background-lightness)
   );
-  background: $app-background;
   width: 100%;
   display: grid;
   grid-template-rows: 5% min-content 1fr 1fr;
