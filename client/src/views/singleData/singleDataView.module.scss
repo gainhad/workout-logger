@@ -18,8 +18,8 @@
   border: none;
   font-size: 2rem;
   line-height: 0.5;
-  margin-left: 20px;
-  margin-top: 10px;
+  margin-left: var(--nav-left-margin);
+  margin-top: var(--nav-top-margin);
 }
 
 .upperLeft {

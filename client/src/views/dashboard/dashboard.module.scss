@@ -33,7 +33,7 @@
   width: min-content;
   border: none;
   font-size: 1.2rem;
-  margin-left: 20px;
+  margin-left: var(--nav-left-margin);
   outline: none;
   transition: 0.1s;
 }
