@@ -11,6 +11,7 @@ import Modal from "../../components/Modal";
 import NewSet from "./NewSet";
 import SetForm from "./SetForm";
 import LiftForm from "./LiftForm";
+import ButtonOne from "../../components/ButtonOne";
 import styles from "./liftLog.module.scss";
 
 const LiftLog = props => {
@@ -43,18 +44,18 @@ const LiftLog = props => {
           setEditSetModal={props.setEditSetModal}
           sets={lift.sets}
         />
-        <button
+        <ButtonOne
           type="button"
           id={styles.editButton}
           className={liftEditable ? styles.cancelButton : null}
           onClick={() => setLiftEditable(!liftEditable)}
         >
           {liftEditable ? "CANCEL" : "EDIT"}
-        </button>
+        </ButtonOne>
         <button
           type="button"
           onClick={() => setSetModalOpen(true)}
-          className="arrow-button"
+          className={styles.addButton}
           id={styles.addSetButton}
         >
           &#65291;
@@ -83,7 +84,7 @@ const LiftSelector = props => {
         <div id={styles.liftSelector}>
           <button
             type="button"
-            className="arrow-button"
+            className={styles.addButton}
             id={styles.addFirstLift}
             onClick={() => setNewLiftModalOpen(true)}
           >
@@ -131,7 +132,7 @@ const LiftSelector = props => {
         {props.atBeginning ? (
           <button
             type="button"
-            className="arrow-button"
+            className={styles.addButton}
             onClick={() => setNewLiftModalOpen(true)}
           >
             &#65291;
