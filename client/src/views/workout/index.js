@@ -8,6 +8,7 @@ import ExitMenu from "./ExitMenu";
 import FinishWorkoutMenu from "./FinishWorkoutMenu.js";
 import { useDispatch } from "react-redux";
 import { currentWorkoutActions } from "../../redux/slices/currentWorkout";
+import Tippy from "../../components/tippy";
 import ButtonOne from "../../components/ButtonOne";
 import styles from "./workout.module.scss";
 
@@ -80,13 +81,15 @@ const Workout = props => {
         >
           Lift History
         </button>
-        <button
-          type="button"
-          className={styles.helpButton}
-          onClick={() => setTooltipsVisible(!tooltipsVisible)}
-        >
-          ?
-        </button>
+        <Tippy content="Show Help Tooltips" visible={tooltipsVisible}>
+          <button
+            type="button"
+            className={styles.helpButton}
+            onClick={() => setTooltipsVisible(!tooltipsVisible)}
+          >
+            ?
+          </button>
+        </Tippy>
       </div>
       <Modal
         isOpen={timesDisplayModalOpen}
