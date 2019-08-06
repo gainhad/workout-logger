@@ -135,7 +135,6 @@ function addOrUpdateMeasurement(index, type, unit, measurement) {
         });
       })
       .catch(error => {
-        console.log("here");
         dispatch({ type: "measurementHistory/addingError" });
       });
   };
