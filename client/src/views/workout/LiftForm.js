@@ -10,10 +10,10 @@ import ButtonOne from "../../components/ButtonOne";
 const LiftForm = ({ liftIndex = undefined, closeModal }) => {
   const currentLift = useSelector(state => getCurrentLift(state));
   const [selectedLift, setSelectedLift] = useState(
-    isNaN(liftIndex) ? "SQUAT" : currentLift.name
+    isNaN(liftIndex) ? "squat" : currentLift.name
   );
   const [madeSelection, setMadeSelection] = useState(false);
-  const liftList = ["SQUAT", "BENCH PRESS", "OVERHEAD PRESS", "DEADLIFT"];
+  const liftList = ["squat", "bench press", "overhead press", "deadlift"];
   const dispatch = useDispatch();
   const submitLift = lift =>
     dispatch(currentWorkoutActions.addOrRenameLift(lift));
@@ -44,7 +44,7 @@ const LiftForm = ({ liftIndex = undefined, closeModal }) => {
                 checked={lift === selectedLift}
                 onChange={() => setSelectedLift(lift)}
               />
-              {lift}
+              {lift.toUpperCase()}
             </label>
           );
         })}

@@ -31,7 +31,6 @@ const SetForm = ({
     event.preventDefault();
     const valid = validateAll(weight, reps, rpe);
     if (valid) {
-      console.log(weight, reps, rpe);
       submitSet({
         liftIndex: currentLiftIndex,
         setIndex: setIndex,

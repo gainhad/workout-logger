@@ -205,6 +205,11 @@ const getEstimatedOneRepMax = createSelector(
   }
 );
 
+const areLiftsWithoutSets = createSelector(
+  ["currentWorkout.lifts"],
+  lifts => lifts.some(lift => lift.sets.length === 0)
+);
+
 const { actions, reducer } = currentWorkout;
 
 // Overwite generate actions with custom actions.
@@ -217,7 +222,8 @@ export {
   getCurrentLift,
   atBeginning,
   atEnd,
-  getEstimatedOneRepMax
+  getEstimatedOneRepMax,
+  areLiftsWithoutSets
 };
 export { actions as currentWorkoutActions };
 export default reducer;
