@@ -5,7 +5,7 @@
   grid-template-rows: repeat(4, auto);
   grid-template-columns: 20% 60% 20%;
   grid-column: 1 / 4;
-  width: 83%;
+  width: 88%;
   max-width: 400px;
   margin-top: 15px;
   background: rgba(0, 0, 0, 0.1);
@@ -24,8 +24,12 @@
   --button-one-background-hover: rgba(240, 93, 94, 0.85);
 }
 
+.rightButton {
+  justify-self: end;
+}
+
 .addButton {
-  font-size: 2em;
+  font-size: 1.8em;
   height: 45px;
   width: 45px;
   background: rgba(255, 255, 255, 0.15);
@@ -88,16 +92,17 @@
 
 #liftSelector {
   display: grid;
-  grid-template-columns: 1fr 80% 1fr;
+  grid-template-columns: 1fr max-content 1fr;
   grid-column: 1 / 4;
   width: 100%;
-  justify-items: center;
+  justify-items: start;
   align-items: center;
   border-bottom: 1px solid $fg-1;
   padding-bottom: 5px;
   h2 {
-    font-size: 2em;
+    font-size: 1.6em;
     grid-column-start: 2;
+    padding: 8px 0;
     text-align: center;
     margin: 0;
   }

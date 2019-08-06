@@ -7,7 +7,6 @@ export default ({ visible: Visible, ...props }) => {
     <Tippy
       arrow={true}
       arrowType="round"
-      delay={[300, 100]}
       animation="scale"
       placement="bottom"
       inertia={true}

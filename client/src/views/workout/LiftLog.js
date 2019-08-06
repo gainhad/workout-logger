@@ -142,7 +142,7 @@ const LiftSelector = props => {
           <Tippy content="Add Lift" visible={props.tooltipsVisible}>
             <button
               type="button"
-              className={styles.addButton}
+              className={styles.addButton + " " + styles.rightButton}
               onClick={() => setNewLiftModalOpen(true)}
             >
               &#65291;
@@ -151,7 +151,7 @@ const LiftSelector = props => {
         ) : (
           <button
             type="button"
-            className="arrow-button"
+            className={"arrow-button " + styles.rightButton}
             onClick={() => props.selectNextLift()}
           >
             &rarr;
