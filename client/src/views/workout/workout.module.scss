@@ -84,3 +84,23 @@
   padding: 0.5em;
   width: 100px;
 }
+
+.helpButton {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  font-weight: bold;
+  justify-self: end;
+  align-self: end;
+  grid-row-start: 4;
+  padding: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.2s;
+  &:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+  &:focus {
+    outline: none;
+    color: rgba(255, 255, 255, 1);
+  }
+}

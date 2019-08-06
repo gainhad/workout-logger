@@ -7,18 +7,6 @@
   grid-template-columns: 50% 50%;
   grid-row-gap: 10px;
   margin: 10px 0 10px 0;
-  input {
-    font-size: 100%;
-    text-align: center;
-    background: none;
-    border: unset;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-    &:active,
-    &:focus {
-      background: rgba(255, 255, 255, 0.2);
-      outline: none;
-    }
-  }
 }
 
 .inputSection {
@@ -29,6 +17,21 @@
     margin-right: 5px;
     width: 65px;
     text-align: end;
+  }
+  input {
+    font-size: 1em;
+    text-align: center;
+    background: none;
+    border: unset;
+    width: 30%;
+    padding-left: 20px;
+    margin-left: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    &:active,
+    &:focus {
+      background: rgba(255, 255, 255, 0.2);
+      outline: none;
+    }
   }
 }
 

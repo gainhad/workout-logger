@@ -10,7 +10,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   );
   let componentToRender = <AuthenticatingScreen />;
   if (isLoggedIn) {
-    componentToRender = <Component />;
+    componentToRender = <Component {...rest} />;
   } else if (authenticationChecked) {
     componentToRender = <Redirect to="/login" />;
   }

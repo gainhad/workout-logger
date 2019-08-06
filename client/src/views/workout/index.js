@@ -16,6 +16,7 @@ const Workout = props => {
   const [timesDisplayModalOpen, setTimesDisplayModalOpen] = useState(false);
   const [exitModalOpen, setExitModalOpen] = useState(false);
   const [finishModalOpen, setFinishModalOpen] = useState(false);
+  const [tooltipsVisible, setTooltipsVisible] = useState(false);
   const [workoutStarted, setWorkoutStarted] = useState(false);
   useEffect(() => {
     if (!workoutStarted) {
@@ -23,6 +24,17 @@ const Workout = props => {
       setWorkoutStarted(true);
     }
   }, [workoutStarted, dispatch]);
+
+  useEffect(() => {
+    if (tooltipsVisible) {
+      const timeout = setTimeout(() => {
+        setTooltipsVisible(false);
+      }, 2000);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [tooltipsVisible]);
 
   /*
   window.addEventListener("beforeunload", function(e) {
@@ -51,7 +63,7 @@ const Workout = props => {
         >
           FINISH
         </ButtonOne>
-        <LiftLog />
+        <LiftLog tooltipsVisible={tooltipsVisible} />
         <E1rmDisplay />
         <button
           type="button"
@@ -67,6 +79,13 @@ const Workout = props => {
           className="arrow-button"
         >
           Lift History
+        </button>
+        <button
+          type="button"
+          className={styles.helpButton}
+          onClick={() => setTooltipsVisible(!tooltipsVisible)}
+        >
+          ?
         </button>
       </div>
       <Modal

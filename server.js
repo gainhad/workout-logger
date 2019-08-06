@@ -71,7 +71,10 @@ app.get("/api/", (req, res) => {
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 
 app.get("/api/check-authentication", (req, res) => {
-  res.json({ status: !!req.session.userId });
+  res.json({
+    status: !!req.session.userId,
+    demo: req.session.userId < 9999999
+  });
 });
 
 app.get("/api/logout", (req, res) => {

@@ -8,7 +8,8 @@ const initialState = {
   isLoggedIn: false,
   authenticationChecked: false,
   authenticationInProgress: false,
-  authenticationError: false
+  authenticationError: false,
+  demo: false
 };
 
 function isLoggedInReducer(state, { payload }) {
@@ -25,13 +26,18 @@ function authenticationErrorReducer(state) {
   state.authenticationError = true;
 }
 
+function demoReducer(state, { payload }) {
+  state.demo = payload;
+}
+
 const userData = createSlice({
   slice: "userData",
   initialState: initialState,
   reducers: {
     isLoggedIn: isLoggedInReducer,
     authenticationInProgress: authenticationInProgressReducer,
-    authenticationError: authenticationErrorReducer
+    authenticationError: authenticationErrorReducer,
+    demo: demoReducer
   }
 });
 
@@ -43,6 +49,10 @@ function checkAuthentication() {
       dispatch({
         type: "userData/isLoggedIn",
         payload: res.data.status
+      });
+      dispatch({
+        type: "userData/demo",
+        payload: res.data.demo
       });
     });
   };

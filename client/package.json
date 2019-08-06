@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@sentry/browser": "^5.5.0",
+    "@tippy.js/react": "^2.2.2",
     "husky": "^2.7.0",
     "lint-staged": "^8.2.1",
     "logrocket": "^1.0.3",

@@ -44,6 +44,7 @@ const Login = () => {
           alert("Error logging in. Please try again");
         }
         // TODO: throw an error here
+        dispatch(userDataActions.demo(true));
         dispatch(userDataActions.isLoggedIn(res.data.isLoggedIn));
         setLoggingIn(false);
       })

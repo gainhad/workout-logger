@@ -37,7 +37,10 @@ function Main() {
   if (!measurementHistoryFetched && isLoggedIn && authenticationChecked) {
     dispatch(measurementHistoryActions.fetchMeasurementHistory());
   }
+
   const isBlurred = useSelector(state => state.globalUI.isBlurred);
+  const isDemo = useSelector(state => state.userData.demo);
+
   return (
     <div className={isBlurred ? "blurred" : null} id="App">
       <Router>
@@ -46,7 +49,11 @@ function Main() {
           path="/login"
           render={() => (isLoggedIn ? <Redirect to="/" /> : <Login />)}
         />
-        <PrivateRoute path="/workout" component={Workout} />
+        <PrivateRoute
+          path="/workout"
+          firstWorkout={isDemo}
+          component={Workout}
+        />
         <PrivateRoute path="/measurement" component={MeasurementMenu} />
         <PrivateRoute path="/view" exact component={ViewDataMenu} />
         <Route path="/view/:dataType/:dataItem" component={SingleDataView} />
