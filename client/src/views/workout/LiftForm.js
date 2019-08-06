@@ -12,7 +12,6 @@ const LiftForm = ({ liftIndex = undefined, closeModal }) => {
   const [selectedLift, setSelectedLift] = useState(
     isNaN(liftIndex) ? "squat" : currentLift.name
   );
-  const [madeSelection, setMadeSelection] = useState(false);
   const liftList = ["squat", "bench press", "overhead press", "deadlift"];
   const dispatch = useDispatch();
   const submitLift = lift =>

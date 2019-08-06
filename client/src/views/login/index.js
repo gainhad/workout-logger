@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { GoogleLogin } from "react-google-login";
+import { useDispatch } from "react-redux";
 import { userDataActions } from "../../redux/slices/userData";
 import { globalUIActions } from "../../redux/slices/globalUI";
 import styles from "./Login.module.scss";

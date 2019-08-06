@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from "react";
 import Tippy from "@tippy.js/react";
-import styles from "./tippy.module.scss";
 
 export default ({ visible: Visible, ...props }) => {
   const tip = useRef(null);

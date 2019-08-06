@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { userDataActions } from "../../redux/slices/userData";
 import ButtonOne from "../../components/ButtonOne";
 import styles from "./dashboard.module.scss";
-import Loader from "../../components/Loader";
 
 const Dashboard = () => {
   const dispatch = useDispatch();

@@ -80,7 +80,7 @@ const SetForm = ({
     if (rpe && !weightTooltipVisible && !repsTooltipVisible) {
       setRpeTooltipVisible(!validateRpe(rpe));
     }
-  }, [rpe]);
+  }, [rpe, weightTooltipVisible, repsTooltipVisible]);
 
   return (
     <form onSubmit={onSubmit} id={styles.setForm}>
@@ -126,6 +126,7 @@ const SetForm = ({
               <a
                 href="https://articles.reactivetrainingsystems.com/2017/12/05/how-to-use-rpe-in-your-training-correctly/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 RPE Help
               </a>
