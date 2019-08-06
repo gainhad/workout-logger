@@ -26,7 +26,7 @@ const LiftForm = ({ liftIndex = undefined, closeModal }) => {
   return (
     <form id={styles.newLift} onSubmit={onSubmit}>
       <div id={styles.liftOptions}>
-        {liftList.map(lift => {
+        {liftList.map((lift, index) => {
           return (
             <label
               className={
@@ -34,6 +34,7 @@ const LiftForm = ({ liftIndex = undefined, closeModal }) => {
                 " " +
                 (lift === selectedLift ? styles.selected : null)
               }
+              key={index}
             >
               <input
                 type="radio"

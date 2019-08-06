@@ -44,8 +44,8 @@ const Login = () => {
         }
         // TODO: throw an error here
         dispatch(userDataActions.demo(true));
-        dispatch(userDataActions.isLoggedIn(res.data.isLoggedIn));
         setLoggingIn(false);
+        dispatch(userDataActions.isLoggedIn(res.data.isLoggedIn));
       })
       .then(res => dispatch(globalUIActions.isBlurred(false)));
   }
