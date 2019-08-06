@@ -31,13 +31,14 @@ const SetForm = ({
     event.preventDefault();
     const valid = validateAll(weight, reps, rpe);
     if (valid) {
+      console.log(weight, reps, rpe);
       submitSet({
         liftIndex: currentLiftIndex,
         setIndex: setIndex,
         set: {
-          weight: weight,
-          reps: reps,
-          rpe: rpe
+          weight: Number(weight),
+          reps: Number(reps),
+          rpe: Number(rpe)
         }
       });
       if (onSetSubmit) {
