@@ -3,35 +3,6 @@ import { calculateE1RM } from "../../utils/calculations.js";
 import { liftHistoryActions } from "./liftHistory.js";
 import axios from "axios";
 
-/*
-const initialState = {
-  lifts: [
-    {
-      name: "squat",
-      sets: [
-        { weight: 255, reps: 10, rpe: 6, timestamp: 1562952114000 },
-        { weight: 287, reps: 7, rpe: 7, timestamp: 1562952114000 },
-        { weight: 287, reps: 8, rpe: 8, timestamp: 1562952114000 }
-      ]
-    },
-    {
-      name: "deadlift",
-      sets: [{ weight: 144, reps: 5, rpe: 8, timestamp: 1562952114000 }]
-    },
-    {
-      name: "bench press",
-      sets: [{ weight: 255, reps: 6, rpe: 9, timestamp: 1562952114000 }]
-    }
-  ],
-  currentLiftIndex: 0,
-  restTimer: {
-    timeStarted: NaN,
-    duration: NaN
-  },
-  timeStarted: 1562756097322
-};
-*/
-
 const initialState = {
   lifts: [],
   currentLiftIndex: 0,
