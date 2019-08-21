@@ -69,13 +69,6 @@ const Workout = props => {
         >
           TIMES
         </button>
-        <button
-          type="button"
-          id={styles.liftHistoryButton}
-          className="arrow-button"
-        >
-          Lift History
-        </button>
         <Tippy content="Show Help Tooltips" visible={tooltipsVisible}>
           <button
             type="button"
