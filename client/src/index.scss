@@ -15,6 +15,11 @@ button {
 
 html,
 #root {
+  background: hsl(
+    var(--app-background-hue),
+    var(--app-background-saturation),
+    calc(var(--app-background-lightness) * 0.4)
+  );
   height: 100%;
   box-sizing: border-box;
 }

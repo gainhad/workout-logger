@@ -9,6 +9,14 @@
   margin: 10px 0 10px 0;
 }
 
+#rpeTable {
+  margin: auto;
+  border: 1px solid rgba(255, 255, 255, .5);
+  th {
+    border-bottom: 1px solid rgba(255, 255, 255, .5);
+ }
+}
+
 .inputSection {
   grid-column: span 2;
   display: flex;

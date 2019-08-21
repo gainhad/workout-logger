@@ -37,12 +37,7 @@ const Workout = props => {
     }
   }, [tooltipsVisible]);
 
-  /*
-  window.addEventListener("beforeunload", function(e) {
-    e.preventDefault();
-    e.returnValue = "";
-  });
-*/
+  // TODO: Store current workout data in local storage
 
   return (
     <>
