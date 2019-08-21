@@ -4,7 +4,7 @@
   display: grid;
   width: 80vw;
   max-width: 300px;
-  grid-template-rows: 1fr 1.5fr;
+  grid-template-rows: 1fr 1.3fr;
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
@@ -22,6 +22,7 @@
   justify-self: center;
   font-size: 1.3em;
   width: 90%;
+  margin-bottom: 10px;
 }
 
 #cancelButton {
@@ -33,6 +34,7 @@
   grid-column: span 2;
   justify-self: end;
   align-self: end;
+  font-size: 1.5rem;
 }
 
 #measurementInput {
