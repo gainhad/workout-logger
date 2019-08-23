@@ -1,68 +1,24 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
+title: "Workout Logger"
+featuredImage: ../../../images/workout-logger-one.png
+projectLink: "https://totemic-courage-246615.appspot.com/"
+codeLink: "https://github.com/gainhad/workout-logger"
+---
 
-## Available Scripts
+# Project Description
+*Workout Logger* (Feel free to suggest a better name!) is a mobile-first workout tracking application that I built because I have never found an app that I enjoyed using. I wanted to keep the app simple and fast to use, but also provide a great platform for reviewing workout data in order to track progress.
+# Future Plans
+Currently, the app is primarily designed for mobile. While it will work on a desktop, the layout is certainly more optimized for a mobile screen. I plan to add a better desktop view for reviewing data though, as that would really take advantage of the extra screen space. I'm pretty happy with the features built in to the workout part of the app, but I would like to continue adding ways to view your data in the future.
+# Technology used
+## Frontend
+- Framework - React (through Create React App) using functional components and React Hooks.
+- State Management - Redux
+- Style - SCSS, although I would like to move it over to Styled Components or CSS Modules in the future
 
-In the project directory, you can run:
+## Backend
+- Language/Runtime - Javascript/NodeJS
+- Framework - Express
+- Database - Postgresql
 
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## Hosting
+Everything is hosted on Google's cloud platform. I am using App Engine to host the application, and Cloud SQL to host the database
